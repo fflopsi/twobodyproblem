@@ -2,7 +2,6 @@
 Created on 23.06.2020
 @author: flori
 '''
-
 import sys
 import vpython as vp
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
