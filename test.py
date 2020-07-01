@@ -2,18 +2,27 @@
 Created on 23.06.2020
 @author: flori
 '''
+
+import sys
 import vpython as vp
-import tkinter as tk
+from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
-def execute(r):
-    vp.box(size = vp.vector(0.5, 0.5, r), color = vp.color.red)
+class MainWindow(QtWidgets.QMainWindow):
+    def __init__(self, *args, **kwargs):
+        super(MainWindow, self).__init__(*args, **kwargs)
+        uic.loadUi("entry.ui", self)
+        self.b_reset.clicked.connect(self.clear_fields)
 
-root = tk.Tk()
-root.title("Guide")
-e = tk.Entry()
-b = tk.Button(command = lambda: execute(float(e.get())))
+    def clear_fields(self):
+        self.central_radius.setText("")
+        self.central_mass.setText("")
+        self.sat_mass.setText("")
+        self.sat_radius.setText("")
+        self.distance.setText("")
 
-e.pack()
-b.pack()
+app = QtWidgets.QApplication(sys.argv)
 
-root.mainloop()
+window = MainWindow()
+window.show()
+
+app.exec()
