@@ -67,7 +67,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>420</y>
+      <y>410</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -83,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>420</y>
+      <y>410</y>
       <width>111</width>
       <height>23</height>
      </rect>
@@ -240,7 +240,14 @@
       <widget class="QLineEdit" name="sat_radius"/>
      </item>
      <item row="6" column="1">
-      <widget class="QLineEdit" name="distance"/>
+      <widget class="QLineEdit" name="distance">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -259,6 +266,8 @@
      <string>Optionen</string>
     </property>
     <addaction name="actionEinstellungen"/>
+    <addaction name="separator"/>
+    <addaction name="actionVerlassen"/>
    </widget>
    <widget class="QMenu" name="menuBeispiele">
     <property name="title">
@@ -278,6 +287,14 @@
   <action name="actionListe_mit_Voreinstellungen">
    <property name="text">
     <string>Liste mit Voreinstellungen...</string>
+   </property>
+  </action>
+  <action name="actionVerlassen">
+   <property name="text">
+    <string>Verlassen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
  </widget>
