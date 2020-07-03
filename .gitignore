@@ -2,3 +2,5 @@ __pycache__
 build
 dist
 test.spec
+.project
+.pydevproject
