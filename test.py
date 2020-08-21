@@ -3,7 +3,7 @@ Created on 23.06.2020
 @author: flori
 '''
 
-import sys
+import sys, data
 import vpython as vp
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
@@ -17,64 +17,41 @@ class Examples(QtWidgets.QMainWindow):
         super(Examples, self).__init__(*args, parent, **kwargs)
         examples = uic.loadUi("examples.ui", self)
         self.actionVerlassen.triggered.connect(self.close)
-        self.b_ok.clicked.connect(self.fill)
+        self.b_ok.clicked.connect(self.ok)
+        self.b_fill.clicked.connect(self.fill)
 
     def fill(self):
-        if str(self.choice_central.currentText()) == "Sonne" and str(self.choice_sat.currentText()) == "Erde":
-            window.central_mass.setText("1.989e30")
-            window.central_radius.setText("6.9634e8")
-            window.sat_mass.setText("5.972e24")
-            window.sat_radius.setText("6.371e6")
-            window.distance.setText("1.496e11")
-            self.close()
-        elif str(self.choice_central.currentText()) == "Erde" and str(self.choice_sat.currentText()) == "Mond":
-            window.central_mass.setText("5.972e24")
-            window.central_radius.setText("6.371e6")
-            window.sat_mass.setText("7.342e22")
-            window.sat_radius.setText("1.737e6")
-            window.distance.setText("3.844e8")
-            self.close()
-        elif str(self.choice_central.currentText()) == "Mond" and str(self.choice_sat.currentText()) == "Sputnik 2":
-            window.central_mass.setText("7.342e22")
-            window.central_radius.setText("1.737e6")
-            window.sat_mass.setText("5e2")
-            window.sat_radius.setText("2e0")
-            window.distance.setText("1e3")
-            self.close()
-        elif str(self.choice_central.currentText()) == "Erde" and str(self.choice_sat.currentText()) == "Sputnik 2":
-            window.central_mass.setText("5.972e24")
-            window.central_radius.setText("6.371e6")
-            window.sat_mass.setText("5e2")
-            window.sat_radius.setText("2e0")
-            window.distance.setText("1e3")
-            self.close()
-        elif str(self.choice_central.currentText()) == "Sonne" and str(self.choice_sat.currentText()) == "Mond":
-            window.central_mass.setText("1.989e30")
-            window.central_radius.setText("6.9634e8")
-            window.sat_mass.setText("7.342e22")
-            window.sat_radius.setText("1.737e6")
-            window.distance.setText("1.496e11")
-            self.close()
-        elif str(self.choice_central.currentText()) == "Sonne" and str(self.choice_sat.currentText()) == "Sputnik 2":
-            window.central_mass.setText("1.989e30")
-            window.central_radius.setText("6.9634e8")
-            window.sat_mass.setText("5e2")
-            window.sat_radius.setText("2e0")
-            window.distance.setText("1.496e11")
-            self.close()
-        else:
+        if data.MASS[str(self.choice_central.currentText())] <= data.MASS[str(self.choice_sat.currentText())]:
             msg = QtWidgets.QMessageBox()
             msg.setIcon(QtWidgets.QMessageBox.Critical)
-            msg.setText("falsche Wahl")
+            msg.setText("Wahl nicht möglich")
             msg.setWindowTitle("Fehler")
             msg.exec()
+        else:
+            window.central_mass.setText(str(data.MASS[str(self.choice_central.currentText())]))
+            window.central_radius.setText(str(data.RADIUS[str(self.choice_central.currentText())]))
+            window.sat_mass.setText(str(data.MASS[str(self.choice_sat.currentText())]))
+            window.sat_radius.setText(str(data.RADIUS[str(self.choice_sat.currentText())]))
+            window.distance.setText(str(data.DISTANCE[str(self.choice_central.currentText())][str(self.choice_sat.currentText())]))
+    def ok(self):
+        if data.MASS[str(self.choice_central.currentText())] < data.MASS[str(self.choice_sat.currentText())]:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Critical)
+            msg.setText("Wahl nicht möglich")
+            msg.setWindowTitle("Fehler")
+            msg.exec()
+        else:
+            self.fill()
+            self.close()
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, parent = None, **kwargs):
         super(MainWindow, self).__init__(*args, parent, **kwargs)
         uic.loadUi("entry.ui", self)
+        self.setWindowIcon(QtGui.QIcon("icon.gif"))
         self.examples = Examples(parent = self)
         self.settings = Settings(parent = self)
+        self.b_ok.clicked.connect(lambda: self.open_vpython())
         self.b_reset.clicked.connect(self.clear_fields)
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionVerlassen.triggered.connect(app.exit)
@@ -87,9 +64,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sat_radius.setText("")
         self.distance.setText("")
 
-app = QtWidgets.QApplication(sys.argv)
+    def open_vpython(self):
 
-window = MainWindow()
-window.show()
+        vp.sphere()
 
-sys.exit(app.exec())
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+
+    window = MainWindow()
+    window.show()
+
+    sys.exit(app.exec())

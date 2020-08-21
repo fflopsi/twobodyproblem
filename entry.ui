@@ -42,7 +42,7 @@
      <rect>
       <x>30</x>
       <y>360</y>
-      <width>541</width>
+      <width>571</width>
       <height>21</height>
      </rect>
     </property>
@@ -258,7 +258,7 @@
      <x>0</x>
      <y>0</y>
      <width>660</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptionen">
