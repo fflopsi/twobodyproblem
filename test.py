@@ -51,11 +51,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowIcon(QtGui.QIcon("icon.gif"))
         self.examples = Examples(parent = self)
         self.settings = Settings(parent = self)
-        self.b_ok.clicked.connect(lambda: self.open_vpython())
+        self.b_ok.clicked.connect(self.open_vpython)
         self.b_reset.clicked.connect(self.clear_fields)
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionVerlassen.triggered.connect(app.exit)
         self.actionEinstellungen.triggered.connect(self.settings.show)
+
+    def read(self):
+        global central_mass
+        central_mass = float(self.central_mass.text())
+        global central_radius
+        central_radius = float(self.central_radius.text())
+        global sat_mass
+        sat_mass = float(self.sat_mass.text())
+        global sat_radius
+        sat_radius = float(self.sat_radius.text())
+        global distance
+        distance = float(self.distance.text()) + central_radius + sat_radius
 
     def clear_fields(self):
         self.central_radius.setText("")
@@ -65,8 +77,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.distance.setText("")
 
     def open_vpython(self):
-
-        vp.sphere()
+        self.read()
+        central = vp.sphere(radius = central_radius)
+        sat = vp.sphere(pos = vp.vector(distance,0,0), radius = sat_radius, make_trail = True)
+        # pointer = vp.arrow(pos = sat.pos - )
+        x = 0
+        while x < 300:
+            vp.rate(30)
+            sat.pos += vp.vector(distance,0,0) / 300
+            x += 1
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
