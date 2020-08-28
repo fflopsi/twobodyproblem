@@ -6,7 +6,7 @@ class MainWindow(QtWidgets.QMainWindow):
     """the main window, or entry window"""
     def __init__(self, *args, parent = None, **kwargs):
         super(MainWindow, self).__init__(*args, parent, **kwargs)
-        uic.loadUi("entry.ui", self)
+        uic.loadUi("ui/entry.ui", self)
         self.setWindowIcon(QtGui.QIcon("icon.gif"))
         self.examples = examples.Examples(parent = self)
         self.settings = settings.Settings(parent = self)

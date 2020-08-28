@@ -5,7 +5,7 @@ class Examples(QtWidgets.QMainWindow):
     """window for presets"""
     def __init__(self, *args, parent = None, **kwargs):
         super(Examples, self).__init__(*args, parent, **kwargs)
-        examples = uic.loadUi("examples.ui", self)
+        examples = uic.loadUi("ui/examples.ui", self)
         self.actionVerlassen.triggered.connect(self.close)
         self.b_ok.clicked.connect(self.ok)
         self.b_fill.clicked.connect(self.fill) # "Übernehmen" button
