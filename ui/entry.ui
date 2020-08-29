@@ -283,10 +283,16 @@
    <property name="text">
     <string>Einstellungen...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="actionListe_mit_Voreinstellungen">
    <property name="text">
     <string>Liste mit Voreinstellungen...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
   <action name="actionVerlassen">

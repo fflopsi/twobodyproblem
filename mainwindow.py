@@ -7,13 +7,17 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, parent = None, **kwargs):
         super(MainWindow, self).__init__(*args, parent, **kwargs)
         uic.loadUi("ui/entry.ui", self)
-        self.setWindowIcon(QtGui.QIcon("icon.gif"))
+        self.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
         self.examples = examples.Examples(parent = self)
         self.settings = settings.Settings(parent = self)
+        self.actionVerlassen.triggered.connect(self.close)
         self.b_ok.clicked.connect(self.open_vpython)
         self.b_reset.clicked.connect(self.clear_fields)
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionEinstellungen.triggered.connect(self.settings.show)
+        global canvas_width
+        global canvas_height
+        global central_mass_default
 
     def read(self):
         """make all the entered values globally accessible"""
@@ -39,6 +43,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def open_vpython(self):
         """open vpython window with entered values"""
         self.read()
+        scene = vp.canvas(title = "Test", height = int(self.settings.canvas_height.value()), width = int(self.settings.canvas_width.value()))
         central = vp.sphere(radius = central_radius)
         sat = vp.sphere(pos = vp.vector(distance,0,0), radius = sat_radius, make_trail = True)
         central_pointer = vp.arrow(axis = vp.vector(0,-(distance / 5),0), color = vp.vector(1,0,0)) # set pointer arrows to the objects because the scales are too large
