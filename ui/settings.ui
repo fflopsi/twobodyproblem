@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>246</width>
-    <height>180</height>
+    <width>605</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="font">
@@ -19,17 +19,123 @@
    <string>Einstellungen</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
+   <widget class="QPushButton" name="b_ok">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>50</y>
-      <width>141</width>
-      <height>21</height>
+      <x>490</x>
+      <y>180</y>
+      <width>89</width>
+      <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>Kommt noch...</string>
+     <string>Ok</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="b_save">
+    <property name="geometry">
+     <rect>
+      <x>368</x>
+      <y>180</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Übernehmen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="b_cancel">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>180</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string extracomment="Verlassen ohne zu speichern">Verlassen ohne zu speichern</string>
+    </property>
+    <property name="statusTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
+     <string/>
+    </property>
+    <property name="accessibleName">
+     <string/>
+    </property>
+    <property name="accessibleDescription">
+     <string/>
+    </property>
+    <property name="text">
+     <string>Abbrechen</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>80</y>
+      <width>281</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="canvas_height">
+       <property name="minimum">
+        <number>50</number>
+       </property>
+       <property name="maximum">
+        <number>2000</number>
+       </property>
+       <property name="value">
+        <number>600</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="canvas_width">
+       <property name="minimum">
+        <number>100</number>
+       </property>
+       <property name="maximum">
+        <number>3000</number>
+       </property>
+       <property name="value">
+        <number>1000</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Breite Simulationsfenster</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Höhe Simulationsfenster</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>161</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;Einstellungen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
@@ -38,12 +144,27 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>246</width>
-     <height>27</height>
+     <width>605</width>
+     <height>24</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuOptionen">
+    <property name="title">
+     <string>Optionen</string>
+    </property>
+    <addaction name="actionVerlassen"/>
+   </widget>
+   <addaction name="menuOptionen"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionVerlassen">
+   <property name="text">
+    <string>Verlassen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -266,6 +266,8 @@
      <string>Optionen</string>
     </property>
     <addaction name="actionEinstellungen"/>
+    <addaction name="separator"/>
+    <addaction name="actionVerlassen"/>
    </widget>
    <widget class="QMenu" name="menuBeispiele">
     <property name="title">
