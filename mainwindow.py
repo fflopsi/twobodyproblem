@@ -15,8 +15,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.b_reset.clicked.connect(self.clear_fields)
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionEinstellungen.triggered.connect(self.settings.show)
-        global canvas_width
-        global canvas_height
         global central_mass_default
 
     def read(self):

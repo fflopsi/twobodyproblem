@@ -166,6 +166,13 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>canvas_width</tabstop>
+  <tabstop>canvas_height</tabstop>
+  <tabstop>b_cancel</tabstop>
+  <tabstop>b_save</tabstop>
+  <tabstop>b_ok</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

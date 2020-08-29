@@ -117,7 +117,7 @@
    <widget class="QPushButton" name="b_ok">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>270</x>
       <y>180</y>
       <width>91</width>
       <height>23</height>
@@ -126,11 +126,14 @@
     <property name="text">
      <string>OK</string>
     </property>
+    <property name="default">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="b_cancel">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>20</x>
       <y>180</y>
       <width>91</width>
       <height>23</height>
@@ -181,6 +184,13 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>choice_central</tabstop>
+  <tabstop>choice_sat</tabstop>
+  <tabstop>b_cancel</tabstop>
+  <tabstop>b_fill</tabstop>
+  <tabstop>b_ok</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

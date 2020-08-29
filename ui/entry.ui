@@ -305,8 +305,6 @@
   </action>
  </widget>
  <tabstops>
-  <tabstop>b_ok</tabstop>
-  <tabstop>b_reset</tabstop>
   <tabstop>central_mass</tabstop>
   <tabstop>central_radius</tabstop>
   <tabstop>placeholder1</tabstop>
@@ -314,6 +312,8 @@
   <tabstop>sat_radius</tabstop>
   <tabstop>placeholder2</tabstop>
   <tabstop>distance</tabstop>
+  <tabstop>b_reset</tabstop>
+  <tabstop>b_ok</tabstop>
  </tabstops>
  <resources/>
  <connections/>

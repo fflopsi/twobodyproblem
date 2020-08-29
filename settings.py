@@ -1,4 +1,4 @@
-import sys, data, re, string
+import sys, data, re
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 class Settings(QtWidgets.QMainWindow):
