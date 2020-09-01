@@ -10,7 +10,7 @@ class Settings(QtWidgets.QMainWindow):
         self.b_cancel.clicked.connect(self.close)
         self.b_ok.clicked.connect(self.ok)
         self.b_save.clicked.connect(self.save) # "Übernehmen" button
-        with open("SETTINGS.txt", "r") as f:
+        with open("SETTINGS.txt", "w+") as f:
             cont = f.readlines()
             for x in range(len(cont)):
                 if re.match(r"canvas_width", cont[x]):
@@ -20,10 +20,19 @@ class Settings(QtWidgets.QMainWindow):
                 if re.match(r"do_restart", cont[x]):
                     self.do_restart.setChecked(bool(int(cont[x + 1])))
 
+    def blank(self, list, length):
+        list = [None] * length
+        list[0] = "canvas_width\n"
+        list[2] = "canvas_height\n"
+        list[4] = "do_restart\n"
+        return list
+
     def save(self):
         cont = []
         with open("SETTINGS.txt", "r") as f:
             cont = f.readlines()
+        if cont == []:
+            cont = self.blank(cont, 6)
         with open("SETTINGS.txt", "w+") as f:
             for x in range(len(cont)):
                 if re.match(r"canvas_width", cont[x]):
