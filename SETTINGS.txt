@@ -1,6 +1,0 @@
-canvas_width
-1500
-canvas_height
-800
-do_restart
-1
