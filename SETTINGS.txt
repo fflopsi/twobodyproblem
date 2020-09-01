@@ -1,4 +1,6 @@
 canvas_width
-1000
+1500
 canvas_height
-600
+800
+do_restart
+1

@@ -17,6 +17,8 @@ class Settings(QtWidgets.QMainWindow):
                     self.canvas_width.setValue(int(cont[x + 1]))
                 if re.match(r"canvas_height", cont[x]):
                     self.canvas_height.setValue(int(cont[x + 1]))
+                if re.match(r"do_restart", cont[x]):
+                    self.do_restart.setChecked(bool(int(cont[x + 1])))
 
     def save(self):
         cont = []
@@ -28,6 +30,11 @@ class Settings(QtWidgets.QMainWindow):
                     cont[x + 1] = str(self.canvas_width.value()) + "\n"
                 if re.match(r"canvas_height", cont[x]):
                     cont[x + 1] = str(self.canvas_height.value()) + "\n"
+                if re.match(r"do_restart", cont[x]):
+                    if self.do_restart.isChecked():
+                        cont[x + 1] = "1" + "\n"
+                    else:
+                        cont[x + 1] = "0" + "\n"
             f.write("".join(cont))
 
     def ok(self):
