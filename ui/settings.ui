@@ -156,10 +156,18 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="spinBox_2"/>
+      <widget class="QSpinBox" name="color_pointer_r">
+       <property name="maximum">
+        <number>255</number>
+       </property>
+      </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QSpinBox" name="spinBox_3"/>
+      <widget class="QSpinBox" name="color_objects_g">
+       <property name="maximum">
+        <number>255</number>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
@@ -169,16 +177,32 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="spinBox"/>
+      <widget class="QSpinBox" name="color_objects_r">
+       <property name="maximum">
+        <number>255</number>
+       </property>
+      </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QSpinBox" name="spinBox_4"/>
+      <widget class="QSpinBox" name="color_objects_b">
+       <property name="maximum">
+        <number>255</number>
+       </property>
+      </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QSpinBox" name="spinBox_5"/>
+      <widget class="QSpinBox" name="color_pointer_g">
+       <property name="maximum">
+        <number>255</number>
+       </property>
+      </widget>
      </item>
      <item row="1" column="3">
-      <widget class="QSpinBox" name="spinBox_6"/>
+      <widget class="QSpinBox" name="color_pointer_b">
+       <property name="maximum">
+        <number>255</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

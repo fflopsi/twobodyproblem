@@ -74,11 +74,11 @@ class MainWindow(QtWidgets.QMainWindow):
         """open vpython window with entered values"""
         self.read()
         scene = vp.canvas(title = "Test", height = int(self.settings.canvas_height.value()), width = int(self.settings.canvas_width.value()))
-        central = vp.sphere(radius = central_radius)
-        sat = vp.sphere(pos = vp.vector(distance,0,0), radius = sat_radius, make_trail = True)
-        central_pointer = vp.arrow(axis = vp.vector(0,-(distance / 5),0), color = vp.vector(1,0,0)) # set pointer arrows to the objects because the scales are too large
+        central = vp.sphere(radius = central_radius, color = vp.vector(int(self.settings.color_objects_r.value())/255, int(self.settings.color_objects_g.value())/255, int(self.settings.color_objects_b.value())/255))
+        sat = vp.sphere(pos = vp.vector(distance,0,0), radius = sat_radius, make_trail = True, color = vp.vector(int(self.settings.color_objects_r.value())/255, int(self.settings.color_objects_g.value())/255, int(self.settings.color_objects_b.value())/255))
+        central_pointer = vp.arrow(axis = vp.vector(0,-(distance / 5),0), color = vp.vector(int(self.settings.color_pointer_r.value())/255, int(self.settings.color_pointer_g.value())/255, int(self.settings.color_pointer_b.value())/255)) # set pointer arrows to the objects because the scales are too large
         central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central_radius,0) # set central pointer to the outside of central
-        sat_pointer = vp.arrow(axis = vp.vector(0,-(distance / 5),0), color = vp.vector(1,0,0))
+        sat_pointer = vp.arrow(axis = vp.vector(0,-(distance / 5),0), color = vp.vector(int(self.settings.color_pointer_r.value())/255, int(self.settings.color_pointer_g.value())/255, int(self.settings.color_pointer_b.value())/255))
         x = 0
         while x < 300: # simple movement
             vp.rate(30)
