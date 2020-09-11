@@ -10,27 +10,31 @@ class Settings(QtWidgets.QMainWindow):
         self.b_cancel.clicked.connect(self.close)
         self.b_ok.clicked.connect(self.ok)
         self.b_save.clicked.connect(self.save) # "Übernehmen" button
-        with open("SETTINGS.txt", "r") as f:
-            cont = f.readlines()
-            for x in range(len(cont)):
-                if re.match(r"canvas_width", cont[x]):
-                    self.canvas_width.setValue(int(cont[x+1]))
-                if re.match(r"canvas_height", cont[x]):
-                    self.canvas_height.setValue(int(cont[x+1]))
-                if re.match(r"do_restart", cont[x]):
-                    self.do_restart.setChecked(bool(int(cont[x+1])))
-                if re.match(r"color_objects_r", cont[x]):
-                    self.color_objects_r.setValue(int(cont[x+1]))
-                if re.match(r"color_objects_g", cont[x]):
-                    self.color_objects_g.setValue(int(cont[x+1]))
-                if re.match(r"color_objects_b", cont[x]):
-                    self.color_objects_b.setValue(int(cont[x+1]))
-                if re.match(r"color_pointer_r", cont[x]):
-                    self.color_pointer_r.setValue(int(cont[x+1]))
-                if re.match(r"color_pointer_g", cont[x]):
-                    self.color_pointer_g.setValue(int(cont[x+1]))
-                if re.match(r"color_pointer_b", cont[x]):
-                    self.color_pointer_b.setValue(int(cont[x+1]))
+        try:
+            with open("SETTINGS.txt", "r") as f:
+                cont = f.readlines()
+                for x in range(len(cont)):
+                    if re.match(r"canvas_width", cont[x]):
+                        self.canvas_width.setValue(int(cont[x+1]))
+                    if re.match(r"canvas_height", cont[x]):
+                        self.canvas_height.setValue(int(cont[x+1]))
+                    if re.match(r"do_restart", cont[x]):
+                        self.do_restart.setChecked(bool(int(cont[x+1])))
+                    if re.match(r"color_objects_r", cont[x]):
+                        self.color_objects_r.setValue(int(cont[x+1]))
+                    if re.match(r"color_objects_g", cont[x]):
+                        self.color_objects_g.setValue(int(cont[x+1]))
+                    if re.match(r"color_objects_b", cont[x]):
+                        self.color_objects_b.setValue(int(cont[x+1]))
+                    if re.match(r"color_pointer_r", cont[x]):
+                        self.color_pointer_r.setValue(int(cont[x+1]))
+                    if re.match(r"color_pointer_g", cont[x]):
+                        self.color_pointer_g.setValue(int(cont[x+1]))
+                    if re.match(r"color_pointer_b", cont[x]):
+                        self.color_pointer_b.setValue(int(cont[x+1]))
+        except FileNotFoundError:
+            with open("SETTINGS.txt", "w+") as f:
+                f.write("")
 
     def blank(self, list, length):
         list = [None] * length
