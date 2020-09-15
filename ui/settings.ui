@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>784</width>
-    <height>351</height>
+    <width>876</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="font">
@@ -22,10 +22,10 @@
    <widget class="QPushButton" name="b_ok">
     <property name="geometry">
      <rect>
-      <x>662</x>
-      <y>260</y>
-      <width>89</width>
-      <height>25</height>
+      <x>720</x>
+      <y>240</y>
+      <width>91</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -35,10 +35,10 @@
    <widget class="QPushButton" name="b_save">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>260</y>
-      <width>111</width>
-      <height>25</height>
+      <x>578</x>
+      <y>240</y>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -49,9 +49,9 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>260</y>
-      <width>89</width>
-      <height>25</height>
+      <y>240</y>
+      <width>111</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -78,8 +78,8 @@
      <rect>
       <x>40</x>
       <y>80</y>
-      <width>281</width>
-      <height>71</height>
+      <width>351</width>
+      <height>81</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -130,7 +130,7 @@
      <rect>
       <x>30</x>
       <y>30</y>
-      <width>161</width>
+      <width>221</width>
       <height>41</height>
      </rect>
     </property>
@@ -141,10 +141,10 @@
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>360</x>
+      <x>420</x>
       <y>80</y>
-      <width>341</width>
-      <height>71</height>
+      <width>391</width>
+      <height>81</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -211,8 +211,8 @@
      <rect>
       <x>40</x>
       <y>180</y>
-      <width>661</width>
-      <height>23</height>
+      <width>821</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -228,8 +228,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>784</width>
-     <height>24</height>
+     <width>876</width>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptionen">
