@@ -37,7 +37,7 @@ Now, the code is available and runnable with `python "C:\Users\[Your Username]\T
 
 <a name="linux"/>
 
-## Ubuntu, Debian and other Linux distros
+### Ubuntu, Debian and other Linux distros
 
 - Run the following commands in bash
   0. not necessary, but recommended: `sudo apt-get update && sudo apt-get upgrade`
