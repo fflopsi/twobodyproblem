@@ -31,7 +31,7 @@ Read below for detailed instructions on how to use my program.
   1. Download and install [Git Bash](https://gitforwindows.org/)
   2. Run the following commands from *git bash*:
     1. `mkdir Two\ Body\ Problem && cd "$_"`
-    2. `git clone https\://github.com/flopsi-l-f/two-body-problem_simulation.git`
+    2. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
 
 Now, the code is available and runnable with `python "C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation\run-main.py"`
 
@@ -48,6 +48,6 @@ Now, the code is available and runnable with `python "C:\Users\[Your Username]\T
     - `pip install scipy`
   3. `sudo apt-get install git`
   4. `mkdir Two\ Body\ Problem && cd "$_"`
-  5. `git clone https\://github.com/flopsi-l-f/two-body-problem_simulation.git`
+  5. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
 
 Now, the code is available and runnable with `python3 /home/[Your Username]/Two\ Body\ Problem/two-body-problem_simulation/run-main.py`
