@@ -98,7 +98,7 @@ class MainWindow(QtWidgets.QMainWindow):
         t = 0
         pos1 = sat.pos
         while t < 1200: # movement
-            vp.rate(60)
+            vp.rate(60) # TODO: add selections for changing rate and end-time
             # sat.pos += vp.vector(distance,0,0) / 300
             # sat.pos = vp.vector(0,0,math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance)) + pos1
             sat.pos = vp.rotate(vp.norm(sat.pos - central.pos), angle=vp.pi / 2, axis=vp.vector(0,1,0)) * math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance) + pos1
