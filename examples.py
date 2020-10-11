@@ -3,7 +3,7 @@ from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 class Examples(QtWidgets.QMainWindow):
     """window for presets"""
-    def __init__(self, *args, parent = None, **kwargs):
+    def __init__(self, *args, parent=None, **kwargs):
         super(Examples, self).__init__(*args, parent, **kwargs)
         examples = uic.loadUi("ui/examples.ui", self)
         self.actionVerlassen.triggered.connect(self.close)

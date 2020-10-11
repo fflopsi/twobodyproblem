@@ -3,7 +3,7 @@ from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 class Settings(QtWidgets.QMainWindow):
     """window for settings"""
-    def __init__(self, *args, parent = None, **kwargs):
+    def __init__(self, *args, parent=None, **kwargs):
         super(Settings, self).__init__(*args, parent, **kwargs)
         settings = uic.loadUi("ui/settings.ui", self)
         self.actionVerlassen.triggered.connect(self.close)
