@@ -81,6 +81,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def open_vpython(self):
         """open vpython window with entered values"""
         self.read()
+        t = 0
+        t_max = 10000
+        testing = False
         scene = vp.canvas(title="Test", height=int(self.settings.canvas_height.value()), width=int(self.settings.canvas_width.value()))
         # initiate bodies itself
         global central
@@ -95,13 +98,14 @@ class MainWindow(QtWidgets.QMainWindow):
         global slider
         slider = vp.slider(min=0.1, max=10, step=0.1, value=1, bind=self.adjust)
         reset = vp.button(text="Reset", bind=self.reset_slider)
-        t = 0
+        close = vp.button(text="Close", bind=lambda: t = t_max)
         pos1 = sat.pos
-        while t < 1200: # movement
+        while t < t_max: # movement
             vp.rate(60) # TODO: add selections for changing rate and end-time
-            # sat.pos += vp.vector(distance,0,0) / 300
-            # sat.pos = vp.vector(0,0,math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance)) + pos1
-            sat.pos = vp.rotate(vp.norm(sat.pos - central.pos), angle=vp.pi / 2, axis=vp.vector(0,1,0)) * math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance) + pos1
+            if testing:
+                pass
+            else:
+                sat.pos = vp.rotate(vp.norm(sat.pos - central.pos), angle=vp.pi / 2, axis=vp.vector(0,1,0)) * math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance) + pos1
             sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat_radius,0)
             pos1 = sat.pos
             t += 1
