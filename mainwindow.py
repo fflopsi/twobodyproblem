@@ -101,8 +101,8 @@ class MainWindow(QtWidgets.QMainWindow):
         close = vp.button(text="Close", bind=lambda: t = t_max)
         pos1 = sat.pos
         while t < t_max: # movement
-            vp.rate(60) # TODO: add selections for changing rate and end-time
-            if testing:
+            vp.rate(60) # TODO: add selections for update rate and end time in settings
+            if testing: # TODO: add selection for testing in settings
                 pass
             else:
                 sat.pos = vp.rotate(vp.norm(sat.pos - central.pos), angle=vp.pi / 2, axis=vp.vector(0,1,0)) * math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance) + pos1
