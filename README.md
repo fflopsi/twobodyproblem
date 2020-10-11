@@ -24,14 +24,14 @@ Read below for detailed instructions on how to use my program.
 - Python prerequisites:
   1. Download and install [Python 3.8](https://www.python.org/downloads/).
   2. Run the following commands from the command line to install required packages:
-    - `pip install pyqt5`
-    - `pip install vpython`
-    - `pip install scipy`
+      - `pip install pyqt5`
+      - `pip install vpython`
+      - `pip install scipy`
 - Git and repository prerequisites:
   1. Download and install [Git Bash](https://gitforwindows.org/)
   2. Run the following commands from *git bash*:
-    1. `mkdir Two\ Body\ Problem && cd "$_"`
-    2. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
+      1. `mkdir Two\ Body\ Problem && cd "$_"`
+      2. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
 
 Now, the code is available and runnable with `python "C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation\run-main.py"`
 
@@ -39,13 +39,13 @@ Now, the code is available and runnable with `python "C:\Users\[Your Username]\T
 
 ### Ubuntu, Debian and other Linux distros
 
-- Run the following commands in bash
-  0. not necessary, but recommended: `sudo apt-get update && sudo apt-get upgrade`
+- Run the following commands in bash:
+  - Not necessary, but recommended: `sudo apt-get update && sudo apt-get upgrade`
   1. `sudo apt-get install python3`
   2. Install the required python packages:
-    - `pip install pyqt5`
-    - `pip install vpython`
-    - `pip install scipy`
+      - `pip install pyqt5`
+      - `pip install vpython`
+      - `pip install scipy`
   3. `sudo apt-get install git`
   4. `mkdir Two\ Body\ Problem && cd "$_"`
   5. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
