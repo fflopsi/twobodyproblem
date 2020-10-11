@@ -3,7 +3,7 @@
 
 **Welcome!**
 
-This is my matriculation project. I wrote a small program to simulate the two body problem. You can either choose from the presets (like the Sun, the Earth, Moon etc.) or type in your own masses and volumes. ATM, the only orbit available is a (perfect) circle.
+This is my matriculation project. I wrote a small program to simulate the two body problem. You can either choose from the presets (like Sun, Earth, Moon etc.) or type in your own masses and volumes. ATM, the only orbit available is a (perfect) circle.
 
 ## Table of Contents
 
@@ -51,3 +51,5 @@ Now, the code is available and runnable with `python "C:\Users\[Your Username]\T
   5. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
 
 Now, the code is available and runnable with `python3 /home/[Your Username]/Two\ Body\ Problem/two-body-problem_simulation/run-main.py`
+
+*Participation in this README is always welcome!*
