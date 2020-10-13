@@ -15,7 +15,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.b_reset.clicked.connect(self.clear_fields)
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionEinstellungen.triggered.connect(self.settings.show)
-        global central_mass_default
 
     def restart(self):
         """restart the program after simulation has finished"""
@@ -68,9 +67,9 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             vp.vector(float(self.sat_v0_x.text()), float(self.sat_v0_y.text()), float(self.sat_v0_z.text()))
         except ValueError:
-            self.sat_v0_x.setText(0)
-            self.sat_v0_y.setText(0)
-            self.sat_v0_z.setText(-8000)
+            self.sat_v0_x.setText("0")
+            self.sat_v0_y.setText("0")
+            self.sat_v0_z.setText("-8000")
         finally:
             v0 = vp.vector(float(self.sat_v0_x.text()), float(self.sat_v0_y.text()), float(self.sat_v0_z.text()))
 
@@ -85,15 +84,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sat_v0_y.setText("")
         self.sat_v0_z.setText("")
 
-    def adjust(self):
-        """adjust volume of central"""
-        central.radius = central_radius * slider.value
+    def adjust_central_radius(self):
+        """adjust radius of central"""
+        central.radius = central_radius * central_radius_slider.value
         central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
 
-    def reset_slider(self):
-        """reset the central volume slider"""
-        slider.value = 1
-        self.adjust()
+    def reset_central_radius_slider(self):
+        """reset the central radius slider"""
+        central_radius_slider.value = 1
+        self.adjust_central_radius()
 
     # def interrupt(self): # doesn't work
     #     t = t_max
@@ -101,9 +100,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def open_vpython(self):
         """open vpython window with entered values"""
         self.read()
-        global t
+        # global t
         t = 0
-        global t_max
+        # global t_max
         t_max = self.settings.update_rate.value() * self.settings.max_seconds.value()
         testing = self.settings.do_testing.isChecked()
         scene = vp.canvas(title="Test", height=int(self.settings.canvas_height.value()), width=int(self.settings.canvas_width.value()))
@@ -111,24 +110,34 @@ class MainWindow(QtWidgets.QMainWindow):
         global central
         central = vp.sphere(radius=central_radius, color=vp.vector(int(self.settings.color_objects_r.value())/255, int(self.settings.color_objects_g.value())/255, int(self.settings.color_objects_b.value())/255))
         sat = vp.sphere(pos=vp.vector(distance,0,0), radius=sat_radius, make_trail=True, color=vp.vector(int(self.settings.color_objects_r.value())/255, int(self.settings.color_objects_g.value())/255, int(self.settings.color_objects_b.value())/255))
+
         # initiate pointers
         global central_pointer
         central_pointer = vp.arrow(axis=vp.vector(0,-(distance / 2),0), color=vp.vector(int(self.settings.color_pointer_r.value())/255, int(self.settings.color_pointer_g.value())/255, int(self.settings.color_pointer_b.value())/255)) # set pointer arrows to the objects because the scales are too large
         central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central_radius,0) # set central pointer to the outside of central
         sat_pointer = vp.arrow(axis=vp.vector(0,-(distance / 5),0), color=vp.vector(int(self.settings.color_pointer_r.value())/255, int(self.settings.color_pointer_g.value())/255, int(self.settings.color_pointer_b.value())/255))
+
         # testing
-        global slider
-        slider = vp.slider(min=0.1, max=10, step=0.1, value=1, bind=self.adjust)
-        reset = vp.button(text="Reset", bind=self.reset_slider)
+        global central_radius_slider
+        central_radius_slider = vp.slider(min=0.1, max=10, step=0.1, value=1, bind=self.adjust_central_radius)
+        reset = vp.button(text="Reset", bind=self.reset_central_radius_slider)
         # close = vp.button(text="Close", bind=self.interrupt) # doesn't work
+
         pos1 = sat.pos
         v_pos1 = v0
         while t < t_max: # movement
             vp.rate(self.settings.update_rate.value())
-            F = ((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass * sat_mass) / (vp.mag(central.pos - sat.pos) ** 2)) * vp.norm(central.pos - sat.pos) # gravitational force
-            a = F / sat_mass # gravitational acceleration
+            G = scipy.constants.value(u"Newtonian constant of gravitation") # some values for calculations
+            M = central_mass
+            m = sat_mass
+            r = central.pos - sat.pos # vector from sat to central
+
+            # calculations
+            F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
+            a = F / m # gravitational acceleration
             v = a + v_pos1 # velocity
             sat.pos = v + pos1 # new position
+
             v_pos1 = v # make the current velocity available for next iteration
             pos1 = sat.pos # make the current position available for next iteration
             sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat_radius,0)
