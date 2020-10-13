@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>881</width>
+    <width>863</width>
     <height>483</height>
    </rect>
   </property>
@@ -22,21 +22,27 @@
    <widget class="QPushButton" name="b_ok">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>370</y>
+      <x>750</x>
+      <y>360</y>
       <width>91</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Ok</string>
+     <string>OK</string>
+    </property>
+    <property name="default">
+     <bool>true</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="b_save">
     <property name="geometry">
      <rect>
-      <x>578</x>
-      <y>370</y>
+      <x>608</x>
+      <y>360</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -49,7 +55,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>370</y>
+      <y>360</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -76,7 +82,7 @@
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>80</y>
       <width>351</width>
       <height>81</height>
@@ -129,7 +135,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>30</y>
+      <y>20</y>
       <width>221</width>
       <height>41</height>
      </rect>
@@ -141,7 +147,7 @@
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>410</x>
       <y>80</y>
       <width>391</width>
       <height>81</height>
@@ -221,7 +227,7 @@
    <widget class="QCheckBox" name="do_restart">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>310</y>
       <width>821</width>
       <height>41</height>
@@ -237,22 +243,22 @@
    <widget class="QCheckBox" name="do_testing">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>280</y>
-      <width>251</width>
+      <width>401</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Test-Features aktivieren</string>
+     <string>Test-Features aktivieren (nicht funktional)</string>
     </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>180</y>
-      <width>500</width>
+      <width>527</width>
       <height>80</height>
      </rect>
     </property>
@@ -260,10 +266,10 @@
      <item row="0" column="1">
       <widget class="QSpinBox" name="update_rate">
        <property name="minimum">
-        <number>10</number>
+        <number>1</number>
        </property>
        <property name="maximum">
-        <number>10000</number>
+        <number>1000000</number>
        </property>
        <property name="value">
         <number>60</number>
@@ -273,7 +279,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Update-Rate der Simulation *</string>
+        <string>Update-Rate (Geschwindigkeit) der Simulation</string>
        </property>
       </widget>
      </item>
@@ -305,7 +311,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>881</width>
+     <width>863</width>
      <height>34</height>
     </rect>
    </property>
