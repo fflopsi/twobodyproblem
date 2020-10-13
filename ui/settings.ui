@@ -336,6 +336,16 @@
  <tabstops>
   <tabstop>canvas_width</tabstop>
   <tabstop>canvas_height</tabstop>
+  <tabstop>color_objects_r</tabstop>
+  <tabstop>color_objects_g</tabstop>
+  <tabstop>color_objects_b</tabstop>
+  <tabstop>color_pointer_r</tabstop>
+  <tabstop>color_pointer_g</tabstop>
+  <tabstop>color_pointer_b</tabstop>
+  <tabstop>update_rate</tabstop>
+  <tabstop>max_seconds</tabstop>
+  <tabstop>do_testing</tabstop>
+  <tabstop>do_restart</tabstop>
   <tabstop>b_cancel</tabstop>
   <tabstop>b_save</tabstop>
   <tabstop>b_ok</tabstop>

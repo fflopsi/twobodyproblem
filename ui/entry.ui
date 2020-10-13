@@ -365,11 +365,16 @@
  <tabstops>
   <tabstop>central_mass</tabstop>
   <tabstop>central_radius</tabstop>
-  <tabstop>placeholder1</tabstop>
   <tabstop>sat_mass</tabstop>
   <tabstop>sat_radius</tabstop>
+  <tabstop>sat_v0_x</tabstop>
+  <tabstop>sat_v0_y</tabstop>
+  <tabstop>sat_v0_z</tabstop>
+  <tabstop>distance</tabstop>
   <tabstop>b_reset</tabstop>
   <tabstop>b_ok</tabstop>
+  <tabstop>placeholder1</tabstop>
+  <tabstop>placeholder1_2</tabstop>
  </tabstops>
  <resources/>
  <connections/>
