@@ -18,6 +18,7 @@ class MainWindow(QtWidgets.QMainWindow):
         global central_mass_default
 
     def restart(self):
+        """restart the program after simulation has finished"""
         os.execl(sys.executable, sys.executable, *sys.argv)
 
     def read(self):
@@ -27,6 +28,8 @@ class MainWindow(QtWidgets.QMainWindow):
         global sat_mass
         global sat_radius
         global distance
+        global v0
+
         try:
             float(self.central_mass.text())
         except ValueError:
@@ -62,6 +65,15 @@ class MainWindow(QtWidgets.QMainWindow):
         finally:
             distance = float(self.distance.text()) + central_radius + sat_radius ### so lassen?
 
+        try:
+            vp.vector(float(self.sat_v0_x.text()), float(self.sat_v0_y.text()), float(self.sat_v0_z.text()))
+        except ValueError:
+            self.sat_v0_x.setText(0)
+            self.sat_v0_y.setText(0)
+            self.sat_v0_z.setText(-8000)
+        finally:
+            v0 = vp.vector(float(self.sat_v0_x.text()), float(self.sat_v0_y.text()), float(self.sat_v0_z.text()))
+
     def clear_fields(self):
         """delete all values in all fields"""
         self.central_radius.setText("")
@@ -69,17 +81,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sat_mass.setText("")
         self.sat_radius.setText("")
         self.distance.setText("")
+        self.sat_v0_x.setText("")
+        self.sat_v0_y.setText("")
+        self.sat_v0_z.setText("")
 
     def adjust(self):
+        """adjust volume of central"""
         central.radius = central_radius * slider.value
         central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
 
     def reset_slider(self):
+        """reset the central volume slider"""
         slider.value = 1
         self.adjust()
 
-    def interrupt(self):
-        t = t_max
+    # def interrupt(self): # doesn't work
+    #     t = t_max
 
     def open_vpython(self):
         """open vpython window with entered values"""
@@ -103,16 +120,18 @@ class MainWindow(QtWidgets.QMainWindow):
         global slider
         slider = vp.slider(min=0.1, max=10, step=0.1, value=1, bind=self.adjust)
         reset = vp.button(text="Reset", bind=self.reset_slider)
-        close = vp.button(text="Close", bind=self.interrupt)
+        # close = vp.button(text="Close", bind=self.interrupt) # doesn't work
         pos1 = sat.pos
+        v_pos1 = v0
         while t < t_max: # movement
             vp.rate(self.settings.update_rate.value())
-            if testing:
-                sat.pos = vp.rotate(vp.norm(sat.pos - central.pos), angle=vp.pi / 2, axis=vp.vector(0,1,0)) * math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance) + pos1
-            else:
-                sat.pos = vp.rotate(vp.norm(sat.pos - central.pos), angle=vp.pi / 2, axis=vp.vector(0,1,0)) * math.sqrt((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass) / distance) + pos1
+            F = ((scipy.constants.value(u"Newtonian constant of gravitation") * central_mass * sat_mass) / (vp.mag(central.pos - sat.pos) ** 2)) * vp.norm(central.pos - sat.pos) # gravitational force
+            a = F / sat_mass # gravitational acceleration
+            v = a + v_pos1 # velocity
+            sat.pos = v + pos1 # new position
+            v_pos1 = v # make the current velocity available for next iteration
+            pos1 = sat.pos # make the current position available for next iteration
             sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat_radius,0)
-            pos1 = sat.pos
             t += 1
         if self.settings.do_restart.isChecked():
             self.restart()

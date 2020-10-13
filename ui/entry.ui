@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>755</width>
-    <height>536</height>
+    <width>743</width>
+    <height>669</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,7 +41,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>370</y>
+      <y>510</y>
       <width>701</width>
       <height>31</height>
      </rect>
@@ -66,14 +66,14 @@
    <widget class="QPushButton" name="b_ok">
     <property name="geometry">
      <rect>
-      <x>564</x>
-      <y>412</y>
-      <width>81</width>
+      <x>480</x>
+      <y>552</y>
+      <width>231</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>OK</string>
+     <string>OK, Simulation starten</string>
     </property>
     <property name="default">
      <bool>true</bool>
@@ -83,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>412</y>
+      <y>552</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -98,15 +98,183 @@
       <x>30</x>
       <y>70</y>
       <width>681</width>
-      <height>281</height>
+      <height>431</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="central_radius"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="central_mass"/>
+     </item>
+     <item row="6" column="2">
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>m/s</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="2">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;m&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_16">
+       <property name="text">
+        <string>Startabstand Körper</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="sat_mass"/>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 2 m)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="3">
+      <widget class="QLabel" name="label_15">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 1000 km)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="sat_v0_z"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;m&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QLabel" name="label_20">
+       <property name="text">
+        <string>(Standard: 0 m/s)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QLineEdit" name="distance">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QLabel" name="label_19">
+       <property name="text">
+        <string>m/s</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Masse Zweitkörper</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" rowspan="3">
+      <widget class="QLabel" name="label_18">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Startgeschwindigkeit&lt;/p&gt;&lt;p&gt;Zweitkörper&lt;/p&gt;&lt;p&gt;(x, y, z)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
      <item row="4" column="1">
       <widget class="QLineEdit" name="sat_radius"/>
      </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="placeholder1">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="frame">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;m&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="2">
       <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;kg&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="sat_v0_y"/>
+     </item>
+     <item row="7" column="2">
+      <widget class="QLabel" name="label_22">
+       <property name="text">
+        <string>m/s</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Radius Zentralkörper</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Masse Zentralkörper</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="3">
+      <widget class="QLabel" name="label_24">
+       <property name="text">
+        <string>(Standard: -8000 m/s)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 6371 km)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="3">
+      <widget class="QLabel" name="label_23">
+       <property name="text">
+        <string>(Standard: 0 m/s)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 5.972*10&lt;span style=&quot; vertical-align:super;&quot;&gt;24&lt;/span&gt; kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QLabel" name="label_10">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;kg&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
@@ -119,92 +287,6 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="2">
-      <widget class="QLabel" name="label_14">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;m&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 6371 km)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="sat_mass"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Radius Zentralkörper</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_16">
-       <property name="text">
-        <string>Abstand Körper</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Masse Zweitkörper</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Masse Zentralkörper</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;m&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="label_11">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;m&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QLabel" name="label_10">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;kg&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="3">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 2 m)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="central_mass"/>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="placeholder2">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="frame">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
@@ -212,40 +294,16 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="placeholder1">
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="sat_v0_x"/>
+     </item>
+     <item row="8" column="1">
+      <widget class="QLineEdit" name="placeholder1_2">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="frame">
         <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="central_radius"/>
-     </item>
-     <item row="6" column="1">
-      <widget class="QLineEdit" name="distance">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 5.972*10&lt;span style=&quot; vertical-align:super;&quot;&gt;24&lt;/span&gt; kg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="3">
-      <widget class="QLabel" name="label_15">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Standard: 1000 km)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
@@ -257,7 +315,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>755</width>
+     <width>743</width>
      <height>34</height>
     </rect>
    </property>
@@ -310,8 +368,6 @@
   <tabstop>placeholder1</tabstop>
   <tabstop>sat_mass</tabstop>
   <tabstop>sat_radius</tabstop>
-  <tabstop>placeholder2</tabstop>
-  <tabstop>distance</tabstop>
   <tabstop>b_reset</tabstop>
   <tabstop>b_ok</tabstop>
  </tabstops>
