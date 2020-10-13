@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>876</width>
-    <height>366</height>
+    <width>881</width>
+    <height>483</height>
    </rect>
   </property>
   <property name="font">
@@ -23,7 +23,7 @@
     <property name="geometry">
      <rect>
       <x>720</x>
-      <y>240</y>
+      <y>370</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -36,7 +36,7 @@
     <property name="geometry">
      <rect>
       <x>578</x>
-      <y>240</y>
+      <y>370</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -49,7 +49,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>240</y>
+      <y>370</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -160,11 +160,17 @@
        <property name="maximum">
         <number>255</number>
        </property>
+       <property name="value">
+        <number>255</number>
+       </property>
       </widget>
      </item>
      <item row="0" column="2">
       <widget class="QSpinBox" name="color_objects_g">
        <property name="maximum">
+        <number>255</number>
+       </property>
+       <property name="value">
         <number>255</number>
        </property>
       </widget>
@@ -181,11 +187,17 @@
        <property name="maximum">
         <number>255</number>
        </property>
+       <property name="value">
+        <number>255</number>
+       </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="QSpinBox" name="color_objects_b">
        <property name="maximum">
+        <number>255</number>
+       </property>
+       <property name="value">
         <number>255</number>
        </property>
       </widget>
@@ -210,7 +222,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>180</y>
+      <y>310</y>
       <width>821</width>
       <height>41</height>
      </rect>
@@ -219,8 +231,73 @@
      <string>Neustarten nach einer Simulation (macht eine weitere, unmittelbare Simulation möglich)</string>
     </property>
     <property name="checked">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
+   </widget>
+   <widget class="QCheckBox" name="do_testing">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>280</y>
+      <width>251</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Test-Features aktivieren</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>180</y>
+      <width>500</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="update_rate">
+       <property name="minimum">
+        <number>10</number>
+       </property>
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+       <property name="value">
+        <number>60</number>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Update-Rate der Simulation *</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Zeit in Sekunden bis zum Ende der Simulation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="max_seconds">
+       <property name="minimum">
+        <number>5</number>
+       </property>
+       <property name="maximum">
+        <number>300</number>
+       </property>
+       <property name="value">
+        <number>20</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -228,7 +305,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>876</width>
+     <width>881</width>
      <height>34</height>
     </rect>
    </property>
