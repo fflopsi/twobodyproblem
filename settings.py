@@ -38,6 +38,8 @@ class Settings(QtWidgets.QMainWindow):
                         self.update_rate.setValue(int(cont[x+1]))
                     if re.match(r"max_seconds", cont[x]):
                         self.max_seconds.setValue(int(cont[x+1]))
+                    if re.match(r"t_factor", cont[x]):
+                        self.t_factor.setValue(int(cont[x+1]))
         except FileNotFoundError:
             with open("SETTINGS.txt", "w+") as f:
                 f.write("")
@@ -57,6 +59,7 @@ class Settings(QtWidgets.QMainWindow):
         list[18] = "color_pointer_b\n"
         list[20] = "update_rate\n"
         list[22] = "max_seconds\n"
+        list[24] = "t_factor\n"
         return list
 
     def save(self):
@@ -64,7 +67,7 @@ class Settings(QtWidgets.QMainWindow):
         with open("SETTINGS.txt", "r") as f:
             cont = f.readlines()
         if cont == []:
-            cont = self.blank(cont, 24)
+            cont = self.blank(cont, 26)
         with open("SETTINGS.txt", "w+") as f:
             for x in range(len(cont)):
                 if re.match(r"canvas_width", cont[x]):
@@ -97,6 +100,8 @@ class Settings(QtWidgets.QMainWindow):
                     cont[x+1] = str(self.update_rate.value()) + "\n"
                 if re.match(r"max_seconds", cont[x]):
                     cont[x+1] = str(self.max_seconds.value()) + "\n"
+                if re.match(r"t_factor", cont[x]):
+                    cont[x+1] = str(self.t_factor.value()) + "\n"
             f.write("".join(cont))
 
     def ok(self):
