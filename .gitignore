@@ -3,3 +3,5 @@ SETTINGS.txt
 _SETTINGS.txt
 debug.log
 settings.yml
+src
+run-main-exe.py
