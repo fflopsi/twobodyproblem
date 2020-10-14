@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>863</width>
-    <height>483</height>
+    <height>535</height>
    </rect>
   </property>
   <property name="font">
@@ -23,7 +23,7 @@
     <property name="geometry">
      <rect>
       <x>750</x>
-      <y>360</y>
+      <y>410</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -42,7 +42,7 @@
     <property name="geometry">
      <rect>
       <x>608</x>
-      <y>360</y>
+      <y>410</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -55,7 +55,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>360</y>
+      <y>410</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -228,7 +228,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>310</y>
+      <y>360</y>
       <width>821</width>
       <height>41</height>
      </rect>
@@ -244,7 +244,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>280</y>
+      <y>330</y>
       <width>401</width>
       <height>20</height>
      </rect>
@@ -258,8 +258,8 @@
      <rect>
       <x>30</x>
       <y>180</y>
-      <width>527</width>
-      <height>80</height>
+      <width>610</width>
+      <height>121</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -300,6 +300,23 @@
        </property>
        <property name="value">
         <number>20</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Verschnellerungsfaktor (macht die Simulation ungenau)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="t_factor">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>1000</number>
        </property>
       </widget>
      </item>

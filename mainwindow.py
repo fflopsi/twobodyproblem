@@ -105,17 +105,17 @@ class MainWindow(QtWidgets.QMainWindow):
         # global t_max
         t_max = self.settings.update_rate.value() * self.settings.max_seconds.value()
         testing = self.settings.do_testing.isChecked()
-        scene = vp.canvas(title="Test", height=int(self.settings.canvas_height.value()), width=int(self.settings.canvas_width.value()))
+        scene = vp.canvas(title="Test", height=self.settings.canvas_height.value(), width=self.settings.canvas_width.value())
         # initiate bodies itself
         global central
-        central = vp.sphere(radius=central_radius, color=vp.vector(int(self.settings.color_objects_r.value())/255, int(self.settings.color_objects_g.value())/255, int(self.settings.color_objects_b.value())/255))
-        sat = vp.sphere(pos=vp.vector(distance,0,0), radius=sat_radius, make_trail=True, color=vp.vector(int(self.settings.color_objects_r.value())/255, int(self.settings.color_objects_g.value())/255, int(self.settings.color_objects_b.value())/255))
+        central = vp.sphere(radius=central_radius, color=vp.vector(self.settings.color_objects_r.value()/255, self.settings.color_objects_g.value()/255, self.settings.color_objects_b.value()/255))
+        sat = vp.sphere(pos=vp.vector(distance,0,0), radius=sat_radius, make_trail=True, color=vp.vector(self.settings.color_objects_r.value()/255, self.settings.color_objects_g.value()/255, self.settings.color_objects_b.value()/255))
 
         # initiate pointers
         global central_pointer
-        central_pointer = vp.arrow(axis=vp.vector(0,-(distance / 2),0), color=vp.vector(int(self.settings.color_pointer_r.value())/255, int(self.settings.color_pointer_g.value())/255, int(self.settings.color_pointer_b.value())/255)) # set pointer arrows to the objects because the scales are too large
+        central_pointer = vp.arrow(axis=vp.vector(0,-(distance / 2),0), color=vp.vector(self.settings.color_pointer_r.value()/255, self.settings.color_pointer_g.value()/255, self.settings.color_pointer_b.value()/255)) # set pointer arrows to the objects because the scales are too large
         central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central_radius,0) # set central pointer to the outside of central
-        sat_pointer = vp.arrow(axis=vp.vector(0,-(distance / 5),0), color=vp.vector(int(self.settings.color_pointer_r.value())/255, int(self.settings.color_pointer_g.value())/255, int(self.settings.color_pointer_b.value())/255))
+        sat_pointer = vp.arrow(axis=vp.vector(0,-(distance / 5),0), color=vp.vector(self.settings.color_pointer_r.value()/255, self.settings.color_pointer_g.value()/255, self.settings.color_pointer_b.value()/255))
 
         # testing
         global central_radius_slider
@@ -135,12 +135,12 @@ class MainWindow(QtWidgets.QMainWindow):
             # calculations
             F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
             a = F / m # gravitational acceleration
-            v = a + v_pos1 # velocity
-            sat.pos = v + pos1 # new position
+            v = a * self.settings.t_factor.value() + v_pos1 # velocity
+            sat.pos = v * self.settings.t_factor.value() + pos1 # new position
 
             v_pos1 = v # make the current velocity available for next iteration
             pos1 = sat.pos # make the current position available for next iteration
-            sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat_radius,0)
+            sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat_radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
             t += 1
         if self.settings.do_restart.isChecked():
             self.restart()
