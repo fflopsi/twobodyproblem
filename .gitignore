@@ -6,3 +6,6 @@ settings.yml
 src
 run-main-exe.py
 target
+build
+run-main.spec
+main.spec
