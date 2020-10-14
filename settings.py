@@ -26,7 +26,7 @@ class Settings(QtWidgets.QMainWindow):
                 self.update_rate.setValue(conf["update_rate"])
                 self.max_seconds.setValue(conf["max_seconds"])
                 self.t_factor.setValue(conf["t_factor"])
-        except FileNotFoundError:
+        except:
             pass
 
     def save(self):
