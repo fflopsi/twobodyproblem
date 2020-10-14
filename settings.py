@@ -11,7 +11,7 @@ class Settings(QtWidgets.QMainWindow):
         self.b_ok.clicked.connect(self.ok)
         self.b_save.clicked.connect(self.save) # "Übernehmen" button
         try:
-            with open("settings.yml", "r") as f:
+            with open("settings.yml", "r") as f: # set the different values to display in settings window
                 conf = yaml.load(f, Loader=yaml.FullLoader)
                 self.canvas_width.setValue(conf["canvas"]["width"])
                 self.canvas_height.setValue(conf["canvas"]["height"])
@@ -26,13 +26,12 @@ class Settings(QtWidgets.QMainWindow):
                 self.update_rate.setValue(conf["update_rate"])
                 self.max_seconds.setValue(conf["max_seconds"])
                 self.t_factor.setValue(conf["t_factor"])
-        except FileNotFoundError:
-            with open("settings.yml", "w+") as f:
-                f.write("")
+        except:
+            pass
 
     def save(self):
         with open("settings.yml", "w+") as f:
-            conf = {
+            conf = { # create the new settings content with the entered values
             "canvas": {"width": self.canvas_width.value(), "height": self.canvas_height.value()},
             "do_restart": int(self.do_restart.isChecked()),
             "do_testing": int(self.do_testing.isChecked()),
