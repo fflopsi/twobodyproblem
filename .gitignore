@@ -2,3 +2,4 @@ __pycache__
 SETTINGS.txt
 _SETTINGS.txt
 debug.log
+settings.yml
