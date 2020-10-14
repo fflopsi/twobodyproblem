@@ -2,3 +2,4 @@
 pyqt5
 vpython
 scipy
+pyyaml
