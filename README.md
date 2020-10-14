@@ -3,7 +3,7 @@
 
 **Welcome!**
 
-This is my matriculation project. I wrote a small program to simulate the two body problem. You can either choose from the presets (like Sun, Earth, Moon etc.) or type in your own masses and volumes. ATM, the only orbit available is a (perfect) circle.
+This is my matriculation project. I wrote a small program to simulate the two body problem. You can either choose from the presets (like Sun, Earth, Moon etc.) or type in your own masses and volumes. The program will show you an approximation of the suitable conic section.
 
 ## Table of Contents
 
