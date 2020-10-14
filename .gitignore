@@ -9,3 +9,4 @@ target
 build
 run-main.spec
 main.spec
+main-exe.py
