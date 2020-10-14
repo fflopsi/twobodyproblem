@@ -1,4 +1,4 @@
-import sys, data, re
+import sys, data, re, yaml
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 class Settings(QtWidgets.QMainWindow):
@@ -11,98 +11,40 @@ class Settings(QtWidgets.QMainWindow):
         self.b_ok.clicked.connect(self.ok)
         self.b_save.clicked.connect(self.save) # "Übernehmen" button
         try:
-            with open("SETTINGS.txt", "r") as f:
-                cont = f.readlines()
-                for x in range(len(cont)):
-                    if re.match(r"canvas_width", cont[x]):
-                        self.canvas_width.setValue(int(cont[x+1]))
-                    if re.match(r"canvas_height", cont[x]): # TODO: elifs starting from here?
-                        self.canvas_height.setValue(int(cont[x+1]))
-                    if re.match(r"do_restart", cont[x]):
-                        self.do_restart.setChecked(bool(int(cont[x+1])))
-                    if re.match(r"do_testing", cont[x]):
-                        self.do_testing.setChecked(bool(int(cont[x+1])))
-                    if re.match(r"color_objects_r", cont[x]):
-                        self.color_objects_r.setValue(int(cont[x+1]))
-                    if re.match(r"color_objects_g", cont[x]):
-                        self.color_objects_g.setValue(int(cont[x+1]))
-                    if re.match(r"color_objects_b", cont[x]):
-                        self.color_objects_b.setValue(int(cont[x+1]))
-                    if re.match(r"color_pointer_r", cont[x]):
-                        self.color_pointer_r.setValue(int(cont[x+1]))
-                    if re.match(r"color_pointer_g", cont[x]):
-                        self.color_pointer_g.setValue(int(cont[x+1]))
-                    if re.match(r"color_pointer_b", cont[x]):
-                        self.color_pointer_b.setValue(int(cont[x+1]))
-                    if re.match(r"update_rate", cont[x]):
-                        self.update_rate.setValue(int(cont[x+1]))
-                    if re.match(r"max_seconds", cont[x]):
-                        self.max_seconds.setValue(int(cont[x+1]))
-                    if re.match(r"t_factor", cont[x]):
-                        self.t_factor.setValue(int(cont[x+1]))
+            with open("settings.yml", "r") as f:
+                conf = yaml.load(f, Loader=yaml.FullLoader)
+                self.canvas_width.setValue(conf["canvas"]["width"])
+                self.canvas_height.setValue(conf["canvas"]["height"])
+                self.do_restart.setChecked(bool(int(conf["do_restart"])))
+                self.do_testing.setChecked(bool(int(conf["do_testing"])))
+                self.color_objects_r.setValue(conf["color"]["objects"]["r"])
+                self.color_objects_g.setValue(conf["color"]["objects"]["g"])
+                self.color_objects_g.setValue(conf["color"]["objects"]["g"])
+                self.color_pointer_r.setValue(conf["color"]["pointer"]["r"])
+                self.color_pointer_g.setValue(conf["color"]["pointer"]["g"])
+                self.color_pointer_b.setValue(conf["color"]["pointer"]["b"])
+                self.update_rate.setValue(conf["update_rate"])
+                self.max_seconds.setValue(conf["max_seconds"])
+                self.t_factor.setValue(conf["t_factor"])
         except FileNotFoundError:
-            with open("SETTINGS.txt", "w+") as f:
+            with open("settings.yml", "w+") as f:
                 f.write("")
 
-    def blank(self, list, length):
-        while length > len(list):
-            list.append(None)
-        list[0] = "canvas_width\n"
-        list[2] = "canvas_height\n"
-        list[4] = "do_restart\n"
-        list[6] = "do_testing\n"
-        list[8] = "color_objects_r\n"
-        list[10] = "color_objects_g\n"
-        list[12] = "color_objects_b\n"
-        list[14] = "color_pointer_r\n"
-        list[16] = "color_pointer_g\n"
-        list[18] = "color_pointer_b\n"
-        list[20] = "update_rate\n"
-        list[22] = "max_seconds\n"
-        list[24] = "t_factor\n"
-        return list
-
     def save(self):
-        cont = []
-        with open("SETTINGS.txt", "r") as f:
-            cont = f.readlines()
-        if cont == []:
-            cont = self.blank(cont, 26)
-        with open("SETTINGS.txt", "w+") as f:
-            for x in range(len(cont)):
-                if re.match(r"canvas_width", cont[x]):
-                    cont[x+1] = str(self.canvas_width.value()) + "\n"
-                if re.match(r"canvas_height", cont[x]):
-                    cont[x+1] = str(self.canvas_height.value()) + "\n"
-                if re.match(r"do_restart", cont[x]):
-                    if self.do_restart.isChecked():
-                        cont[x+1] = "1" + "\n"
-                    else:
-                        cont[x+1] = "0" + "\n"
-                if re.match(r"do_testing", cont[x]):
-                    if self.do_testing.isChecked():
-                        cont[x+1] = "1" + "\n"
-                    else:
-                        cont[x+1] = "0" + "\n"
-                if re.match(r"color_objects_r", cont[x]):
-                    cont[x+1] = str(self.color_objects_r.value()) + "\n"
-                if re.match(r"color_objects_g", cont[x]):
-                    cont[x+1] = str(self.color_objects_g.value()) + "\n"
-                if re.match(r"color_objects_b", cont[x]):
-                    cont[x+1] = str(self.color_objects_b.value()) + "\n"
-                if re.match(r"color_pointer_r", cont[x]):
-                    cont[x+1] = str(self.color_pointer_r.value()) + "\n"
-                if re.match(r"color_pointer_g", cont[x]):
-                    cont[x+1] = str(self.color_pointer_g.value()) + "\n"
-                if re.match(r"color_pointer_b", cont[x]):
-                    cont[x+1] = str(self.color_pointer_b.value()) + "\n"
-                if re.match(r"update_rate", cont[x]):
-                    cont[x+1] = str(self.update_rate.value()) + "\n"
-                if re.match(r"max_seconds", cont[x]):
-                    cont[x+1] = str(self.max_seconds.value()) + "\n"
-                if re.match(r"t_factor", cont[x]):
-                    cont[x+1] = str(self.t_factor.value()) + "\n"
-            f.write("".join(cont))
+        with open("settings.yml", "w+") as f:
+            conf = {
+            "canvas": {"width": self.canvas_width.value(), "height": self.canvas_height.value()},
+            "do_restart": int(self.do_restart.isChecked()),
+            "do_testing": int(self.do_testing.isChecked()),
+            "color": {
+            "objects": {"r": self.color_objects_r.value(), "g": self.color_objects_g.value(), "b": self.color_objects_b.value()},
+            "pointer": {"r": self.color_pointer_r.value(), "g": self.color_pointer_g.value(), "b": self.color_pointer_b.value()}
+            },
+            "update_rate": self.update_rate.value(),
+            "max_seconds": self.max_seconds.value(),
+            "t_factor": self.t_factor.value()
+            }
+            f.write(yaml.dump(conf))
 
     def ok(self):
         self.save()
