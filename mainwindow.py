@@ -81,7 +81,7 @@ class MainWindow(QtWidgets.QMainWindow):
             v0 = vp.vector(float(self.sat_v0_x.text()), float(self.sat_v0_y.text()), float(self.sat_v0_z.text()))
 
         if self.save_values.isChecked():
-            with open("values.yml", "w+") as f:
+            with open("saved_data/values.yml", "w+") as f:
                 values = {
                 "central_mass": CENTRAL_MASS,
                 "central_radius": CENTRAL_RADIUS,
@@ -121,9 +121,9 @@ class MainWindow(QtWidgets.QMainWindow):
         error = False
         if msg.clickedButton() == b_delete:
             try:
-                with open("values.yml", "r") as f:
+                with open("saved_data/values.yml", "r") as f:
                     values = yaml.load(f, Loader=yaml.FullLoader)
-                os.remove("values.yml")
+                os.remove("saved_data/values.yml")
             except FileNotFoundError:
                 error = True
                 err = QtWidgets.QMessageBox()
@@ -133,7 +133,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 err.exec()
         elif msg.clickedButton() == b_save:
             try:
-                with open("values.yml", "r") as f:
+                with open("saved_data/values.yml", "r") as f:
                     values = yaml.load(f, Loader=yaml.FullLoader)
             except FileNotFoundError:
                 error = True

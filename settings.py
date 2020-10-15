@@ -11,7 +11,7 @@ class Settings(QtWidgets.QMainWindow):
         self.b_ok.clicked.connect(self.ok)
         self.b_save.clicked.connect(self.save) # "Übernehmen" button
         try:
-            with open("settings.yml", "r") as f: # set the different values to display in settings window
+            with open("saved_data/settings.yml", "r") as f: # set the different values to display in settings window
                 conf = yaml.load(f, Loader=yaml.FullLoader)
                 self.canvas_width.setValue(conf["canvas"]["width"])
                 self.canvas_height.setValue(conf["canvas"]["height"])
@@ -30,7 +30,7 @@ class Settings(QtWidgets.QMainWindow):
             pass
 
     def save(self):
-        with open("settings.yml", "w+") as f:
+        with open("saved_data/settings.yml", "w+") as f:
             conf = { # create the new settings content with the entered values
             "canvas": {"width": self.canvas_width.value(), "height": self.canvas_height.value()},
             "do_restart": int(self.do_restart.isChecked()),
