@@ -250,7 +250,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Test-Features aktivieren (nicht funktional)</string>
+     <string>Test-Features aktivieren</string>
     </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget_3">
