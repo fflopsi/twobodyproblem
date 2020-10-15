@@ -123,6 +123,7 @@ class MainWindow(QtWidgets.QMainWindow):
             try:
                 with open("values.yml", "r") as f:
                     values = yaml.load(f, Loader=yaml.FullLoader)
+                os.remove("values.yml")
             except FileNotFoundError:
                 error = True
                 err = QtWidgets.QMessageBox()
@@ -142,7 +143,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 err.setWindowTitle("Fehler")
                 err.exec()
 
-        if not error:
+        if not error: # if the file could be loaded correctly
             self.central_mass.setText(str(values["central_mass"]))
             self.central_radius.setText(str(values["central_radius"]))
             self.sat_mass.setText(str(values["sat_mass"]))
