@@ -1,13 +1,3 @@
 __pycache__
-SETTINGS.txt
-_SETTINGS.txt
 debug.log
 settings.yml
-src
-run-main-exe.py
-target
-build
-run-main.spec
-main.spec
-main-exe.py
-dist
