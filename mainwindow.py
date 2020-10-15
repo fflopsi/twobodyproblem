@@ -144,14 +144,21 @@ class MainWindow(QtWidgets.QMainWindow):
                 err.exec()
 
         if not error: # if the file could be loaded correctly
-            self.central_mass.setText(str(values["central_mass"]))
-            self.central_radius.setText(str(values["central_radius"]))
-            self.sat_mass.setText(str(values["sat_mass"]))
-            self.sat_radius.setText(str(values["sat_radius"]))
-            self.distance.setText(str(values["distance"]))
-            self.sat_v0_x.setText(str(values["v0"]["x"]))
-            self.sat_v0_y.setText(str(values["v0"]["y"]))
-            self.sat_v0_z.setText(str(values["v0"]["z"]))
+            try:
+                self.central_mass.setText(str(values["central_mass"]))
+                self.central_radius.setText(str(values["central_radius"]))
+                self.sat_mass.setText(str(values["sat_mass"]))
+                self.sat_radius.setText(str(values["sat_radius"]))
+                self.distance.setText(str(values["distance"]))
+                self.sat_v0_x.setText(str(values["v0"]["x"]))
+                self.sat_v0_y.setText(str(values["v0"]["y"]))
+                self.sat_v0_z.setText(str(values["v0"]["z"]))
+            except TypeError:
+                err = QtWidgets.QMessageBox()
+                err.setIcon(QtWidgets.QMessageBox.Critical)
+                err.setText("Werte-Datei fehlerhaft")
+                err.setWindowTitle("Fehler")
+                err.exec()
 
     def adjust_central_radius(self):
         """adjust radius of central"""
