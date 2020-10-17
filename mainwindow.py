@@ -160,18 +160,38 @@ class MainWindow(QtWidgets.QMainWindow):
                 err.setWindowTitle("Fehler")
                 err.exec()
 
-    def adjust_central_radius(self):
-        """adjust radius of central"""
-        central.radius = CENTRAL_RADIUS * central_radius_slider.value
+    def adjust_central_radius_smaller(self):
+        """adjust radius of central to smaller values"""
+        central.radius = CENTRAL_RADIUS * central_radius_slider_smaller.value
+        central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
+
+    def adjust_central_radius_bigger(self):
+        """adjust radius of central to bigger values"""
+        central.radius = CENTRAL_RADIUS * central_radius_slider_bigger.value
         central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
 
     def reset_central_radius_slider(self):
         """reset the central radius slider"""
-        central_radius_slider.value = 1
-        self.adjust_central_radius()
+        central_radius_slider_smaller.value = 1
+        central_radius_slider_bigger.value = 1
+        self.adjust_central_radius_smaller()
 
-    # def interrupt(self): # doesn't work
-    #     t = t_max
+    def adjust_sat_radius_smaller(self):
+        """adjust radius of sat to smaller values"""
+        sat.radius = SAT_RADIUS * sat_radius_slider_smaller.value
+        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0)
+
+    def adjust_sat_radius_bigger(self):
+        """adjust radius of sat to bigger values"""
+        sat.radius = SAT_RADIUS * sat_radius_slider_bigger.value
+        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0)
+
+    def reset_sat_radius_slider(self):
+        """reset the sat radius slider"""
+        sat_radius_slider_smaller.value = 1
+        sat_radius_slider_bigger.value = 1
+        self.adjust_sat_radius_smaller()
+
 
     def open_vpython(self):
         """open vpython window with entered values"""
@@ -185,19 +205,28 @@ class MainWindow(QtWidgets.QMainWindow):
         # initiate bodies itself
         global central
         central = vp.sphere(radius=CENTRAL_RADIUS, make_trail=True, color=vp.vector(self.settings.color_objects_r.value()/255, self.settings.color_objects_g.value()/255, self.settings.color_objects_b.value()/255))
+        global sat
         sat = vp.sphere(pos=vp.vector(DISTANCE,0,0), radius=SAT_RADIUS, make_trail=True, color=vp.vector(self.settings.color_objects_r.value()/255, self.settings.color_objects_g.value()/255, self.settings.color_objects_b.value()/255))
 
         # initiate pointers
         global central_pointer
         central_pointer = vp.arrow(axis=vp.vector(0,-(DISTANCE / 2),0), color=vp.vector(self.settings.color_pointer_r.value()/255, self.settings.color_pointer_g.value()/255, self.settings.color_pointer_b.value()/255)) # set pointer arrows to the objects because the scales are too large
         central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,CENTRAL_RADIUS,0) # set central pointer to the outside of central
-        sat_pointer = vp.arrow(axis=vp.vector(0,-(DISTANCE / 5),0), color=vp.vector(self.settings.color_pointer_r.value()/255, self.settings.color_pointer_g.value()/255, self.settings.color_pointer_b.value()/255))
+        global sat_pointer
+        sat_pointer = vp.arrow(axis=vp.vector(0,-(DISTANCE / 2),0), color=vp.vector(self.settings.color_pointer_r.value()/255, self.settings.color_pointer_g.value()/255, self.settings.color_pointer_b.value()/255))
 
-        # testing
-        global central_radius_slider
-        central_radius_slider = vp.slider(min=0.1, max=10, step=0.1, value=1, bind=self.adjust_central_radius)
-        reset = vp.button(text="Reset", bind=self.reset_central_radius_slider)
-        # close = vp.button(text="Close", bind=self.interrupt) # doesn't work
+        # sliders for changing the radius magnification of the two objects
+        global central_radius_slider_smaller
+        central_radius_slider_smaller = vp.slider(min=0.01, max=1, step=0.01, value=1, bind=self.adjust_central_radius_smaller, top=12, bottom=12)
+        global central_radius_slider_bigger
+        central_radius_slider_bigger = vp.slider(min=1, max=100, step=1, value=1, bind=self.adjust_central_radius_bigger, top=12, bottom=12)
+        reset_central = vp.button(text="Reset", bind=self.reset_central_radius_slider)
+        scene.append_to_caption("\n")
+        global sat_radius_slider_smaller
+        sat_radius_slider_smaller = vp.slider(min=0.01, max=1, step=0.01, value=1, bind=self.adjust_sat_radius_smaller, top=12, bottom=12)
+        global sat_radius_slider_bigger
+        sat_radius_slider_bigger = vp.slider(min=1, max=100, step=1, value=1, bind=self.adjust_sat_radius_bigger, top=12, bottom=12)
+        reset_sat = vp.button(text="Reset", bind=self.reset_sat_radius_slider)
 
         if testing:
             pos1_s = sat.pos
@@ -229,7 +258,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 v_pos1_c = v_c
                 pos1_s = sat.pos # make the current position available for next iteration
                 pos1_c = central.pos
-                sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,SAT_RADIUS,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
                 central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
             else:
                 G = scipy.constants.value(u"Newtonian constant of gravitation") # some values for calculations
@@ -245,7 +274,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 v_pos1 = v # make the current velocity available for next iteration
                 pos1 = sat.pos # make the current position available for next iteration
-                sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,SAT_RADIUS,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
             t += 1
         if self.settings.do_restart.isChecked():
             self.restart()
