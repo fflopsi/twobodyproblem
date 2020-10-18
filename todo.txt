@@ -1,4 +1,5 @@
 mehr als einmal die eingegebenen Werte speichern
 Drei-Körper-Problem versuchen
 Einstellung für fixen Zentralkörper, sonst Startgeschwindigkeit für Zentralkörper
+Standardwerte-Einstellung, schöneres Einstellungsfenster
 besser kommentieren, Dokumentation schreiben, Hilfstext ins Programm nehmen, ...
