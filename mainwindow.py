@@ -16,6 +16,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actiongespeicherte_Werte_laden.triggered.connect(self.load_values)
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionEinstellungen.triggered.connect(self.settings.show)
+        self.tabWidget.setCurrentIndex(0) # set the tab for central as "default"
 
     def restart(self):
         """restart the program after simulation has finished"""
@@ -28,7 +29,8 @@ class MainWindow(QtWidgets.QMainWindow):
         global SAT_MASS
         global SAT_RADIUS
         global DISTANCE
-        global v0
+        global SAT_v0
+        global CENTRAL_v0
 
         try:
             float(self.central_mass.text())
@@ -78,7 +80,22 @@ class MainWindow(QtWidgets.QMainWindow):
         except ValueError:
             self.sat_v0_z.setText("-8000")
         finally:
-            v0 = vp.vector(float(self.sat_v0_x.text()), float(self.sat_v0_y.text()), float(self.sat_v0_z.text()))
+            SAT_v0 = vp.vector(float(self.sat_v0_x.text()), float(self.sat_v0_y.text()), float(self.sat_v0_z.text()))
+
+        try:
+            float(self.central_v0_x.text())
+        except ValueError:
+            self.central_v0_x.setText("0")
+        try:
+            float(self.central_v0_y.text())
+        except ValueError:
+            self.central_v0_y.setText("0")
+        try:
+            float(self.central_v0_z.text())
+        except ValueError:
+            self.central_v0_z.setText("-8000")
+        finally:
+            CENTRAL_v0 = vp.vector(float(self.central_v0_x.text()), float(self.central_v0_y.text()), float(self.central_v0_z.text()))
 
         if self.save_values.isChecked():
             with open("saved_data/values.yml", "w+") as f:
@@ -88,7 +105,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 "sat_mass": SAT_MASS,
                 "sat_radius": SAT_RADIUS,
                 "distance": DISTANCE - CENTRAL_RADIUS - SAT_RADIUS,
-                "v0": {"x": v0.x, "y": v0.y, "z": v0.z}
+                "sat_v0": {"x": SAT_v0.x, "y": SAT_v0.y, "z": SAT_v0.z},
+                "central_v0": {"x": CENTRAL_v0.x, "y": CENTRAL_v0.y, "z": CENTRAL_v0.z}
                 }
                 f.write(yaml.dump(values))
 
@@ -102,6 +120,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sat_v0_x.setText("")
         self.sat_v0_y.setText("")
         self.sat_v0_z.setText("")
+        self.central_v0_x.setText("")
+        self.central_v0_y.setText("")
+        self.central_v0_z.setText("")
 
     def load_values(self):
         msg = QtWidgets.QMessageBox()
@@ -150,9 +171,12 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.sat_mass.setText(str(values["sat_mass"]))
                 self.sat_radius.setText(str(values["sat_radius"]))
                 self.distance.setText(str(values["distance"]))
-                self.sat_v0_x.setText(str(values["v0"]["x"]))
-                self.sat_v0_y.setText(str(values["v0"]["y"]))
-                self.sat_v0_z.setText(str(values["v0"]["z"]))
+                self.sat_v0_x.setText(str(values["sat_v0"]["x"]))
+                self.sat_v0_y.setText(str(values["sat_v0"]["y"]))
+                self.sat_v0_z.setText(str(values["sat_v0"]["z"]))
+                self.central_v0_x.setText(str(values["central_v0"]["x"]))
+                self.central_v0_y.setText(str(values["central_v0"]["y"]))
+                self.central_v0_z.setText(str(values["central_v0"]["z"]))
             except TypeError:
                 err = QtWidgets.QMessageBox()
                 err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -235,11 +259,11 @@ class MainWindow(QtWidgets.QMainWindow):
         if testing:
             pos1_s = sat.pos
             pos1_c = central.pos
-            v_pos1_s = v0
-            v_pos1_c = vp.vector(0,0,0)
+            v_pos1_s = SAT_v0
+            v_pos1_c = CENTRAL_v0
         else:
             pos1 = sat.pos
-            v_pos1 = v0
+            v_pos1 = SAT_v0
         while t < t_max: # movement
             vp.rate(self.settings.update_rate.value())
             r = central.pos - sat.pos # vector from sat to central
