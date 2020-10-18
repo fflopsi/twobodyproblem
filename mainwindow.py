@@ -228,6 +228,10 @@ class MainWindow(QtWidgets.QMainWindow):
         sat_radius_slider_bigger = vp.slider(min=1, max=100, step=1, value=1, bind=self.adjust_sat_radius_bigger, top=12, bottom=12)
         reset_sat = vp.button(text="Reset", bind=self.reset_sat_radius_slider)
 
+        G = scipy.constants.value(u"Newtonian constant of gravitation") # some values for calculations
+        M = CENTRAL_MASS
+        m = SAT_MASS
+
         if testing:
             pos1_s = sat.pos
             pos1_c = central.pos
@@ -238,12 +242,8 @@ class MainWindow(QtWidgets.QMainWindow):
             v_pos1 = v0
         while t < t_max: # movement
             vp.rate(self.settings.update_rate.value())
+            r = central.pos - sat.pos # vector from sat to central
             if testing:
-                G = scipy.constants.value(u"Newtonian constant of gravitation") # some values for calculations
-                M = CENTRAL_MASS
-                m = SAT_MASS
-                r = central.pos - sat.pos # vector from sat to central
-
                 # calculations: _s for sat, _c for central
                 F_s = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
                 F_c = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(-r)
@@ -261,11 +261,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
                 central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
             else:
-                G = scipy.constants.value(u"Newtonian constant of gravitation") # some values for calculations
-                M = CENTRAL_MASS
-                m = SAT_MASS
-                r = central.pos - sat.pos # vector from sat to central
-
                 # calculations
                 F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
                 a = F / m # gravitational acceleration
