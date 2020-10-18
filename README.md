@@ -22,7 +22,7 @@ Read below for detailed instructions on how to use my program.
 ### Windows 10
 
 - Python prerequisites:
-  1. Download and install [Python 3.8](https://www.python.org/downloads/).
+  1. Download and install [Python 3.9](https://www.python.org/downloads/).
 - Git and repository prerequisites:
   1. Download and install [Git Bash](https://gitforwindows.org/)
   2. Run the following commands from *git bash*:
@@ -33,6 +33,8 @@ Read below for detailed instructions on how to use my program.
       2. `pip install -r requirements.txt`
 
 Now, the code is available and runnable with `python "C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation\run-main.py"`
+
+(You may need Microsoft Visual C++ to run vpython, so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) if needed.)
 
 <a name="linux"/>
 
