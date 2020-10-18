@@ -1,4 +1,4 @@
-import sys, data, examples, settings, os, math, scipy.constants, yaml
+import sys, data, examples, settings, os, math, yaml
 import vpython as vp
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
@@ -252,7 +252,7 @@ class MainWindow(QtWidgets.QMainWindow):
         sat_radius_slider_bigger = vp.slider(min=1, max=100, step=1, value=1, bind=self.adjust_sat_radius_bigger, top=12, bottom=12)
         reset_sat = vp.button(text="Reset", bind=self.reset_sat_radius_slider)
 
-        G = scipy.constants.value(u"Newtonian constant of gravitation") # some values for calculations
+        G = 6.67430e-11 # some values for calculations
         M = CENTRAL_MASS
         m = SAT_MASS
 
