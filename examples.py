@@ -1,4 +1,4 @@
-import sys, data
+import data
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 class Examples(QtWidgets.QMainWindow):

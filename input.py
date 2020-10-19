@@ -1,4 +1,4 @@
-import sys, data, examples, settings, os, math, yaml
+import sys, data, examples, settings, os, yaml
 import vpython as vp
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 

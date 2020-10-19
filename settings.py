@@ -1,4 +1,4 @@
-import sys, data, re, yaml
+import yaml
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 class Settings(QtWidgets.QMainWindow):
