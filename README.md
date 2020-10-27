@@ -32,7 +32,7 @@ Read below for detailed instructions on how to use my program.
       1. `cd C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation`
       2. `pip install -r requirements.txt`
 
-Now, the code is available and runnable with `python "C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation\run-main.py"`
+Now, the code is available and runnable with `python "C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation\main.py"`
 
 (You may need Microsoft Visual C++ to run vpython, so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) if needed.)
 
@@ -49,6 +49,6 @@ Now, the code is available and runnable with `python "C:\Users\[Your Username]\T
   5. `cd two-body-problem_simulation`
   6. `pip3 install -r requirements.txt`
 
-Now, the code is available and runnable with `python3 /home/[Your Username]/Two\ Body\ Problem/two-body-problem_simulation/run-main.py`
+Now, the code is available and runnable with `python3 /home/[Your Username]/Two\ Body\ Problem/two-body-problem_simulation/main.py`
 
 *Participation in this README is always welcome!*
