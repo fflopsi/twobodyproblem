@@ -17,6 +17,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionEinstellungen.triggered.connect(self.settings.show)
         self.tabWidget.setCurrentIndex(0) # set the tab for central as "default"
+        global pause
+        pause = False
 
     def restart(self):
         """restart the program after simulation has finished"""
@@ -184,6 +186,14 @@ class MainWindow(QtWidgets.QMainWindow):
                 err.setWindowTitle("Fehler")
                 err.exec()
 
+    def pause_simulation(self):
+        global pause
+        pause = not pause
+        if pause:
+            pause_sim.text = "Play"
+        else:
+            pause_sim.text = "Pause"
+
     def adjust_central_radius_smaller(self):
         """adjust radius of central to smaller values"""
         central.radius = CENTRAL_RADIUS * central_radius_slider_smaller.value
@@ -239,6 +249,9 @@ class MainWindow(QtWidgets.QMainWindow):
         global sat_pointer
         sat_pointer = vp.arrow(axis=vp.vector(0,-(DISTANCE / 2),0), color=vp.vector(self.settings.color_pointer_r.value()/255, self.settings.color_pointer_g.value()/255, self.settings.color_pointer_b.value()/255))
 
+        global pause_sim
+        pause_sim = vp.button(text="Pause", bind=self.pause_simulation)
+        scene.append_to_caption("\n")
         # sliders for changing the radius magnification of the two objects
         global central_radius_slider_smaller
         central_radius_slider_smaller = vp.slider(min=0.01, max=1, step=0.01, value=1, bind=self.adjust_central_radius_smaller, top=12, bottom=12)
@@ -265,35 +278,36 @@ class MainWindow(QtWidgets.QMainWindow):
             pos1 = sat.pos
             v_pos1 = SAT_v0
         while t < t_max: # movement
-            vp.rate(self.settings.update_rate.value())
-            r = central.pos - sat.pos # vector from sat to central
-            if testing:
-                # calculations: _s for sat, _c for central
-                F_s = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
-                F_c = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(-r)
-                a_s = F_s / m # gravitational acceleration
-                a_c = F_c / M
-                v_s = a_s * self.settings.t_factor.value() + v_pos1_s # velocity
-                v_c = a_c * self.settings.t_factor.value() + v_pos1_c
-                sat.pos = v_s * self.settings.t_factor.value() + pos1_s # new position
-                central.pos = v_c * self.settings.t_factor.value() + pos1_c
+            if not pause:
+                vp.rate(self.settings.update_rate.value())
+                r = central.pos - sat.pos # vector from sat to central
+                if testing:
+                    # calculations: _s for sat, _c for central
+                    F_s = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
+                    F_c = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(-r)
+                    a_s = F_s / m # gravitational acceleration
+                    a_c = F_c / M
+                    v_s = a_s * self.settings.t_factor.value() + v_pos1_s # velocity
+                    v_c = a_c * self.settings.t_factor.value() + v_pos1_c
+                    sat.pos = v_s * self.settings.t_factor.value() + pos1_s # new position
+                    central.pos = v_c * self.settings.t_factor.value() + pos1_c
 
-                v_pos1_s = v_s # make the current velocity available for next iteration
-                v_pos1_c = v_c
-                pos1_s = sat.pos # make the current position available for next iteration
-                pos1_c = central.pos
-                sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
-                central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
-            else:
-                # calculations
-                F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
-                a = F / m # gravitational acceleration
-                v = a * self.settings.t_factor.value() + v_pos1 # velocity
-                sat.pos = v * self.settings.t_factor.value() + pos1 # new position
+                    v_pos1_s = v_s # make the current velocity available for next iteration
+                    v_pos1_c = v_c
+                    pos1_s = sat.pos # make the current position available for next iteration
+                    pos1_c = central.pos
+                    sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                    central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
+                else:
+                    # calculations
+                    F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
+                    a = F / m # gravitational acceleration
+                    v = a * self.settings.t_factor.value() + v_pos1 # velocity
+                    sat.pos = v * self.settings.t_factor.value() + pos1 # new position
 
-                v_pos1 = v # make the current velocity available for next iteration
-                pos1 = sat.pos # make the current position available for next iteration
-                sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
-            t += 1
+                    v_pos1 = v # make the current velocity available for next iteration
+                    pos1 = sat.pos # make the current position available for next iteration
+                    sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                t += 1
         if self.settings.do_restart.isChecked():
             self.restart()
