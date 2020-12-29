@@ -1,7 +1,7 @@
 Einstellung für fixen Zentralkörper (nicht testing), sonst Startgeschwindigkeit für Zentralkörper
 Geschwindigkeit, Beschleunigung und Kraft mit Pfeilen visualisieren und ein-/ausschaltbar machen
 sinnvollere data.py Datei (-> yaml???), sinnvollere Speicherung der Werte (mehr als einmal, dictionary anpassen)
-Standardwerte-Einstellung, schöneres Einstellungsfenster
+mehr Standardwerte (Baumstruktur), Standardwerte-Einstellung, schöneres Einstellungsfenster
 Kollisionsdetektion
 Drei-Körper-Problem versuchen
 relativistische Formeln einbauen
