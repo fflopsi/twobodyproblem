@@ -4,5 +4,6 @@ sinnvollere data.py Datei (-> yaml???), sinnvollere Speicherung der Werte (mehr 
 Standardwerte-Einstellung, schöneres Einstellungsfenster
 Kollisionsdetektion
 Drei-Körper-Problem versuchen
+relativistische Formeln einbauen
 Daten zu Körper in Arrays speichern, Mehr-Körper-Simulation ermöglichen, Körper-Hinzufügen-Funktion
 besser kommentieren, Dokumentation schreiben, Hilfstext ins Programm nehmen, ...
