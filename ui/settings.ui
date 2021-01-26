@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>863</width>
-    <height>535</height>
+    <height>541</height>
    </rect>
   </property>
   <property name="font">
@@ -23,10 +23,13 @@
     <property name="geometry">
      <rect>
       <x>750</x>
-      <y>410</y>
+      <y>420</y>
       <width>91</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>speichern und schliessen</string>
     </property>
     <property name="text">
      <string>OK</string>
@@ -42,10 +45,13 @@
     <property name="geometry">
      <rect>
       <x>608</x>
-      <y>410</y>
+      <y>420</y>
       <width>131</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>speichern</string>
     </property>
     <property name="text">
      <string>Übernehmen</string>
@@ -55,13 +61,13 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>410</y>
+      <y>420</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="toolTip">
-     <string extracomment="Verlassen ohne zu speichern">Verlassen ohne zu speichern</string>
+     <string extracomment="Verlassen ohne zu speichern">schliessen ohne zu speichern</string>
     </property>
     <property name="statusTip">
      <string/>
@@ -227,14 +233,17 @@
    <widget class="QCheckBox" name="do_restart">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>360</y>
-      <width>821</width>
-      <height>41</height>
+      <x>350</x>
+      <y>370</y>
+      <width>311</width>
+      <height>31</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option wird das Programm nach jeder Simulation neustarten. Somit wird eine weitere, unmittelbare Simulation möglich gemacht.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="text">
-     <string>Neustarten nach einer Simulation (macht eine weitere, unmittelbare Simulation möglich)</string>
+     <string>Neustart nach einer Simulation</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -244,10 +253,13 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>330</y>
-      <width>401</width>
-      <height>20</height>
+      <y>370</y>
+      <width>251</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option aktiviert möglicherweise unvollständige, noch in Entwicklung stehende Features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="text">
      <string>Test-Features aktivieren</string>
@@ -278,6 +290,9 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl Berechnungen pro Sekunde&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Update-Rate (Geschwindigkeit) der Simulation</string>
        </property>
@@ -305,6 +320,9 @@
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_7">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;physikalisch: &amp;Delta;t&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Verschnellerungsfaktor (macht die Simulation ungenau)</string>
        </property>
@@ -324,6 +342,59 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QCheckBox" name="do_central_unmoving">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>330</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bei Aktivieren dieses Feldes werden die Kräfte, die auf den Zentralkörper wirken, vernachlässigt werden. Somit wird er unbeweglich im Zentrum der Visualisierung stehen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="statusTip">
+     <string>noch nicht funktional</string>
+    </property>
+    <property name="text">
+     <string>unbeweglicher Zentralkörper</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="do_central_centered">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>330</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der Zentralkörper wird bei Aktivieren dieses Feldes immer in der Mitte der Visualisierung angezeigt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
+    <property name="statusTip">
+     <string>noch nicht funktional</string>
+    </property>
+    <property name="whatsThis">
+     <string/>
+    </property>
+    <property name="accessibleName">
+     <string/>
+    </property>
+    <property name="accessibleDescription">
+     <string/>
+    </property>
+    <property name="text">
+     <string>zentrierter Zentralkörper</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
