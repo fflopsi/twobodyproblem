@@ -235,7 +235,7 @@
      <rect>
       <x>350</x>
       <y>370</y>
-      <width>311</width>
+      <width>241</width>
       <height>31</height>
      </rect>
     </property>
@@ -254,7 +254,7 @@
      <rect>
       <x>30</x>
       <y>370</y>
-      <width>251</width>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
@@ -343,12 +343,12 @@
      </item>
     </layout>
    </widget>
-   <widget class="QCheckBox" name="do_central_unmoving">
+   <widget class="QRadioButton" name="do_central_unmoving">
     <property name="geometry">
      <rect>
       <x>30</x>
       <y>330</y>
-      <width>291</width>
+      <width>231</width>
       <height>31</height>
      </rect>
     </property>
@@ -356,18 +356,18 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bei Aktivieren dieses Feldes werden die Kräfte, die auf den Zentralkörper wirken, vernachlässigt werden. Somit wird er unbeweglich im Zentrum der Visualisierung stehen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="statusTip">
-     <string>noch nicht funktional</string>
+     <string/>
     </property>
     <property name="text">
      <string>unbeweglicher Zentralkörper</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="do_central_centered">
+   <widget class="QRadioButton" name="do_central_centered">
     <property name="geometry">
      <rect>
-      <x>350</x>
+      <x>310</x>
       <y>330</y>
-      <width>251</width>
+      <width>201</width>
       <height>31</height>
      </rect>
     </property>
@@ -378,7 +378,7 @@
      <number>-1</number>
     </property>
     <property name="statusTip">
-     <string>noch nicht funktional</string>
+     <string/>
     </property>
     <property name="whatsThis">
      <string/>
@@ -393,6 +393,40 @@
      <string>zentrierter Zentralkörper</string>
     </property>
     <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="do_central_moving">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>330</y>
+      <width>211</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="toolTipDuration">
+     <number>-1</number>
+    </property>
+    <property name="statusTip">
+     <string/>
+    </property>
+    <property name="whatsThis">
+     <string/>
+    </property>
+    <property name="accessibleName">
+     <string/>
+    </property>
+    <property name="accessibleDescription">
+     <string/>
+    </property>
+    <property name="text">
+     <string>beweglicher Zentralkörper</string>
+    </property>
+    <property name="checked">
      <bool>true</bool>
     </property>
    </widget>
@@ -403,7 +437,7 @@
      <x>0</x>
      <y>0</y>
      <width>863</width>
-     <height>34</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptionen">

@@ -235,6 +235,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # global t_max
         t_max = self.settings.update_rate.value() * self.settings.max_seconds.value()
         testing = self.settings.do_testing.isChecked()
+        central_unmoving = self.settings.do_central_unmoving.isChecked()
+        central_centered = self.settings.do_central_centered.isChecked()
         scene = vp.canvas(title="Simulation zum Zweikörperproblem", height=self.settings.canvas_height.value(), width=self.settings.canvas_width.value())
         # initiate bodies itself
         global central
@@ -257,31 +259,45 @@ class MainWindow(QtWidgets.QMainWindow):
         central_radius_slider_smaller = vp.slider(min=0.01, max=1, step=0.01, value=1, bind=self.adjust_central_radius_smaller, top=12, bottom=12)
         global central_radius_slider_bigger
         central_radius_slider_bigger = vp.slider(min=1, max=100, step=1, value=1, bind=self.adjust_central_radius_bigger, top=12, bottom=12)
-        reset_central = vp.button(text="Reset", bind=self.reset_central_radius_slider)
+        vp.button(text="Reset", bind=self.reset_central_radius_slider)
         scene.append_to_caption("\n")
         global sat_radius_slider_smaller
         sat_radius_slider_smaller = vp.slider(min=0.01, max=1, step=0.01, value=1, bind=self.adjust_sat_radius_smaller, top=12, bottom=12)
         global sat_radius_slider_bigger
         sat_radius_slider_bigger = vp.slider(min=1, max=100, step=1, value=1, bind=self.adjust_sat_radius_bigger, top=12, bottom=12)
-        reset_sat = vp.button(text="Reset", bind=self.reset_sat_radius_slider)
+        vp.button(text="Reset", bind=self.reset_sat_radius_slider)
 
         G = 6.67430e-11 # some values for calculations
         M = CENTRAL_MASS
         m = SAT_MASS
 
-        if testing:
+        if central_unmoving:
+            pos1 = sat.pos
+            v_pos1 = SAT_v0
+        else:
             pos1_s = sat.pos
             pos1_c = central.pos
             v_pos1_s = SAT_v0
             v_pos1_c = CENTRAL_v0
-        else:
-            pos1 = sat.pos
-            v_pos1 = SAT_v0
+        
+        if central_centered:
+            scene.camera.follow(central)
+
         while t < t_max: # movement
             if not pause:
                 vp.rate(self.settings.update_rate.value())
                 r = central.pos - sat.pos # vector from sat to central
-                if testing:
+                if central_unmoving:
+                    # calculations
+                    F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
+                    a = F / m # gravitational acceleration
+                    v = a * self.settings.t_factor.value() + v_pos1 # velocity
+                    sat.pos = v * self.settings.t_factor.value() + pos1 # new position
+
+                    v_pos1 = v # make the current velocity available for next iteration
+                    pos1 = sat.pos # make the current position available for next iteration
+                    sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                else:
                     # calculations: _s for sat, _c for central
                     F_s = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
                     F_c = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(-r)
@@ -298,16 +314,6 @@ class MainWindow(QtWidgets.QMainWindow):
                     pos1_c = central.pos
                     sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
                     central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
-                else:
-                    # calculations
-                    F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
-                    a = F / m # gravitational acceleration
-                    v = a * self.settings.t_factor.value() + v_pos1 # velocity
-                    sat.pos = v * self.settings.t_factor.value() + pos1 # new position
-
-                    v_pos1 = v # make the current velocity available for next iteration
-                    pos1 = sat.pos # make the current position available for next iteration
-                    sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
                 t += 1
         if self.settings.do_restart.isChecked():
             self.restart()
