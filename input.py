@@ -287,33 +287,36 @@ class MainWindow(QtWidgets.QMainWindow):
             if not pause:
                 vp.rate(self.settings.update_rate.value())
                 r = central.pos - sat.pos # vector from sat to central
-                if central_unmoving:
-                    # calculations
-                    F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
-                    a = F / m # gravitational acceleration
-                    v = a * self.settings.t_factor.value() + v_pos1 # velocity
-                    sat.pos = v * self.settings.t_factor.value() + pos1 # new position
+                if not testing or testing:
+                    if central_unmoving:
+                        # calculations
+                        F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
+                        a = F / m # gravitational acceleration
+                        v = a * self.settings.t_factor.value() + v_pos1 # velocity
+                        sat.pos = v * self.settings.t_factor.value() + pos1 # new position
 
-                    v_pos1 = v # make the current velocity available for next iteration
-                    pos1 = sat.pos # make the current position available for next iteration
-                    sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                        v_pos1 = v # make the current velocity available for next iteration
+                        pos1 = sat.pos # make the current position available for next iteration
+                        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                    else:
+                        # calculations: _s for sat, _c for central
+                        F_s = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
+                        F_c = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(-r)
+                        a_s = F_s / m # gravitational acceleration
+                        a_c = F_c / M
+                        v_s = a_s * self.settings.t_factor.value() + v_pos1_s # velocity
+                        v_c = a_c * self.settings.t_factor.value() + v_pos1_c
+                        sat.pos = v_s * self.settings.t_factor.value() + pos1_s # new position
+                        central.pos = v_c * self.settings.t_factor.value() + pos1_c
+
+                        v_pos1_s = v_s # make the current velocity available for next iteration
+                        v_pos1_c = v_c
+                        pos1_s = sat.pos # make the current position available for next iteration
+                        pos1_c = central.pos
+                        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                        central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
                 else:
-                    # calculations: _s for sat, _c for central
-                    F_s = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
-                    F_c = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(-r)
-                    a_s = F_s / m # gravitational acceleration
-                    a_c = F_c / M
-                    v_s = a_s * self.settings.t_factor.value() + v_pos1_s # velocity
-                    v_c = a_c * self.settings.t_factor.value() + v_pos1_c
-                    sat.pos = v_s * self.settings.t_factor.value() + pos1_s # new position
-                    central.pos = v_c * self.settings.t_factor.value() + pos1_c
-
-                    v_pos1_s = v_s # make the current velocity available for next iteration
-                    v_pos1_c = v_c
-                    pos1_s = sat.pos # make the current position available for next iteration
-                    pos1_c = central.pos
-                    sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
-                    central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
+                    return
                 t += 1
         if self.settings.do_restart.isChecked():
             self.restart()
