@@ -17,6 +17,8 @@ class Settings(QtWidgets.QMainWindow):
                 self.canvas_height.setValue(conf["canvas"]["height"])
                 self.do_restart.setChecked(bool(int(conf["do_restart"])))
                 self.do_testing.setChecked(bool(int(conf["do_testing"])))
+                self.do_central_unmoving.setChecked(bool(int(conf["do_central_unmoving"])))
+                self.do_central_centered.setChecked(bool(int(conf["do_central_centered"])))
                 self.color_objects_r.setValue(conf["color"]["objects"]["r"])
                 self.color_objects_g.setValue(conf["color"]["objects"]["g"])
                 self.color_objects_g.setValue(conf["color"]["objects"]["g"])
@@ -35,6 +37,8 @@ class Settings(QtWidgets.QMainWindow):
             "canvas": {"width": self.canvas_width.value(), "height": self.canvas_height.value()},
             "do_restart": int(self.do_restart.isChecked()),
             "do_testing": int(self.do_testing.isChecked()),
+            "do_central_unmoving": int(self.do_central_unmoving.isChecked()),
+            "do_central_centered": int(self.do_central_centered.isChecked()),
             "color": {
             "objects": {"r": self.color_objects_r.value(), "g": self.color_objects_g.value(), "b": self.color_objects_b.value()},
             "pointer": {"r": self.color_pointer_r.value(), "g": self.color_pointer_g.value(), "b": self.color_pointer_b.value()}
