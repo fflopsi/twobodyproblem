@@ -3,7 +3,7 @@ import vpython as vp
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
 class MainWindow(QtWidgets.QMainWindow):
-    """the main window, or entry window"""
+    """initialize main window"""
     def __init__(self, *args, parent=None, **kwargs):
         super(MainWindow, self).__init__(*args, parent, **kwargs)
         uic.loadUi("ui/input.ui", self)
@@ -99,7 +99,7 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             float(self.central_v0_z.text())
         except ValueError:
-            self.central_v0_z.setText("-8000")
+            self.central_v0_z.setText("0")
         finally:
             CENTRAL_v0 = vp.vector(float(self.central_v0_x.text()), float(self.central_v0_y.text()), float(self.central_v0_z.text()))
 
