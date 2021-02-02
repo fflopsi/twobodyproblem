@@ -10,6 +10,7 @@ class Settings(QtWidgets.QMainWindow):
         self.b_cancel.clicked.connect(self.close)
         self.b_ok.clicked.connect(self.ok)
         self.b_save.clicked.connect(self.save) # "Übernehmen" button
+        
         try:
             with open("saved_data/settings.yml", "r") as f: # set the different values to display in settings window
                 conf = yaml.load(f, Loader=yaml.FullLoader)
@@ -34,18 +35,29 @@ class Settings(QtWidgets.QMainWindow):
     def save(self):
         with open("saved_data/settings.yml", "w+") as f:
             conf = { # create the new settings content with the entered values
-            "canvas": {"width": self.canvas_width.value(), "height": self.canvas_height.value()},
-            "do_restart": int(self.do_restart.isChecked()),
-            "do_testing": int(self.do_testing.isChecked()),
-            "do_central_unmoving": int(self.do_central_unmoving.isChecked()),
-            "do_central_centered": int(self.do_central_centered.isChecked()),
-            "color": {
-            "objects": {"r": self.color_objects_r.value(), "g": self.color_objects_g.value(), "b": self.color_objects_b.value()},
-            "pointer": {"r": self.color_pointer_r.value(), "g": self.color_pointer_g.value(), "b": self.color_pointer_b.value()}
-            },
-            "update_rate": self.update_rate.value(),
-            "max_seconds": self.max_seconds.value(),
-            "t_factor": self.t_factor.value()
+                "canvas": {
+                    "width": self.canvas_width.value(),
+                    "height": self.canvas_height.value()
+                },
+                "do_restart": int(self.do_restart.isChecked()),
+                "do_testing": int(self.do_testing.isChecked()),
+                "do_central_unmoving": int(self.do_central_unmoving.isChecked()),
+                "do_central_centered": int(self.do_central_centered.isChecked()),
+                "color": {
+                    "objects": {
+                        "r": self.color_objects_r.value(),
+                        "g": self.color_objects_g.value(),
+                        "b": self.color_objects_b.value()
+                    },
+                    "pointer": {
+                        "r": self.color_pointer_r.value(),
+                        "g": self.color_pointer_g.value(),
+                        "b": self.color_pointer_b.value()
+                    }
+                },
+                "update_rate": self.update_rate.value(),
+                "max_seconds": self.max_seconds.value(),
+                "t_factor": self.t_factor.value()
             }
             f.write(yaml.dump(conf))
         if self.do_central_unmoving.isChecked():
