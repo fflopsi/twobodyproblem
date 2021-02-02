@@ -2,6 +2,26 @@ import sys, data, examples, settings, os, yaml
 import vpython as vp
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
+pause = False
+pause_sim = 0
+
+CENTRAL_MASS = 0 #some constants
+CENTRAL_RADIUS = 0
+SAT_MASS = 0
+SAT_RADIUS = 0
+DISTANCE = 0
+SAT_v0 = vp.vector(0,0,0)
+CENTRAL_v0 = vp.vector(0,0,0)
+
+central = 0 #vpython objects
+sat = 0
+central_pointer = 0
+sat_pointer = 0
+central_radius_slider_smaller = 0
+central_radius_slider_bigger = 0
+sat_radius_slider_smaller = 0
+sat_radius_slider_bigger = 0
+
 class MainWindow(QtWidgets.QMainWindow):
     """initialize main window"""
     def __init__(self, *args, parent=None, **kwargs):
@@ -17,8 +37,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
         self.actionEinstellungen.triggered.connect(self.settings.show)
         self.tabWidget.setCurrentIndex(0) # set the tab for central as "default"
-        global pause
-        pause = False
         if self.settings.do_central_unmoving.isChecked():
             self.central_v0_x.setEnabled(False)
             self.central_v0_y.setEnabled(False)
