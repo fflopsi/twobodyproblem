@@ -5,7 +5,7 @@ class Settings(QtWidgets.QMainWindow):
     """window for settings"""
     def __init__(self, *args, parent=None, **kwargs):
         super(Settings, self).__init__(*args, parent, **kwargs)
-        settings = uic.loadUi("ui/settings.ui", self)
+        uic.loadUi("ui/settings.ui", self)
         self.actionVerlassen.triggered.connect(self.close)
         self.b_cancel.clicked.connect(self.close)
         self.b_ok.clicked.connect(self.ok)
@@ -48,6 +48,10 @@ class Settings(QtWidgets.QMainWindow):
             "t_factor": self.t_factor.value()
             }
             f.write(yaml.dump(conf))
+        if self.do_central_unmoving.isChecked():
+            self.parent().central_v0_x.setEnabled(False)
+            self.parent().central_v0_y.setEnabled(False)
+            self.parent().central_v0_z.setEnabled(False)
 
     def ok(self):
         self.save()

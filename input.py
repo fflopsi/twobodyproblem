@@ -19,6 +19,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabWidget.setCurrentIndex(0) # set the tab for central as "default"
         global pause
         pause = False
+        if self.settings.do_central_unmoving.isChecked():
+            self.central_v0_x.setEnabled(False)
+            self.central_v0_y.setEnabled(False)
+            self.central_v0_z.setEnabled(False)
 
     def restart(self):
         """restart the program after simulation has finished"""
@@ -142,29 +146,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
         values = {}
         error = False
-        if msg.clickedButton() == b_delete:
-            try:
-                with open("saved_data/values.yml", "r") as f:
+        try:
+            with open("saved_data/values.yml", "r") as f:
                     values = yaml.load(f, Loader=yaml.FullLoader)
+            if msg.clickedButton() == b_delete:
                 os.remove("saved_data/values.yml")
-            except FileNotFoundError:
-                error = True
-                err = QtWidgets.QMessageBox()
-                err.setIcon(QtWidgets.QMessageBox.Critical)
-                err.setText("keine gespeicherten Werte vorhanden")
-                err.setWindowTitle("Fehler")
-                err.exec()
-        elif msg.clickedButton() == b_save:
-            try:
-                with open("saved_data/values.yml", "r") as f:
-                    values = yaml.load(f, Loader=yaml.FullLoader)
-            except FileNotFoundError:
-                error = True
-                err = QtWidgets.QMessageBox()
-                err.setIcon(QtWidgets.QMessageBox.Critical)
-                err.setText("keine gespeicherten Werte vorhanden")
-                err.setWindowTitle("Fehler")
-                err.exec()
+        except FileNotFoundError:
+            error = True
+            err = QtWidgets.QMessageBox()
+            err.setIcon(QtWidgets.QMessageBox.Critical)
+            err.setText("keine gespeicherten Werte vorhanden")
+            err.setWindowTitle("Fehler")
+            err.exec()
 
         if not error: # if the file could be loaded correctly
             try:
@@ -176,9 +169,10 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.sat_v0_x.setText(str(values["sat_v0"]["x"]))
                 self.sat_v0_y.setText(str(values["sat_v0"]["y"]))
                 self.sat_v0_z.setText(str(values["sat_v0"]["z"]))
-                self.central_v0_x.setText(str(values["central_v0"]["x"]))
-                self.central_v0_y.setText(str(values["central_v0"]["y"]))
-                self.central_v0_z.setText(str(values["central_v0"]["z"]))
+                if not self.settings.do_central_unmoving.isChecked():
+                    self.central_v0_x.setText(str(values["central_v0"]["x"]))
+                    self.central_v0_y.setText(str(values["central_v0"]["y"]))
+                    self.central_v0_z.setText(str(values["central_v0"]["z"]))
             except TypeError:
                 err = QtWidgets.QMessageBox()
                 err.setIcon(QtWidgets.QMessageBox.Critical)
