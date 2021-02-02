@@ -1,6 +1,8 @@
 import data
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
+error = False
+
 class Examples(QtWidgets.QMainWindow):
     """window for presets"""
     def __init__(self, *args, parent=None, **kwargs):
