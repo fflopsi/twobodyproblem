@@ -1,5 +1,4 @@
 import sys
-import data
 import examples
 import settings
 import os
@@ -33,7 +32,10 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, parent, **kwargs)
         uic.loadUi("ui/input.ui", self)
         self.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
-        self.examples = examples.Examples(parent=self)
+        self.presets = list()
+        with open("saved_data/presets.yml", "r") as f:
+            presets = yaml.load(f, Loader=yaml.FullLoader)
+        self.examples = examples.Examples(presets=presets, parent=self)
         self.settings = settings.Settings(parent=self)
         self.actionVerlassen.triggered.connect(self.close)
         self.b_ok.clicked.connect(self.open_vpython)
@@ -65,35 +67,35 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             float(self.central_mass.text())
         except ValueError:
-            self.central_mass.setText(str(data.MASS["Erde"]))
+            self.central_mass.setText(str(presets["mass"]["Erde"]))
         finally:
             CENTRAL_MASS = float(self.central_mass.text())
 
         try:
             float(self.central_radius.text())
         except ValueError:
-            self.central_radius.setText(str(data.RADIUS["Erde"]))
+            self.central_radius.setText(str(presets["radius"]["Erde"]))
         finally:
             CENTRAL_RADIUS = float(self.central_radius.text())
 
         try:
             float(self.sat_mass.text())
         except ValueError:
-            self.sat_mass.setText(str(data.MASS["Sputnik 2"]))
+            self.sat_mass.setText(str(presets["mass"]["Sputnik 2"]))
         finally:
             SAT_MASS = float(self.sat_mass.text())
 
         try:
             float(self.sat_radius.text())
         except ValueError:
-            self.sat_radius.setText(str(data.RADIUS["Sputnik 2"]))
+            self.sat_radius.setText(str(presets["radius"]["Sputnik 2"]))
         finally:
             SAT_RADIUS = float(self.sat_radius.text())
 
         try:
             float(self.distance.text())
         except ValueError:
-            self.distance.setText(str(data.DISTANCE["Erde"]["Sputnik 2"]))
+            self.distance.setText(str(presets["distance"]["Erde"]["Sputnik 2"]))
         finally:
             DISTANCE = float(self.distance.text()) + CENTRAL_RADIUS + SAT_RADIUS ### so lassen?
 

@@ -1,0 +1,23 @@
+mass:
+  UNIT: "kg"
+  Sonne: 1.989e+30
+  Erde: 5.972e+24
+  Mond: 7.342e+22
+  Sputnik 2: 5.0e+2
+radius:
+  UNIT: "m"
+  Sonne: 6.9634e+8
+  Erde: 6.371e+6
+  Mond: 1.737e+6
+  Sputnik 2: 2.0e+0
+distance:
+  UNIT: "m"
+  Sonne:
+    Erde: 1.496e+11
+    Mond: 1.496e+11
+    Sputnik 2: 1.496e+11
+  Erde:
+    Mond: 3.844e+8
+    Sputnik 2: 1.0e+6
+  Mond:
+    Sputnik 2: 1.0e+6
