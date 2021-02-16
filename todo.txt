@@ -1,6 +1,6 @@
 Slider für Geschwindigkeit und Delta t
 Geschwindigkeit, Beschleunigung und Kraft mit Pfeilen visualisieren und ein-/ausschaltbar machen
-sinnvollere data.py Datei (-> yaml???), sinnvollere Speicherung der Werte (mehr als einmal, dictionary anpassen)
+sinnvollere Speicherung der Werte (mehr als einmal, dictionary anpassen)
 mehr Standardwerte (Baumstruktur), Standardwerte-Einstellung, schöneres Einstellungsfenster
 Kollisionsdetektion
 Drei-Körper-Problem versuchen
