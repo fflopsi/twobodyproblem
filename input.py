@@ -181,55 +181,57 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def load_values(self):
         """loading and filling in saved values"""
+        # set up the message box
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Question)
         msg.setText(
             "Möchten Sie die gespeicherten Werte löschen oder behalten?")
         msg.setWindowTitle("gespeicherte Werte laden")
-        msg.setStandardButtons(QtWidgets.QMessageBox.No |
-                               QtWidgets.QMessageBox.Yes)
-        b_delete = msg.button(QtWidgets.QMessageBox.Yes)
-        b_delete.setText("Löschen")
-        b_save = msg.button(QtWidgets.QMessageBox.No)
-        b_save.setText("Behalten")
-        msg.setDefaultButton(b_save)
-        msg.setEscapeButton(b_save)
-        msg.exec()
+        msg.setStandardButtons(QtWidgets.QMessageBox.Save |
+                               QtWidgets.QMessageBox.Discard |
+                               QtWidgets.QMessageBox.Cancel)
+        msg.button(QtWidgets.QMessageBox.Save).setText("Behalten")
+        msg.button(QtWidgets.QMessageBox.Discard).setText("Löschen")
+        msg.button(QtWidgets.QMessageBox.Cancel).setText("Abbrechen")
+        msg.setDefaultButton(QtWidgets.QMessageBox.Save)
+        msg.setEscapeButton(QtWidgets.QMessageBox.Cancel)
 
-        # try to load the requested value file
-        values = list()
-        try:
-            with open("saved_data/values.yml", "r") as f:
-                values = yaml.load(f, Loader=yaml.FullLoader)
-            if msg.clickedButton() == b_delete:
-                os.remove("saved_data/values.yml")
-            # try to fill in all values
+        res = msg.exec()
+        if res == QtWidgets.QMessageBox.Save or res == QtWidgets.QMessageBox.Discard:
+            # try to load the requested value file
+            values = list()
             try:
-                self.central_mass.setText(str(values["central_mass"]))
-                self.central_radius.setText(str(values["central_radius"]))
-                self.sat_mass.setText(str(values["sat_mass"]))
-                self.sat_radius.setText(str(values["sat_radius"]))
-                self.distance.setText(str(values["distance"]))
-                self.sat_v0_x.setText(str(values["sat_v0"]["x"]))
-                self.sat_v0_y.setText(str(values["sat_v0"]["y"]))
-                self.sat_v0_z.setText(str(values["sat_v0"]["z"]))
-                if not self.settings.do_central_unmoving.isChecked():
-                    self.central_v0_x.setText(str(values["central_v0"]["x"]))
-                    self.central_v0_y.setText(str(values["central_v0"]["y"]))
-                    self.central_v0_z.setText(str(values["central_v0"]["z"]))
-            except TypeError:
+                with open("saved_data/values.yml", "r") as f:
+                    values = yaml.load(f, Loader=yaml.FullLoader)
+                if msg.clickedButton() == QtWidgets.QMessageBox.Discard:
+                    os.remove("saved_data/values.yml")
+                # try to fill in all values
+                try:
+                    self.central_mass.setText(str(values["central_mass"]))
+                    self.central_radius.setText(str(values["central_radius"]))
+                    self.sat_mass.setText(str(values["sat_mass"]))
+                    self.sat_radius.setText(str(values["sat_radius"]))
+                    self.distance.setText(str(values["distance"]))
+                    self.sat_v0_x.setText(str(values["sat_v0"]["x"]))
+                    self.sat_v0_y.setText(str(values["sat_v0"]["y"]))
+                    self.sat_v0_z.setText(str(values["sat_v0"]["z"]))
+                    if not self.settings.do_central_unmoving.isChecked():
+                        self.central_v0_x.setText(str(values["central_v0"]["x"]))
+                        self.central_v0_y.setText(str(values["central_v0"]["y"]))
+                        self.central_v0_z.setText(str(values["central_v0"]["z"]))
+                except TypeError:
+                    err = QtWidgets.QMessageBox()
+                    err.setIcon(QtWidgets.QMessageBox.Critical)
+                    err.setText("Werte-Datei fehlerhaft")
+                    err.setWindowTitle("Fehler")
+                    err.exec()
+            except FileNotFoundError:
+                error = True
                 err = QtWidgets.QMessageBox()
                 err.setIcon(QtWidgets.QMessageBox.Critical)
-                err.setText("Werte-Datei fehlerhaft")
+                err.setText("keine gespeicherten Werte vorhanden")
                 err.setWindowTitle("Fehler")
                 err.exec()
-        except FileNotFoundError:
-            error = True
-            err = QtWidgets.QMessageBox()
-            err.setIcon(QtWidgets.QMessageBox.Critical)
-            err.setText("keine gespeicherten Werte vorhanden")
-            err.setWindowTitle("Fehler")
-            err.exec()
 
     def pause_simulation(self):
         """pause the simulation"""
