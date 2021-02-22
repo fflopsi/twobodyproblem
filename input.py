@@ -36,25 +36,25 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # values needed during simulation
         self.pause = False
-        self.pause_sim = 0
+        self.pause_sim: vp.button
         # constants needed for calculations
-        self.CENTRAL_MASS = 0
-        self.CENTRAL_RADIUS = 0
-        self.SAT_MASS = 0
-        self.SAT_RADIUS = 0
-        self.DISTANCE = 0
-        self.SAT_v0 = vp.vector(0, 0, 0)
-        self.CENTRAL_v0 = vp.vector(0, 0, 0)
+        self.CENTRAL_MASS: int
+        self.CENTRAL_RADIUS: int
+        self.SAT_MASS: int
+        self.SAT_RADIUS: int
+        self.DISTANCE: int
+        self.SAT_v0: vp.vector
+        self.CENTRAL_v0: vp.vector
         # vpython objects for simulation
-        self.central = 0
-        self.sat = 0
+        self.central: vp.sphere
+        self.sat: vp.sphere
         if self.settings.show_pointers.isChecked():
-            self.central_pointer = 0
-            self.sat_pointer = 0
-        self.central_radius_slider_smaller = 0
-        self.central_radius_slider_bigger = 0
-        self.sat_radius_slider_smaller = 0
-        self.sat_radius_slider_bigger = 0
+            self.central_pointer: vp.arrow
+            self.sat_pointer: vp.arrow
+        self.central_radius_smaller: vp.slider
+        self.central_radius_bigger: vp.slider
+        self.sat_radius_smaller: vp.slider
+        self.sat_radius_bigger: vp.slider
 
         if self.settings.do_central_unmoving.isChecked():
             self.central_v0_x.setEnabled(False)
@@ -216,9 +216,12 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.sat_v0_y.setText(str(values["sat_v0"]["y"]))
                     self.sat_v0_z.setText(str(values["sat_v0"]["z"]))
                     if not self.settings.do_central_unmoving.isChecked():
-                        self.central_v0_x.setText(str(values["central_v0"]["x"]))
-                        self.central_v0_y.setText(str(values["central_v0"]["y"]))
-                        self.central_v0_z.setText(str(values["central_v0"]["z"]))
+                        self.central_v0_x.setText(
+                            str(values["central_v0"]["x"]))
+                        self.central_v0_y.setText(
+                            str(values["central_v0"]["y"]))
+                        self.central_v0_z.setText(
+                            str(values["central_v0"]["z"]))
                 except TypeError:
                     err = QtWidgets.QMessageBox()
                     err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -251,8 +254,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def reset_central_radius_slider(self):
         """reset the central radius sliders"""
-        self.central_radius_slider_smaller.value = 1
-        self.central_radius_slider_bigger.value = 1
+        self.central_radius_smaller.value = 1
+        self.central_radius_bigger.value = 1
         self.adjust_central_radius(value=1)
 
     def adjust_sat_radius(self, value):
@@ -265,7 +268,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def reset_sat_radius_slider(self):
         """reset the sat radius sliders"""
         self.sat_radius_slider_smaller.value = 1
-        self.sat_radius_slider_bigger.value = 1
+        self.sat_radius_bigger.value = 1
         self.adjust_sat_radius(value=1)
 
     def open_vpython(self):
@@ -285,8 +288,7 @@ class MainWindow(QtWidgets.QMainWindow):
             width=self.settings.canvas_width.value()
         )
         self.central = vp.sphere(
-            radius=self.CENTRAL_RADIUS,
-            make_trail=True,
+            radius=self.CENTRAL_RADIUS, make_trail=True,
             color=vp.vector(
                 self.settings.color_objects_r.value()/255,
                 self.settings.color_objects_g.value()/255,
@@ -294,9 +296,7 @@ class MainWindow(QtWidgets.QMainWindow):
             )
         )
         self.sat = vp.sphere(
-            pos=vp.vector(self.DISTANCE, 0, 0),
-            radius=self.SAT_RADIUS,
-            make_trail=True,
+            pos=vp.vector(self.DISTANCE, 0, 0), radius=self.SAT_RADIUS, make_trail=True,
             color=vp.vector(
                 self.settings.color_objects_r.value()/255,
                 self.settings.color_objects_g.value()/255,
@@ -331,31 +331,29 @@ class MainWindow(QtWidgets.QMainWindow):
         scene.append_to_caption("\n")
 
         # sliders for changing the radius magnification of the two objects
-        self.central_radius_slider_smaller = vp.slider(
+        self.central_radius_smaller = vp.slider(
             min=0.01, max=1, step=0.01, value=1,
             bind=lambda: self.adjust_central_radius(
-                value=self.central_radius_slider_smaller.value),
+                value=self.central_radius_smaller.value),
             top=12, bottom=12
         )
-        self.central_radius_slider_bigger = vp.slider(
+        self.central_radius_bigger = vp.slider(
             min=1, max=100, step=1, value=1,
             bind=lambda: self.adjust_central_radius(
-                value=self.central_radius_slider_bigger.value),
+                value=self.central_radius_bigger.value),
             top=12, bottom=12
         )
         vp.button(text="Reset", bind=self.reset_central_radius_slider)
         scene.append_to_caption("\n")
-        self.sat_radius_slider_smaller = vp.slider(
-            min=0.01, max=1, step=0.01, value=1,
+        self.sat_radius_smaller = vp.slider(
+            min=0.01, max=1, step=0.01, value=1, top=12, bottom=12,
             bind=lambda: self.adjust_sat_radius(
-                value=self.sat_radius_slider_smaller.value),
-            top=12, bottom=12
+                value=self.sat_radius_smaller.value)
         )
-        self.sat_radius_slider_bigger = vp.slider(
-            min=1, max=100, step=1, value=1,
+        self.sat_radius_bigger = vp.slider(
+            min=1, max=100, step=1, value=1, top=12, bottom=12,
             bind=lambda: self.adjust_sat_radius(
-                value=self.sat_radius_slider_bigger.value),
-            top=12, bottom=12
+                value=self.sat_radius_bigger.value)
         )
         vp.button(text="Reset", bind=self.reset_sat_radius_slider)
 
