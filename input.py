@@ -241,49 +241,32 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.pause_sim.text = "Pause"
 
-    def adjust_central_radius_smaller(self):
-        """adjust radius of central (and pointer if needed) to smaller values"""
-        self.central.radius = self.CENTRAL_RADIUS * \
-            self.central_radius_slider_smaller.value
-        if self.settings.show_pointers.isChecked():
-            self.central_pointer.pos = self.central.pos - \
-                self.central_pointer.axis + \
-                vp.vector(0, self.central.radius, 0)
-
-    def adjust_central_radius_bigger(self):
-        """adjust radius of central (and pointer if needed) to bigger values"""
-        self.central.radius = self.CENTRAL_RADIUS * \
-            self.central_radius_slider_bigger.value
+    def adjust_central_radius(self, value):
+        """adjust radius of central (and pointer if needed)"""
+        self.central.radius = self.CENTRAL_RADIUS * value
         if self.settings.show_pointers.isChecked():
             self.central_pointer.pos = self.central.pos - \
                 self.central_pointer.axis + \
                 vp.vector(0, self.central.radius, 0)
 
     def reset_central_radius_slider(self):
-        """reset the central radius slider"""
+        """reset the central radius sliders"""
         self.central_radius_slider_smaller.value = 1
         self.central_radius_slider_bigger.value = 1
-        self.adjust_central_radius_smaller()
+        self.adjust_central_radius(value=1)
 
-    def adjust_sat_radius_smaller(self):
-        """adjust radius of sat (and pointer if needed) to smaller values"""
-        self.sat.radius = self.SAT_RADIUS * self.sat_radius_slider_smaller.value
-        if self.settings.show_pointers.isChecked():
-            self.sat_pointer.pos = self.sat.pos - \
-                self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
-
-    def adjust_sat_radius_bigger(self):
-        """adjust radius of sat (and pointer if needed) to bigger values"""
-        self.sat.radius = self.SAT_RADIUS * self.sat_radius_slider_bigger.value
+    def adjust_sat_radius(self, value):
+        """adjust radius of sat (and pointer if needed)"""
+        self.sat.radius = self.SAT_RADIUS * value
         if self.settings.show_pointers.isChecked():
             self.sat_pointer.pos = self.sat.pos - \
                 self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
 
     def reset_sat_radius_slider(self):
-        """reset the sat radius slider"""
+        """reset the sat radius sliders"""
         self.sat_radius_slider_smaller.value = 1
         self.sat_radius_slider_bigger.value = 1
-        self.adjust_sat_radius_smaller()
+        self.adjust_sat_radius(value=1)
 
     def open_vpython(self):
         """open vpython window with entered values"""
@@ -350,24 +333,28 @@ class MainWindow(QtWidgets.QMainWindow):
         # sliders for changing the radius magnification of the two objects
         self.central_radius_slider_smaller = vp.slider(
             min=0.01, max=1, step=0.01, value=1,
-            bind=self.adjust_central_radius_smaller,
+            bind=lambda: self.adjust_central_radius(
+                value=self.central_radius_slider_smaller.value),
             top=12, bottom=12
         )
         self.central_radius_slider_bigger = vp.slider(
             min=1, max=100, step=1, value=1,
-            bind=self.adjust_central_radius_bigger,
+            bind=lambda: self.adjust_central_radius(
+                value=self.central_radius_slider_bigger.value),
             top=12, bottom=12
         )
         vp.button(text="Reset", bind=self.reset_central_radius_slider)
         scene.append_to_caption("\n")
         self.sat_radius_slider_smaller = vp.slider(
             min=0.01, max=1, step=0.01, value=1,
-            bind=self.adjust_sat_radius_smaller,
+            bind=lambda: self.adjust_sat_radius(
+                value=self.sat_radius_slider_smaller.value),
             top=12, bottom=12
         )
         self.sat_radius_slider_bigger = vp.slider(
             min=1, max=100, step=1, value=1,
-            bind=self.adjust_sat_radius_bigger,
+            bind=lambda: self.adjust_sat_radius(
+                value=self.sat_radius_slider_bigger.value),
             top=12, bottom=12
         )
         vp.button(text="Reset", bind=self.reset_sat_radius_slider)
