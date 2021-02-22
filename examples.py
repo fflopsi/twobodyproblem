@@ -10,7 +10,7 @@ class Examples(QtWidgets.QMainWindow):
         examples = uic.loadUi("ui/examples.ui", self)
         self.actionVerlassen.triggered.connect(self.close)
         self.b_cancel.clicked.connect(self.close)
-        self.b_ok.clicked.connect(self.ok)
+        self.b_ok.clicked.connect(lambda: (self.fill(), self.close()))
         self.b_fill.clicked.connect(self.fill)
 
         self.values = presets
@@ -40,8 +40,3 @@ class Examples(QtWidgets.QMainWindow):
                 str(self.values["distance"]
                     [str(self.choice_central.currentText())]
                     [str(self.choice_sat.currentText())]))
-
-    def ok(self):
-        """perform fill() and close window if no error occurred"""
-        self.fill()
-        self.close()
