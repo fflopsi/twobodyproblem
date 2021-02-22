@@ -2,49 +2,59 @@ import sys
 import examples
 import settings
 import os
+import signal
 import yaml
 import vpython as vp
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
-pause = False
-pause_sim = 0
-
-CENTRAL_MASS = 0 # some constants
-CENTRAL_RADIUS = 0
-SAT_MASS = 0
-SAT_RADIUS = 0
-DISTANCE = 0
-SAT_v0 = vp.vector(0, 0, 0)
-CENTRAL_v0 = vp.vector(0, 0, 0)
-
-central = 0 # vpython objects
-sat = 0
-central_pointer = 0
-sat_pointer = 0
-central_radius_slider_smaller = 0
-central_radius_slider_bigger = 0
-sat_radius_slider_smaller = 0
-sat_radius_slider_bigger = 0
 
 class MainWindow(QtWidgets.QMainWindow):
-    """initialize main window"""
+    """main window for inputs"""
+    EXIT_CODE_REBOOT = -123
+
     def __init__(self, *args, parent=None, **kwargs):
+        # set up UI
         super(MainWindow, self).__init__(*args, parent, **kwargs)
         uic.loadUi("ui/input.ui", self)
         self.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
         self.presets = list()
         with open("saved_data/presets.yml", "r") as f:
             presets = yaml.load(f, Loader=yaml.FullLoader)
+        # create other windows
         self.examples = examples.Examples(presets=presets, parent=self)
         self.settings = settings.Settings(parent=self)
-        self.actionVerlassen.triggered.connect(self.close)
+
+        # add button and action funcionality
         self.b_ok.clicked.connect(self.open_vpython)
         self.b_reset.clicked.connect(self.clear_fields)
+        self.actionVerlassen.triggered.connect(self.close)
         self.actiongespeicherte_Werte_laden.triggered.connect(self.load_values)
-        self.actionListe_mit_Voreinstellungen.triggered.connect(self.examples.show)
+        self.actionVoreinstellungen.triggered.connect(self.examples.show)
         self.actionEinstellungen.triggered.connect(self.settings.show)
-        self.tabWidget.setCurrentIndex(0) # set the tab for central as "default"
-        
+        # set the tab for central as "default"
+        self.tabWidget.setCurrentIndex(0)
+
+        # values needed during simulation
+        self.pause = False
+        self.pause_sim = 0
+        # constants needed for calculations
+        self.CENTRAL_MASS = 0
+        self.CENTRAL_RADIUS = 0
+        self.SAT_MASS = 0
+        self.SAT_RADIUS = 0
+        self.DISTANCE = 0
+        self.SAT_v0 = vp.vector(0, 0, 0)
+        self.CENTRAL_v0 = vp.vector(0, 0, 0)
+        # vpython objects for simulation
+        self.central = 0
+        self.sat = 0
+        self.central_pointer = 0
+        self.sat_pointer = 0
+        self.central_radius_slider_smaller = 0
+        self.central_radius_slider_bigger = 0
+        self.sat_radius_slider_smaller = 0
+        self.sat_radius_slider_bigger = 0
+
         if self.settings.do_central_unmoving.isChecked():
             self.central_v0_x.setEnabled(False)
             self.central_v0_y.setEnabled(False)
@@ -53,51 +63,47 @@ class MainWindow(QtWidgets.QMainWindow):
     def restart(self):
         """restart the program after simulation has finished"""
         os.execl(sys.executable, sys.executable, *sys.argv)
+        # another option (not recommended):
+        # QtWidgets.QApplication.exit(MainWindow.EXIT_CODE_REBOOT)
 
     def read(self):
         """make all the entered values globally accessible"""
-        global CENTRAL_MASS
-        global CENTRAL_RADIUS
-        global SAT_MASS
-        global SAT_RADIUS
-        global DISTANCE
-        global SAT_v0
-        global CENTRAL_v0
-
-        try:
+        try:  # check if correct number entered
             float(self.central_mass.text())
-        except ValueError:
+        except ValueError:  # enter standard value if an error occurs
             self.central_mass.setText(str(presets["mass"]["Erde"]))
-        finally:
-            CENTRAL_MASS = float(self.central_mass.text())
+        finally:  # save entered value for simulation
+            self.CENTRAL_MASS = float(self.central_mass.text())
 
         try:
             float(self.central_radius.text())
         except ValueError:
             self.central_radius.setText(str(presets["radius"]["Erde"]))
         finally:
-            CENTRAL_RADIUS = float(self.central_radius.text())
+            self.CENTRAL_RADIUS = float(self.central_radius.text())
 
         try:
             float(self.sat_mass.text())
         except ValueError:
             self.sat_mass.setText(str(presets["mass"]["Sputnik 2"]))
         finally:
-            SAT_MASS = float(self.sat_mass.text())
+            self.SAT_MASS = float(self.sat_mass.text())
 
         try:
             float(self.sat_radius.text())
         except ValueError:
             self.sat_radius.setText(str(presets["radius"]["Sputnik 2"]))
         finally:
-            SAT_RADIUS = float(self.sat_radius.text())
+            self.SAT_RADIUS = float(self.sat_radius.text())
 
         try:
             float(self.distance.text())
         except ValueError:
-            self.distance.setText(str(presets["distance"]["Erde"]["Sputnik 2"]))
+            self.distance.setText(
+                str(presets["distance"]["Erde"]["Sputnik 2"]))
         finally:
-            DISTANCE = float(self.distance.text()) + CENTRAL_RADIUS + SAT_RADIUS ### so lassen?
+            self.DISTANCE = float(self.distance.text()) + \
+                self.CENTRAL_RADIUS + self.SAT_RADIUS  # so lassen?
 
         try:
             float(self.sat_v0_x.text())
@@ -112,7 +118,7 @@ class MainWindow(QtWidgets.QMainWindow):
         except ValueError:
             self.sat_v0_z.setText("-8000")
         finally:
-            SAT_v0 = vp.vector(
+            self.SAT_v0 = vp.vector(
                 float(self.sat_v0_x.text()),
                 float(self.sat_v0_y.text()),
                 float(self.sat_v0_z.text())
@@ -131,7 +137,7 @@ class MainWindow(QtWidgets.QMainWindow):
         except ValueError:
             self.central_v0_z.setText("0")
         finally:
-            CENTRAL_v0 = vp.vector(
+            self.CENTRAL_v0 = vp.vector(
                 float(self.central_v0_x.text()),
                 float(self.central_v0_y.text()),
                 float(self.central_v0_z.text())
@@ -140,20 +146,20 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.save_values.isChecked():
             with open("saved_data/values.yml", "w+") as f:
                 values = {
-                    "central_mass": CENTRAL_MASS,
-                    "central_radius": CENTRAL_RADIUS,
-                    "sat_mass": SAT_MASS,
-                    "sat_radius": SAT_RADIUS,
-                    "distance": DISTANCE - CENTRAL_RADIUS - SAT_RADIUS,
+                    "central_mass": self.CENTRAL_MASS,
+                    "central_radius": self.CENTRAL_RADIUS,
+                    "sat_mass": self.SAT_MASS,
+                    "sat_radius": self.SAT_RADIUS,
+                    "distance": self.DISTANCE - self.CENTRAL_RADIUS - self.SAT_RADIUS,
                     "sat_v0": {
-                        "x": SAT_v0.x,
-                        "y": SAT_v0.y,
-                        "z": SAT_v0.z
+                        "x": self.SAT_v0.x,
+                        "y": self.SAT_v0.y,
+                        "z": self.SAT_v0.z
                     },
                     "central_v0": {
-                        "x": CENTRAL_v0.x,
-                        "y": CENTRAL_v0.y,
-                        "z": CENTRAL_v0.z
+                        "x": self.CENTRAL_v0.x,
+                        "y": self.CENTRAL_v0.y,
+                        "z": self.CENTRAL_v0.z
                     }
                 }
                 f.write(yaml.dump(values))
@@ -176,9 +182,11 @@ class MainWindow(QtWidgets.QMainWindow):
         """loading and filling in saved values"""
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Question)
-        msg.setText("Möchten Sie die gespeicherten Werte löschen oder behalten?")
+        msg.setText(
+            "Möchten Sie die gespeicherten Werte löschen oder behalten?")
         msg.setWindowTitle("gespeicherte Werte laden")
-        msg.setStandardButtons(QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Yes)
+        msg.setStandardButtons(QtWidgets.QMessageBox.No |
+                               QtWidgets.QMessageBox.Yes)
         b_delete = msg.button(QtWidgets.QMessageBox.Yes)
         b_delete.setText("Löschen")
         b_save = msg.button(QtWidgets.QMessageBox.No)
@@ -187,22 +195,14 @@ class MainWindow(QtWidgets.QMainWindow):
         msg.setEscapeButton(b_save)
         msg.exec()
 
-        values = {}
-        error = False
+        # try to load the requested value file
+        values = list()
         try:
             with open("saved_data/values.yml", "r") as f:
-                    values = yaml.load(f, Loader=yaml.FullLoader)
+                values = yaml.load(f, Loader=yaml.FullLoader)
             if msg.clickedButton() == b_delete:
                 os.remove("saved_data/values.yml")
-        except FileNotFoundError:
-            error = True
-            err = QtWidgets.QMessageBox()
-            err.setIcon(QtWidgets.QMessageBox.Critical)
-            err.setText("keine gespeicherten Werte vorhanden")
-            err.setWindowTitle("Fehler")
-            err.exec()
-
-        if not error: # if the file could be loaded correctly
+            # try to fill in all values
             try:
                 self.central_mass.setText(str(values["central_mass"]))
                 self.central_radius.setText(str(values["central_radius"]))
@@ -222,50 +222,63 @@ class MainWindow(QtWidgets.QMainWindow):
                 err.setText("Werte-Datei fehlerhaft")
                 err.setWindowTitle("Fehler")
                 err.exec()
+        except FileNotFoundError:
+            error = True
+            err = QtWidgets.QMessageBox()
+            err.setIcon(QtWidgets.QMessageBox.Critical)
+            err.setText("keine gespeicherten Werte vorhanden")
+            err.setWindowTitle("Fehler")
+            err.exec()
 
     def pause_simulation(self):
-        global pause
-        pause = not pause
-        if pause:
-            pause_sim.text = "Play"
+        """pause the simulation"""
+        self.pause = not self.pause
+        if self.pause:
+            self.pause_sim.text = "Play"
         else:
-            pause_sim.text = "Pause"
+            self.pause_sim.text = "Pause"
 
     def adjust_central_radius_smaller(self):
         """adjust radius of central to smaller values"""
-        central.radius = CENTRAL_RADIUS * central_radius_slider_smaller.value
-        central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
+        self.central.radius = self.CENTRAL_RADIUS * \
+            self.central_radius_slider_smaller.value
+        self.central_pointer.pos = self.central.pos - \
+            self.central_pointer.axis + vp.vector(0, self.central.radius, 0)
 
     def adjust_central_radius_bigger(self):
         """adjust radius of central to bigger values"""
-        central.radius = CENTRAL_RADIUS * central_radius_slider_bigger.value
-        central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
+        self.central.radius = self.CENTRAL_RADIUS * \
+            self.central_radius_slider_bigger.value
+        self.central_pointer.pos = self.central.pos - \
+            self.central_pointer.axis + vp.vector(0, self.central.radius, 0)
 
     def reset_central_radius_slider(self):
         """reset the central radius slider"""
-        central_radius_slider_smaller.value = 1
-        central_radius_slider_bigger.value = 1
+        self.central_radius_slider_smaller.value = 1
+        self.central_radius_slider_bigger.value = 1
         self.adjust_central_radius_smaller()
 
     def adjust_sat_radius_smaller(self):
         """adjust radius of sat to smaller values"""
-        sat.radius = SAT_RADIUS * sat_radius_slider_smaller.value
-        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0)
+        self.sat.radius = self.SAT_RADIUS * self.sat_radius_slider_smaller.value
+        self.sat_pointer.pos = self.sat.pos - \
+            self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
 
     def adjust_sat_radius_bigger(self):
         """adjust radius of sat to bigger values"""
-        sat.radius = SAT_RADIUS * sat_radius_slider_bigger.value
-        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0)
+        self.sat.radius = self.SAT_RADIUS * self.sat_radius_slider_bigger.value
+        self.sat_pointer.pos = self.sat.pos - \
+            self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
 
     def reset_sat_radius_slider(self):
         """reset the sat radius slider"""
-        sat_radius_slider_smaller.value = 1
-        sat_radius_slider_bigger.value = 1
+        self.sat_radius_slider_smaller.value = 1
+        self.sat_radius_slider_bigger.value = 1
         self.adjust_sat_radius_smaller()
-
 
     def open_vpython(self):
         """open vpython window with entered values"""
+        # read values and set up variables
         self.read()
         t = 0
         t_max = self.settings.update_rate.value() * self.settings.max_seconds.value()
@@ -273,16 +286,14 @@ class MainWindow(QtWidgets.QMainWindow):
         central_unmoving = self.settings.do_central_unmoving.isChecked()
         central_centered = self.settings.do_central_centered.isChecked()
 
+        # set up vpython canvas, objects and pointers (arrows to the objects because the scales are too large)
         scene = vp.canvas(
             title="Simulation zum Zweikörperproblem",
             height=self.settings.canvas_height.value(),
             width=self.settings.canvas_width.value()
         )
-
-        # initiate bodies itself
-        global central
-        central = vp.sphere(
-            radius=CENTRAL_RADIUS,
+        self.central = vp.sphere(
+            radius=self.CENTRAL_RADIUS,
             make_trail=True,
             color=vp.vector(
                 self.settings.color_objects_r.value()/255,
@@ -290,10 +301,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.settings.color_objects_b.value()/255
             )
         )
-        global sat
-        sat = vp.sphere(
-            pos=vp.vector(DISTANCE,0,0),
-            radius=SAT_RADIUS,
+        self.sat = vp.sphere(
+            pos=vp.vector(self.DISTANCE, 0, 0),
+            radius=self.SAT_RADIUS,
             make_trail=True,
             color=vp.vector(
                 self.settings.color_objects_r.value()/255,
@@ -301,21 +311,18 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.settings.color_objects_b.value()/255
             )
         )
-
-        # initiate pointers (arrows to the objects because the scales are too large)
-        global central_pointer
-        central_pointer = vp.arrow(
-            axis=vp.vector(0,-(DISTANCE / 2),0),
+        self.central_pointer = vp.arrow(
+            axis=vp.vector(0, -(self.DISTANCE / 2), 0),
             color=vp.vector(
                 self.settings.color_pointer_r.value()/255,
                 self.settings.color_pointer_g.value()/255,
                 self.settings.color_pointer_b.value()/255
             )
         )
-        central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,CENTRAL_RADIUS,0) # set central pointer to the outside of central
-        global sat_pointer
-        sat_pointer = vp.arrow(
-            axis=vp.vector(0,-(DISTANCE / 2),0),
+        self.central_pointer.pos = self.central.pos - self.central_pointer.axis + \
+            vp.vector(0, self.CENTRAL_RADIUS, 0)
+        self.sat_pointer = vp.arrow(
+            axis=vp.vector(0, -(self.DISTANCE / 2), 0),
             color=vp.vector(
                 self.settings.color_pointer_r.value()/255,
                 self.settings.color_pointer_g.value()/255,
@@ -323,107 +330,103 @@ class MainWindow(QtWidgets.QMainWindow):
             )
         )
 
-        global pause_sim
-        pause_sim = vp.button(text="Pause", bind=self.pause_simulation)
+        # set up pause button
+        self.pause_sim = vp.button(text="Pause", bind=self.pause_simulation)
+        vp.button(text="Stop", bind=lambda: os.kill(
+            os.getpid(), signal.SIGINT))
+        vp.button(text="Restart", bind=self.restart)
         scene.append_to_caption("\n")
 
         # sliders for changing the radius magnification of the two objects
-        global central_radius_slider_smaller
-        central_radius_slider_smaller = vp.slider(
-            min=0.01,
-            max=1,
-            step=0.01,
-            value=1,
+        self.central_radius_slider_smaller = vp.slider(
+            min=0.01, max=1, step=0.01, value=1,
             bind=self.adjust_central_radius_smaller,
-            top=12,
-            bottom=12
+            top=12, bottom=12
         )
-        global central_radius_slider_bigger
-        central_radius_slider_bigger = vp.slider(
-            min=1,
-            max=100,
-            step=1,
-            value=1,
+        self.central_radius_slider_bigger = vp.slider(
+            min=1, max=100, step=1, value=1,
             bind=self.adjust_central_radius_bigger,
-            top=12,
-            bottom=12
+            top=12, bottom=12
         )
         vp.button(text="Reset", bind=self.reset_central_radius_slider)
         scene.append_to_caption("\n")
-        global sat_radius_slider_smaller
-        sat_radius_slider_smaller = vp.slider(
-            min=0.01,
-            max=1,
-            step=0.01,
-            value=1,
+        self.sat_radius_slider_smaller = vp.slider(
+            min=0.01, max=1, step=0.01, value=1,
             bind=self.adjust_sat_radius_smaller,
-            top=12,
-            bottom=12
+            top=12, bottom=12
         )
-        global sat_radius_slider_bigger
-        sat_radius_slider_bigger = vp.slider(
-            min=1,
-            max=100,
-            step=1,
-            value=1,
+        self.sat_radius_slider_bigger = vp.slider(
+            min=1, max=100, step=1, value=1,
             bind=self.adjust_sat_radius_bigger,
-            top=12,
-            bottom=12
+            top=12, bottom=12
         )
         vp.button(text="Reset", bind=self.reset_sat_radius_slider)
 
-        G = 6.67430e-11 # some values for calculations
-        M = CENTRAL_MASS
-        m = SAT_MASS
-
-        if central_unmoving:
-            pos1 = sat.pos
-            v_pos1 = SAT_v0
+        # some values for calculations
+        G = 6.67430e-11  # gravitational constant
+        M = self.CENTRAL_MASS
+        m = self.SAT_MASS
+        delta_t = self.settings.t_factor.value()
+        if not central_unmoving:
+            pos1_s = self.sat.pos
+            pos1_c = self.central.pos
+            v_pos1_s = self.SAT_v0
+            v_pos1_c = self.CENTRAL_v0
         else:
-            pos1_s = sat.pos
-            pos1_c = central.pos
-            v_pos1_s = SAT_v0
-            v_pos1_c = CENTRAL_v0
-        
+            pos1 = self.sat.pos
+            v_pos1 = self.SAT_v0
+
         if central_centered:
-            scene.camera.follow(central)
+            scene.camera.follow(self.central)
 
-        while t < t_max: # movement
-            if not pause:
+        # movement while simulation time not over
+        while t < t_max:
+            if not self.pause:
                 vp.rate(self.settings.update_rate.value())
-                r = central.pos - sat.pos # vector from sat to central
+                r = self.sat.pos - self.central.pos
+                # for testing: delete "or testing" and insert testing code into else below
                 if not testing or testing:
-                    if central_unmoving:
-                        # calculations
-                        F = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
-                        a = F / m # gravitational acceleration
-                        v = a * self.settings.t_factor.value() + v_pos1 # velocity
-                        sat.pos = v * self.settings.t_factor.value() + pos1 # new position
-
-                        v_pos1 = v # make the current velocity available for next iteration
-                        pos1 = sat.pos # make the current position available for next iteration
-                        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
-                    else:
-                        # calculations: _s for sat, _c for central
-                        F_s = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(r) # gravitational force
-                        F_c = ((G * M * m) / (vp.mag(r) ** 2)) * vp.norm(-r)
-                        a_s = F_s / m # gravitational acceleration
+                    if not central_unmoving:
+                        # calculations of force, acceleration and velocity: _s for sat, _c for central
+                        F_s = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
+                        F_c = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(r)
+                        a_s = F_s / m
                         a_c = F_c / M
-                        v_s = a_s * self.settings.t_factor.value() + v_pos1_s # velocity
-                        v_c = a_c * self.settings.t_factor.value() + v_pos1_c
-                        sat.pos = v_s * self.settings.t_factor.value() + pos1_s # new position
-                        central.pos = v_c * self.settings.t_factor.value() + pos1_c
+                        v_s = a_s*delta_t + v_pos1_s
+                        v_c = a_c*delta_t + v_pos1_c
 
-                        v_pos1_s = v_s # make the current velocity available for next iteration
+                        # move sat, central and pointers to new positions
+                        self.sat.pos = v_s*delta_t + pos1_s
+                        self.central.pos = v_c*delta_t + pos1_c
+                        # andere Möglichkeit ausprobieren (direkt bei sat definieren)
+                        self.sat_pointer.pos = self.sat.pos - \
+                            self.sat_pointer.axis + \
+                            vp.vector(0, self.sat.radius, 0)
+                        self.central_pointer.pos = self.central.pos - \
+                            self.central_pointer.axis + \
+                            vp.vector(0, self.central.radius, 0)
+
+                        # make the current velocities and positions available for next iteration
+                        v_pos1_s = v_s
                         v_pos1_c = v_c
-                        pos1_s = sat.pos # make the current position available for next iteration
-                        pos1_c = central.pos
-                        sat_pointer.pos = sat.pos - sat_pointer.axis + vp.vector(0,sat.radius,0) # andere Möglichkeit ausprobieren (direkt bei sat definieren)
-                        central_pointer.pos = central.pos - central_pointer.axis + vp.vector(0,central.radius,0)
+                        pos1_s = self.sat.pos
+                        pos1_c = self.central.pos
+                    else:  # same as above but only for sat
+                        F = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
+                        a = F / m
+                        v = a*delta_t + v_pos1
+                        self.sat.pos = v*delta_t + pos1
+
+                        v_pos1 = v
+                        pos1 = self.sat.pos
+                        self.sat_pointer.pos = self.sat.pos - \
+                            self.sat_pointer.axis + \
+                            vp.vector(0, self.sat.radius, 0)
                 else:
-                    return
-                
+                    # insert testing code here
+                    pass
+
                 t += 1
-        
+
         if self.settings.do_restart.isChecked():
             self.restart()

@@ -408,7 +408,7 @@
      <x>0</x>
      <y>0</y>
      <width>741</width>
-     <height>34</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptionen">
@@ -423,7 +423,7 @@
     <property name="title">
      <string>Werte</string>
     </property>
-    <addaction name="actionListe_mit_Voreinstellungen"/>
+    <addaction name="actionVoreinstellungen"/>
     <addaction name="actiongespeicherte_Werte_laden"/>
    </widget>
    <addaction name="menuOptionen"/>
@@ -436,14 +436,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
-   </property>
-  </action>
-  <action name="actionListe_mit_Voreinstellungen">
-   <property name="text">
-    <string>Liste mit Voreinstellungen...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+E</string>
    </property>
   </action>
   <action name="actionVerlassen">
@@ -460,6 +452,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionVoreinstellungen">
+   <property name="text">
+    <string>Voreinstellungen...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

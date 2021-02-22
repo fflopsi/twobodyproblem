@@ -1,25 +1,30 @@
 import yaml
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 
+
 class Settings(QtWidgets.QMainWindow):
     """window for settings"""
+
     def __init__(self, *args, parent=None, **kwargs):
-        super(Settings, self).__init__(*args, parent, **kwargs)
+        super(Settings, self).__init__(*args, parent, **kwargs)  # set up UI
         uic.loadUi("ui/settings.ui", self)
         self.actionVerlassen.triggered.connect(self.close)
         self.b_cancel.clicked.connect(self.close)
-        self.b_ok.clicked.connect(self.ok)
-        self.b_save.clicked.connect(self.save) # "Übernehmen" button
-        
+        self.b_ok.clicked.connect(lambda: (self.save(), self.close()))
+        self.b_save.clicked.connect(self.save)
+
         try:
-            with open("saved_data/settings.yml", "r") as f: # set the different values to display in settings window
+            # set the different values to display in settings window
+            with open("saved_data/settings.yml", "r") as f:
                 conf = yaml.load(f, Loader=yaml.FullLoader)
                 self.canvas_width.setValue(conf["canvas"]["width"])
                 self.canvas_height.setValue(conf["canvas"]["height"])
                 self.do_restart.setChecked(bool(int(conf["do_restart"])))
                 self.do_testing.setChecked(bool(int(conf["do_testing"])))
-                self.do_central_unmoving.setChecked(bool(int(conf["do_central_unmoving"])))
-                self.do_central_centered.setChecked(bool(int(conf["do_central_centered"])))
+                self.do_central_unmoving.setChecked(
+                    bool(int(conf["do_central_unmoving"])))
+                self.do_central_centered.setChecked(
+                    bool(int(conf["do_central_centered"])))
                 self.color_objects_r.setValue(conf["color"]["objects"]["r"])
                 self.color_objects_g.setValue(conf["color"]["objects"]["g"])
                 self.color_objects_g.setValue(conf["color"]["objects"]["g"])
@@ -33,8 +38,9 @@ class Settings(QtWidgets.QMainWindow):
             pass
 
     def save(self):
+        """save the entered settings to a file"""
         with open("saved_data/settings.yml", "w+") as f:
-            conf = { # create the new settings content with the entered values
+            conf = {  # create the new settings content with the entered values
                 "canvas": {
                     "width": self.canvas_width.value(),
                     "height": self.canvas_height.value()
@@ -64,7 +70,3 @@ class Settings(QtWidgets.QMainWindow):
             self.parent().central_v0_x.setEnabled(False)
             self.parent().central_v0_y.setEnabled(False)
             self.parent().central_v0_z.setEnabled(False)
-
-    def ok(self):
-        self.save()
-        self.close()
