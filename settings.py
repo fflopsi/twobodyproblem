@@ -12,6 +12,10 @@ class Settings(QtWidgets.QMainWindow):
         self.b_cancel.clicked.connect(self.close)
         self.b_ok.clicked.connect(lambda: (self.save(), self.close()))
         self.b_save.clicked.connect(self.save)
+        self.show_pointers.stateChanged.connect(
+            self.show_pointers_changed_action)
+        self.do_central_unmoving.toggled.connect(
+            self.central_changed_action)
 
         try:
             # set the different values to display in settings window
@@ -31,11 +35,15 @@ class Settings(QtWidgets.QMainWindow):
                 self.color_pointer_r.setValue(conf["color"]["pointer"]["r"])
                 self.color_pointer_g.setValue(conf["color"]["pointer"]["g"])
                 self.color_pointer_b.setValue(conf["color"]["pointer"]["b"])
+                self.show_pointers.setChecked(bool(int(conf["show_pointers"])))
                 self.update_rate.setValue(conf["update_rate"])
                 self.max_seconds.setValue(conf["max_seconds"])
                 self.t_factor.setValue(conf["t_factor"])
         except FileNotFoundError:
             pass
+
+        self.show_pointers_changed_action()
+        self.central_changed_action()
 
     def save(self):
         """save the entered settings to a file"""
@@ -61,12 +69,29 @@ class Settings(QtWidgets.QMainWindow):
                         "b": self.color_pointer_b.value()
                     }
                 },
+                "show_pointers": int(self.show_pointers.isChecked()),
                 "update_rate": self.update_rate.value(),
                 "max_seconds": self.max_seconds.value(),
                 "t_factor": self.t_factor.value()
             }
             f.write(yaml.dump(conf))
+
+    def show_pointers_changed_action(self):
+        if self.show_pointers.isChecked():
+            self.color_pointer_r.setEnabled(True)
+            self.color_pointer_g.setEnabled(True)
+            self.color_pointer_b.setEnabled(True)
+        else:
+            self.color_pointer_r.setEnabled(False)
+            self.color_pointer_g.setEnabled(False)
+            self.color_pointer_b.setEnabled(False)
+
+    def central_changed_action(self):
         if self.do_central_unmoving.isChecked():
             self.parent().central_v0_x.setEnabled(False)
             self.parent().central_v0_y.setEnabled(False)
             self.parent().central_v0_z.setEnabled(False)
+        else:
+            self.parent().central_v0_x.setEnabled(True)
+            self.parent().central_v0_y.setEnabled(True)
+            self.parent().central_v0_z.setEnabled(True)

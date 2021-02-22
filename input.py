@@ -48,8 +48,9 @@ class MainWindow(QtWidgets.QMainWindow):
         # vpython objects for simulation
         self.central = 0
         self.sat = 0
-        self.central_pointer = 0
-        self.sat_pointer = 0
+        if self.settings.show_pointers.isChecked():
+            self.central_pointer = 0
+            self.sat_pointer = 0
         self.central_radius_slider_smaller = 0
         self.central_radius_slider_bigger = 0
         self.sat_radius_slider_smaller = 0
@@ -239,18 +240,22 @@ class MainWindow(QtWidgets.QMainWindow):
             self.pause_sim.text = "Pause"
 
     def adjust_central_radius_smaller(self):
-        """adjust radius of central to smaller values"""
+        """adjust radius of central (and pointer if needed) to smaller values"""
         self.central.radius = self.CENTRAL_RADIUS * \
             self.central_radius_slider_smaller.value
-        self.central_pointer.pos = self.central.pos - \
-            self.central_pointer.axis + vp.vector(0, self.central.radius, 0)
+        if self.settings.show_pointers.isChecked():
+            self.central_pointer.pos = self.central.pos - \
+                self.central_pointer.axis + \
+                vp.vector(0, self.central.radius, 0)
 
     def adjust_central_radius_bigger(self):
-        """adjust radius of central to bigger values"""
+        """adjust radius of central (and pointer if needed) to bigger values"""
         self.central.radius = self.CENTRAL_RADIUS * \
             self.central_radius_slider_bigger.value
-        self.central_pointer.pos = self.central.pos - \
-            self.central_pointer.axis + vp.vector(0, self.central.radius, 0)
+        if self.settings.show_pointers.isChecked():
+            self.central_pointer.pos = self.central.pos - \
+                self.central_pointer.axis + \
+                vp.vector(0, self.central.radius, 0)
 
     def reset_central_radius_slider(self):
         """reset the central radius slider"""
@@ -259,16 +264,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.adjust_central_radius_smaller()
 
     def adjust_sat_radius_smaller(self):
-        """adjust radius of sat to smaller values"""
+        """adjust radius of sat (and pointer if needed) to smaller values"""
         self.sat.radius = self.SAT_RADIUS * self.sat_radius_slider_smaller.value
-        self.sat_pointer.pos = self.sat.pos - \
-            self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
+        if self.settings.show_pointers.isChecked():
+            self.sat_pointer.pos = self.sat.pos - \
+                self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
 
     def adjust_sat_radius_bigger(self):
-        """adjust radius of sat to bigger values"""
+        """adjust radius of sat (and pointer if needed) to bigger values"""
         self.sat.radius = self.SAT_RADIUS * self.sat_radius_slider_bigger.value
-        self.sat_pointer.pos = self.sat.pos - \
-            self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
+        if self.settings.show_pointers.isChecked():
+            self.sat_pointer.pos = self.sat.pos - \
+                self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
 
     def reset_sat_radius_slider(self):
         """reset the sat radius slider"""
@@ -311,24 +318,25 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.settings.color_objects_b.value()/255
             )
         )
-        self.central_pointer = vp.arrow(
-            axis=vp.vector(0, -(self.DISTANCE / 2), 0),
-            color=vp.vector(
-                self.settings.color_pointer_r.value()/255,
-                self.settings.color_pointer_g.value()/255,
-                self.settings.color_pointer_b.value()/255
+        if self.settings.show_pointers.isChecked():
+            self.central_pointer = vp.arrow(
+                axis=vp.vector(0, -(self.DISTANCE / 2), 0),
+                color=vp.vector(
+                    self.settings.color_pointer_r.value()/255,
+                    self.settings.color_pointer_g.value()/255,
+                    self.settings.color_pointer_b.value()/255
+                )
             )
-        )
-        self.central_pointer.pos = self.central.pos - self.central_pointer.axis + \
-            vp.vector(0, self.CENTRAL_RADIUS, 0)
-        self.sat_pointer = vp.arrow(
-            axis=vp.vector(0, -(self.DISTANCE / 2), 0),
-            color=vp.vector(
-                self.settings.color_pointer_r.value()/255,
-                self.settings.color_pointer_g.value()/255,
-                self.settings.color_pointer_b.value()/255
+            self.central_pointer.pos = self.central.pos - self.central_pointer.axis + \
+                vp.vector(0, self.CENTRAL_RADIUS, 0)
+            self.sat_pointer = vp.arrow(
+                axis=vp.vector(0, -(self.DISTANCE / 2), 0),
+                color=vp.vector(
+                    self.settings.color_pointer_r.value()/255,
+                    self.settings.color_pointer_g.value()/255,
+                    self.settings.color_pointer_b.value()/255
+                )
             )
-        )
 
         # set up pause button
         self.pause_sim = vp.button(text="Pause", bind=self.pause_simulation)
@@ -395,16 +403,17 @@ class MainWindow(QtWidgets.QMainWindow):
                         v_s = a_s*delta_t + v_pos1_s
                         v_c = a_c*delta_t + v_pos1_c
 
-                        # move sat, central and pointers to new positions
+                        # move sat, central (and pointers if needed) to new positions
                         self.sat.pos = v_s*delta_t + pos1_s
                         self.central.pos = v_c*delta_t + pos1_c
                         # andere Möglichkeit ausprobieren (direkt bei sat definieren)
-                        self.sat_pointer.pos = self.sat.pos - \
-                            self.sat_pointer.axis + \
-                            vp.vector(0, self.sat.radius, 0)
-                        self.central_pointer.pos = self.central.pos - \
-                            self.central_pointer.axis + \
-                            vp.vector(0, self.central.radius, 0)
+                        if self.settings.show_pointers.isChecked():
+                            self.sat_pointer.pos = self.sat.pos - \
+                                self.sat_pointer.axis + \
+                                vp.vector(0, self.sat.radius, 0)
+                            self.central_pointer.pos = self.central.pos - \
+                                self.central_pointer.axis + \
+                                vp.vector(0, self.central.radius, 0)
 
                         # make the current velocities and positions available for next iteration
                         v_pos1_s = v_s
@@ -419,9 +428,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
                         v_pos1 = v
                         pos1 = self.sat.pos
-                        self.sat_pointer.pos = self.sat.pos - \
-                            self.sat_pointer.axis + \
-                            vp.vector(0, self.sat.radius, 0)
+                        if self.settings.show_pointers.isChecked():
+                            self.sat_pointer.pos = self.sat.pos - \
+                                self.sat_pointer.axis + \
+                                vp.vector(0, self.sat.radius, 0)
                 else:
                     # insert testing code here
                     pass

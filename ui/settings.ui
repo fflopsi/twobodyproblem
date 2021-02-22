@@ -430,6 +430,25 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QCheckBox" name="show_pointers">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>180</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option aktiviert Pfeile, die auf die Körper in der Simulation zeigen (vor allem hilfreich bei grösseren Distanzen zwischen kleineren Körpern).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>Pfeile anzeigen</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
