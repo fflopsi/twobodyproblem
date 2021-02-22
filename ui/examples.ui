@@ -123,6 +123,9 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Übernehmen und schliessen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="text">
      <string>OK</string>
     </property>
@@ -152,6 +155,9 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Werte eintragen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
     <property name="text">
      <string>Übernehmen</string>
     </property>
@@ -163,7 +169,7 @@
      <x>0</x>
      <y>0</y>
      <width>476</width>
-     <height>34</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptionen">

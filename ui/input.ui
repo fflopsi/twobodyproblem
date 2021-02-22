@@ -424,6 +424,7 @@
      <string>Werte</string>
     </property>
     <addaction name="actionVoreinstellungen"/>
+    <addaction name="separator"/>
     <addaction name="actiongespeicherte_Werte_laden"/>
    </widget>
    <addaction name="menuOptionen"/>
