@@ -1,19 +1,20 @@
 import yaml
-from PyQt5 import uic, QtCore, QtGui, QtWidgets
+from PyQt5 import uic, QtWidgets
 
 
 class Examples(QtWidgets.QMainWindow):
     """window for presets"""
 
-    def __init__(self, presets, *args, parent=None, **kwargs):
+    def __init__(self, *args, parent=None, **kwargs):
         super(Examples, self).__init__(*args, parent, **kwargs)  # set up UI
-        examples = uic.loadUi("ui/examples.ui", self)
+        uic.loadUi("ui/examples.ui", self)
         self.actionVerlassen.triggered.connect(self.close)
         self.b_cancel.clicked.connect(self.close)
         self.b_ok.clicked.connect(lambda: (self.fill(), self.close()))
         self.b_fill.clicked.connect(self.fill)
 
-        self.values = presets
+        with open("saved_data/presets.yml", "r") as f:
+            self.values = yaml.load(f, Loader=yaml.FullLoader)
 
     def fill(self):
         """fill entry window fields with selected values"""

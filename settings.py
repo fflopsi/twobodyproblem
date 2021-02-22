@@ -1,5 +1,5 @@
 import yaml
-from PyQt5 import uic, QtCore, QtGui, QtWidgets
+from PyQt5 import uic, QtWidgets
 
 
 class Settings(QtWidgets.QMainWindow):

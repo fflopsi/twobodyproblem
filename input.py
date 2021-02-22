@@ -5,7 +5,7 @@ import os
 import signal
 import yaml
 import vpython as vp
-from PyQt5 import uic, QtCore, QtGui, QtWidgets
+from PyQt5 import uic, QtGui, QtWidgets
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -17,23 +17,23 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(*args, parent, **kwargs)
         uic.loadUi("ui/input.ui", self)
         self.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
-        self.presets = list()
-        with open("saved_data/presets.yml", "r") as f:
-            presets = yaml.load(f, Loader=yaml.FullLoader)
         # create other windows
-        self.examples = examples.Examples(presets=presets, parent=self)
-        self.settings = settings.Settings(parent=self)
+        self.w_examples = examples.Examples(parent=self)
+        self.w_settings = settings.Settings(parent=self)
 
         # add button and action funcionality
         self.b_ok.clicked.connect(self.open_vpython)
         self.b_reset.clicked.connect(self.clear_fields)
         self.actionVerlassen.triggered.connect(self.close)
         self.actiongespeicherte_Werte_laden.triggered.connect(self.load_values)
-        self.actionVoreinstellungen.triggered.connect(self.examples.show)
-        self.actionEinstellungen.triggered.connect(self.settings.show)
+        self.actionVoreinstellungen.triggered.connect(self.w_examples.show)
+        self.actionEinstellungen.triggered.connect(self.w_settings.show)
         # set the tab for central as "default"
         self.tabWidget.setCurrentIndex(0)
 
+        self.presets: list
+        with open("saved_data/presets.yml", "r") as f:
+            self.presets = yaml.load(f, Loader=yaml.FullLoader)
         # values needed during simulation
         self.pause = False
         self.pause_sim: vp.button
@@ -48,7 +48,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # vpython objects for simulation
         self.central: vp.sphere
         self.sat: vp.sphere
-        if self.settings.show_pointers.isChecked():
+        if self.w_settings.show_pointers.isChecked():
             self.central_pointer: vp.arrow
             self.sat_pointer: vp.arrow
         self.central_radius_smaller: vp.slider
@@ -56,7 +56,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sat_radius_smaller: vp.slider
         self.sat_radius_bigger: vp.slider
 
-        if self.settings.do_central_unmoving.isChecked():
+        if self.w_settings.do_central_unmoving.isChecked():
             self.central_v0_x.setEnabled(False)
             self.central_v0_y.setEnabled(False)
             self.central_v0_z.setEnabled(False)
@@ -72,28 +72,28 @@ class MainWindow(QtWidgets.QMainWindow):
         try:  # check if correct number entered
             float(self.central_mass.text())
         except ValueError:  # enter standard value if an error occurs
-            self.central_mass.setText(str(presets["mass"]["Erde"]))
+            self.central_mass.setText(str(self.presets["mass"]["Erde"]))
         finally:  # save entered value for simulation
             self.CENTRAL_MASS = float(self.central_mass.text())
 
         try:
             float(self.central_radius.text())
         except ValueError:
-            self.central_radius.setText(str(presets["radius"]["Erde"]))
+            self.central_radius.setText(str(self.presets["radius"]["Erde"]))
         finally:
             self.CENTRAL_RADIUS = float(self.central_radius.text())
 
         try:
             float(self.sat_mass.text())
         except ValueError:
-            self.sat_mass.setText(str(presets["mass"]["Sputnik 2"]))
+            self.sat_mass.setText(str(self.presets["mass"]["Sputnik 2"]))
         finally:
             self.SAT_MASS = float(self.sat_mass.text())
 
         try:
             float(self.sat_radius.text())
         except ValueError:
-            self.sat_radius.setText(str(presets["radius"]["Sputnik 2"]))
+            self.sat_radius.setText(str(self.presets["radius"]["Sputnik 2"]))
         finally:
             self.SAT_RADIUS = float(self.sat_radius.text())
 
@@ -101,7 +101,7 @@ class MainWindow(QtWidgets.QMainWindow):
             float(self.distance.text())
         except ValueError:
             self.distance.setText(
-                str(presets["distance"]["Erde"]["Sputnik 2"]))
+                str(self.presets["distance"]["Erde"]["Sputnik 2"]))
         finally:
             self.DISTANCE = float(self.distance.text()) + \
                 self.CENTRAL_RADIUS + self.SAT_RADIUS  # so lassen?
@@ -215,7 +215,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     self.sat_v0_x.setText(str(values["sat_v0"]["x"]))
                     self.sat_v0_y.setText(str(values["sat_v0"]["y"]))
                     self.sat_v0_z.setText(str(values["sat_v0"]["z"]))
-                    if not self.settings.do_central_unmoving.isChecked():
+                    if not self.w_settings.do_central_unmoving.isChecked():
                         self.central_v0_x.setText(
                             str(values["central_v0"]["x"]))
                         self.central_v0_y.setText(
@@ -247,7 +247,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def adjust_central_radius(self, value):
         """adjust radius of central (and pointer if needed)"""
         self.central.radius = self.CENTRAL_RADIUS * value
-        if self.settings.show_pointers.isChecked():
+        if self.w_settings.show_pointers.isChecked():
             self.central_pointer.pos = self.central.pos - \
                 self.central_pointer.axis + \
                 vp.vector(0, self.central.radius, 0)
@@ -261,7 +261,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def adjust_sat_radius(self, value):
         """adjust radius of sat (and pointer if needed)"""
         self.sat.radius = self.SAT_RADIUS * value
-        if self.settings.show_pointers.isChecked():
+        if self.w_settings.show_pointers.isChecked():
             self.sat_pointer.pos = self.sat.pos - \
                 self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
 
@@ -276,40 +276,40 @@ class MainWindow(QtWidgets.QMainWindow):
         # read values and set up variables
         self.read()
         t = 0
-        t_max = self.settings.update_rate.value() * self.settings.max_seconds.value()
-        testing = self.settings.do_testing.isChecked()
-        central_unmoving = self.settings.do_central_unmoving.isChecked()
-        central_centered = self.settings.do_central_centered.isChecked()
+        t_max = self.w_settings.update_rate.value() * self.w_settings.max_seconds.value()
+        testing = self.w_settings.do_testing.isChecked()
+        central_unmoving = self.w_settings.do_central_unmoving.isChecked()
+        central_centered = self.w_settings.do_central_centered.isChecked()
 
         # set up vpython canvas, objects and pointers (arrows to the objects because the scales are too large)
         scene = vp.canvas(
             title="Simulation zum Zweikörperproblem",
-            height=self.settings.canvas_height.value(),
-            width=self.settings.canvas_width.value()
+            height=self.w_settings.canvas_height.value(),
+            width=self.w_settings.canvas_width.value()
         )
         self.central = vp.sphere(
             radius=self.CENTRAL_RADIUS, make_trail=True,
             color=vp.vector(
-                self.settings.color_objects_r.value()/255,
-                self.settings.color_objects_g.value()/255,
-                self.settings.color_objects_b.value()/255
+                self.w_settings.color_objects_r.value()/255,
+                self.w_settings.color_objects_g.value()/255,
+                self.w_settings.color_objects_b.value()/255
             )
         )
         self.sat = vp.sphere(
             pos=vp.vector(self.DISTANCE, 0, 0), radius=self.SAT_RADIUS, make_trail=True,
             color=vp.vector(
-                self.settings.color_objects_r.value()/255,
-                self.settings.color_objects_g.value()/255,
-                self.settings.color_objects_b.value()/255
+                self.w_settings.color_objects_r.value()/255,
+                self.w_settings.color_objects_g.value()/255,
+                self.w_settings.color_objects_b.value()/255
             )
         )
-        if self.settings.show_pointers.isChecked():
+        if self.w_settings.show_pointers.isChecked():
             self.central_pointer = vp.arrow(
                 axis=vp.vector(0, -(self.DISTANCE / 2), 0),
                 color=vp.vector(
-                    self.settings.color_pointer_r.value()/255,
-                    self.settings.color_pointer_g.value()/255,
-                    self.settings.color_pointer_b.value()/255
+                    self.w_settings.color_pointer_r.value()/255,
+                    self.w_settings.color_pointer_g.value()/255,
+                    self.w_settings.color_pointer_b.value()/255
                 )
             )
             self.central_pointer.pos = self.central.pos - self.central_pointer.axis + \
@@ -317,9 +317,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.sat_pointer = vp.arrow(
                 axis=vp.vector(0, -(self.DISTANCE / 2), 0),
                 color=vp.vector(
-                    self.settings.color_pointer_r.value()/255,
-                    self.settings.color_pointer_g.value()/255,
-                    self.settings.color_pointer_b.value()/255
+                    self.w_settings.color_pointer_r.value()/255,
+                    self.w_settings.color_pointer_g.value()/255,
+                    self.w_settings.color_pointer_b.value()/255
                 )
             )
 
@@ -361,7 +361,7 @@ class MainWindow(QtWidgets.QMainWindow):
         G = 6.67430e-11  # gravitational constant
         M = self.CENTRAL_MASS
         m = self.SAT_MASS
-        delta_t = self.settings.t_factor.value()
+        delta_t = self.w_settings.t_factor.value()
         if not central_unmoving:
             pos1_s = self.sat.pos
             pos1_c = self.central.pos
@@ -377,7 +377,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # movement while simulation time not over
         while t < t_max:
             if not self.pause:
-                vp.rate(self.settings.update_rate.value())
+                vp.rate(self.w_settings.update_rate.value())
                 r = self.sat.pos - self.central.pos
                 # for testing: delete "or testing" and insert testing code into else below
                 if not testing or testing:
@@ -394,7 +394,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         self.sat.pos = v_s*delta_t + pos1_s
                         self.central.pos = v_c*delta_t + pos1_c
                         # andere Möglichkeit ausprobieren (direkt bei sat definieren)
-                        if self.settings.show_pointers.isChecked():
+                        if self.w_settings.show_pointers.isChecked():
                             self.sat_pointer.pos = self.sat.pos - \
                                 self.sat_pointer.axis + \
                                 vp.vector(0, self.sat.radius, 0)
@@ -415,7 +415,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
                         v_pos1 = v
                         pos1 = self.sat.pos
-                        if self.settings.show_pointers.isChecked():
+                        if self.w_settings.show_pointers.isChecked():
                             self.sat_pointer.pos = self.sat.pos - \
                                 self.sat_pointer.axis + \
                                 vp.vector(0, self.sat.radius, 0)
@@ -425,5 +425,5 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 t += 1
 
-        if self.settings.do_restart.isChecked():
+        if self.w_settings.do_restart.isChecked():
             self.restart()
