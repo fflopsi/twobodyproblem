@@ -1,9 +1,10 @@
+Pfeile an Körper anheften (mit vpython selbst)
+Simulation in eigene Klasse auslagern, weniger Klassenvariablen
+Einstellungen speicher- und ladbar wie Werte, Standard-Einstellungen definierbar
 Slider für Geschwindigkeit und Delta t
 Geschwindigkeit, Beschleunigung und Kraft mit Pfeilen visualisieren und ein-/ausschaltbar machen
-sinnvollere Speicherung der Werte (mehr als einmal, dictionary anpassen)
-mehr Standardwerte (Baumstruktur), Standardwerte-Einstellung, schöneres Einstellungsfenster
-Kollisionsdetektion
-Drei-Körper-Problem versuchen
-relativistische Formeln einbauen
+mehr Standardwerte (Baumstruktur), Standardwerte-Einstellung
+Drei-Körper-Problem, relativistische Formeln einbauen
 Daten zu Körper in Arrays speichern, Mehr-Körper-Simulation ermöglichen, Körper-Hinzufügen-Funktion
+Kollisionsdetektion
 Dokumentation schreiben, Hilfstext ins Programm nehmen, ...
