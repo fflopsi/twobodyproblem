@@ -16,6 +16,7 @@ class Settings(QtWidgets.QMainWindow):
             self.show_pointers_changed_action)
         self.do_central_unmoving.toggled.connect(
             self.central_changed_action)
+        self.tabWidget.setCurrentIndex(0)
 
         try:
             # set the different values to display in settings window
@@ -39,8 +40,15 @@ class Settings(QtWidgets.QMainWindow):
                 self.update_rate.setValue(conf["update_rate"])
                 self.max_seconds.setValue(conf["max_seconds"])
                 self.t_factor.setValue(conf["t_factor"])
+                self.save_dialog.setChecked(bool(int(conf["save_dialog"])))
         except FileNotFoundError:
-            pass
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setWindowTitle("Einstellungsdatei nicht gefunden")
+            msg.setText("Es werden die Standard-Einstellungen angewendet.")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.setDefaultButton(QtWidgets.QMessageBox.Ok)
+            msg.exec()
 
         self.show_pointers_changed_action()
         self.central_changed_action()
@@ -72,7 +80,8 @@ class Settings(QtWidgets.QMainWindow):
                 "show_pointers": int(self.show_pointers.isChecked()),
                 "update_rate": self.update_rate.value(),
                 "max_seconds": self.max_seconds.value(),
-                "t_factor": self.t_factor.value()
+                "t_factor": self.t_factor.value(),
+                "save_dialog": int(self.save_dialog.isChecked())
             }
             f.write(yaml.dump(conf))
 

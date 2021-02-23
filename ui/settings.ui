@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>863</width>
-    <height>541</height>
+    <height>523</height>
    </rect>
   </property>
   <property name="font">
@@ -22,7 +22,7 @@
    <widget class="QPushButton" name="b_ok">
     <property name="geometry">
      <rect>
-      <x>750</x>
+      <x>740</x>
       <y>420</y>
       <width>91</width>
       <height>31</height>
@@ -44,7 +44,7 @@
    <widget class="QPushButton" name="b_save">
     <property name="geometry">
      <rect>
-      <x>608</x>
+      <x>598</x>
       <y>420</y>
       <width>131</width>
       <height>31</height>
@@ -85,58 +85,6 @@
      <string>Abbrechen</string>
     </property>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>80</y>
-      <width>351</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="canvas_height">
-       <property name="minimum">
-        <number>50</number>
-       </property>
-       <property name="maximum">
-        <number>2000</number>
-       </property>
-       <property name="value">
-        <number>600</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="canvas_width">
-       <property name="minimum">
-        <number>100</number>
-       </property>
-       <property name="maximum">
-        <number>3000</number>
-       </property>
-       <property name="value">
-        <number>1000</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Breite Simulationsfenster</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Höhe Simulationsfenster</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QLabel" name="label_17">
     <property name="geometry">
      <rect>
@@ -150,304 +98,395 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;Einstellungen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>410</x>
-      <y>80</y>
-      <width>391</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Pfeilfarbe</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="color_pointer_r">
-       <property name="maximum">
-        <number>255</number>
-       </property>
-       <property name="value">
-        <number>255</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QSpinBox" name="color_objects_g">
-       <property name="maximum">
-        <number>255</number>
-       </property>
-       <property name="value">
-        <number>255</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Objektfarbe</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="color_objects_r">
-       <property name="maximum">
-        <number>255</number>
-       </property>
-       <property name="value">
-        <number>255</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QSpinBox" name="color_objects_b">
-       <property name="maximum">
-        <number>255</number>
-       </property>
-       <property name="value">
-        <number>255</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QSpinBox" name="color_pointer_g">
-       <property name="maximum">
-        <number>255</number>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QSpinBox" name="color_pointer_b">
-       <property name="maximum">
-        <number>255</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QCheckBox" name="do_restart">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>370</y>
-      <width>241</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option wird das Programm nach jeder Simulation neustarten. Somit wird eine weitere, unmittelbare Simulation möglich gemacht.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Neustart nach einer Simulation</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="do_testing">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>370</y>
-      <width>191</width>
-      <height>31</height>
+      <y>70</y>
+      <width>801</width>
+      <height>331</height>
      </rect>
     </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option aktiviert möglicherweise unvollständige, noch in Entwicklung stehende Features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
-    <property name="text">
-     <string>Test-Features aktivieren</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>180</y>
-      <width>610</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="update_rate">
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>100000</number>
-       </property>
-       <property name="value">
-        <number>100</number>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl Berechnungen pro Sekunde&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Update-Rate (Geschwindigkeit) der Simulation</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Zeit in Sekunden bis zum Ende der Simulation</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="max_seconds">
-       <property name="minimum">
-        <number>5</number>
-       </property>
-       <property name="maximum">
-        <number>3600</number>
-       </property>
-       <property name="value">
-        <number>30</number>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;physikalisch: &amp;Delta;t&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Verschnellerungsfaktor (macht die Simulation ungenau)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QSpinBox" name="t_factor">
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>100000</number>
-       </property>
-       <property name="value">
-        <number>10</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QRadioButton" name="do_central_unmoving">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>330</y>
-      <width>231</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bei Aktivieren dieses Feldes werden die Kräfte, die auf den Zentralkörper wirken, vernachlässigt werden. Somit wird er unbeweglich im Zentrum der Visualisierung stehen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="statusTip">
-     <string/>
-    </property>
-    <property name="text">
-     <string>unbeweglicher Zentralkörper</string>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="do_central_centered">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>330</y>
-      <width>201</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der Zentralkörper wird bei Aktivieren dieses Feldes immer in der Mitte der Visualisierung angezeigt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="toolTipDuration">
-     <number>-1</number>
-    </property>
-    <property name="statusTip">
-     <string/>
-    </property>
-    <property name="whatsThis">
-     <string/>
-    </property>
-    <property name="accessibleName">
-     <string/>
-    </property>
-    <property name="accessibleDescription">
-     <string/>
-    </property>
-    <property name="text">
-     <string>zentrierter Zentralkörper</string>
-    </property>
-    <property name="checked">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="do_central_moving">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>330</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string/>
-    </property>
-    <property name="toolTipDuration">
-     <number>-1</number>
-    </property>
-    <property name="statusTip">
-     <string/>
-    </property>
-    <property name="whatsThis">
-     <string/>
-    </property>
-    <property name="accessibleName">
-     <string/>
-    </property>
-    <property name="accessibleDescription">
-     <string/>
-    </property>
-    <property name="text">
-     <string>beweglicher Zentralkörper</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="show_pointers">
-    <property name="geometry">
-     <rect>
-      <x>670</x>
-      <y>180</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option aktiviert Pfeile, die auf die Körper in der Simulation zeigen (vor allem hilfreich bei grösseren Distanzen zwischen kleineren Körpern).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-    <property name="text">
-     <string>Pfeile anzeigen</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Visualisierung</string>
+     </attribute>
+     <widget class="QRadioButton" name="do_central_moving">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>250</y>
+        <width>211</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="toolTipDuration">
+       <number>-1</number>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="accessibleName">
+       <string/>
+      </property>
+      <property name="accessibleDescription">
+       <string/>
+      </property>
+      <property name="text">
+       <string>beweglicher Zentralkörper</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="do_central_unmoving">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>250</y>
+        <width>231</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bei Aktivieren dieses Feldes werden die Kräfte, die auf den Zentralkörper wirken, vernachlässigt werden. Somit wird er unbeweglich im Zentrum der Visualisierung stehen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="text">
+       <string>unbeweglicher Zentralkörper</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>610</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="update_rate">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100000</number>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl Berechnungen pro Sekunde&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Update-Rate (Geschwindigkeit) der Simulation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Zeit in Sekunden bis zum Ende der Simulation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="max_seconds">
+         <property name="minimum">
+          <number>5</number>
+         </property>
+         <property name="maximum">
+          <number>3600</number>
+         </property>
+         <property name="value">
+          <number>30</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;physikalisch: &amp;Delta;t&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Verschnellerungsfaktor (macht die Simulation ungenau)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QSpinBox" name="t_factor">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>100000</number>
+         </property>
+         <property name="value">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>10</y>
+        <width>391</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Pfeilfarbe</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="color_pointer_r">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QSpinBox" name="color_objects_g">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Objektfarbe</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="color_objects_r">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QSpinBox" name="color_objects_b">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+         <property name="value">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="color_pointer_g">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QSpinBox" name="color_pointer_b">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QCheckBox" name="show_pointers">
+      <property name="geometry">
+       <rect>
+        <x>650</x>
+        <y>110</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option aktiviert Pfeile, die auf die Körper in der Simulation zeigen (vor allem hilfreich bei grösseren Distanzen zwischen kleineren Körpern).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Pfeile anzeigen</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="do_central_centered">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>250</y>
+        <width>201</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der Zentralkörper wird bei Aktivieren dieses Feldes immer in der Mitte der Visualisierung angezeigt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="toolTipDuration">
+       <number>-1</number>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="accessibleName">
+       <string/>
+      </property>
+      <property name="accessibleDescription">
+       <string/>
+      </property>
+      <property name="text">
+       <string>zentrierter Zentralkörper</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>351</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="1">
+        <widget class="QSpinBox" name="canvas_height">
+         <property name="minimum">
+          <number>50</number>
+         </property>
+         <property name="maximum">
+          <number>2000</number>
+         </property>
+         <property name="value">
+          <number>600</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="canvas_width">
+         <property name="minimum">
+          <number>100</number>
+         </property>
+         <property name="maximum">
+          <number>3000</number>
+         </property>
+         <property name="value">
+          <number>1000</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Breite Simulationsfenster</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Höhe Simulationsfenster</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Weiteres</string>
+     </attribute>
+     <widget class="QCheckBox" name="do_restart">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>241</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option wird das Programm nach jeder Simulation neustarten. Somit wird eine weitere, unmittelbare Simulation möglich gemacht.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Neustart nach einer Simulation</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="do_testing">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>191</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option aktiviert möglicherweise unvollständige, noch in Entwicklung stehende Features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Test-Features aktivieren</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="save_dialog">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>411</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Diese Option ermöglicht es, Werteingaben irgendwo zu speichern statt im Programmverzeichnis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>erweitertes Fenster zur Speicherung von Werteingaben</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
