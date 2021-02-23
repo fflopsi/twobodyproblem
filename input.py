@@ -403,7 +403,6 @@ class MainWindow(QtWidgets.QMainWindow):
                         # move sat, central (and pointers if needed) to new positions
                         self.sat.pos = v_s*delta_t + pos1_s
                         self.central.pos = v_c*delta_t + pos1_c
-                        # andere Möglichkeit ausprobieren (direkt bei sat definieren)
                         if self.w_settings.show_pointers.isChecked():
                             self.sat_pointer.pos = self.sat.pos - \
                                 self.sat_pointer.axis + \
