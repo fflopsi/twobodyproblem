@@ -163,7 +163,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.central_v0_y.setText("")
         self.central_v0_z.setText("")
 
-    def values_to_dict(self):
+    def values_to_dict(self) -> dict:
         """returns the entered values as dictionary"""
         self.read()
         values = {
@@ -383,54 +383,56 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if central_centered:
             scene.camera.follow(self.central)
+        
+        if testing:
+            vp.attach_arrow(self.sat, "axis", scale=1e4)
+            vp.attach_arrow(self.central, "axis", scale=1e4)
 
         # movement while simulation time not over
         while t < t_max:
             if not self.pause:
                 vp.rate(self.w_settings.update_rate.value())
                 r = self.sat.pos - self.central.pos
-                # for testing: delete "or testing" and insert testing code into else below
-                if not testing or testing:
-                    if not central_unmoving:
-                        # calculations of force, acceleration and velocity: _s for sat, _c for central
-                        F_s = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
-                        F_c = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(r)
-                        a_s = F_s / m
-                        a_c = F_c / M
-                        v_s = a_s*delta_t + v_pos1_s
-                        v_c = a_c*delta_t + v_pos1_c
+                if not central_unmoving:
+                    # calculations of force, acceleration and velocity: _s for sat, _c for central
+                    F_s = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
+                    F_c = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(r)
+                    a_s = F_s / m
+                    a_c = F_c / M
+                    v_s = a_s*delta_t + v_pos1_s
+                    v_c = a_c*delta_t + v_pos1_c
 
-                        # move sat, central (and pointers if needed) to new positions
-                        self.sat.pos = v_s*delta_t + pos1_s
-                        self.central.pos = v_c*delta_t + pos1_c
-                        if self.w_settings.show_pointers.isChecked():
-                            self.sat_pointer.pos = self.sat.pos - \
-                                self.sat_pointer.axis + \
-                                vp.vector(0, self.sat.radius, 0)
-                            self.central_pointer.pos = self.central.pos - \
-                                self.central_pointer.axis + \
-                                vp.vector(0, self.central.radius, 0)
+                    # move sat, central (and pointers if needed) to new positions
+                    self.sat.pos = v_s*delta_t + pos1_s
+                    if testing:
+                        self.sat.axis = v_s
+                        self.central.axis = v_c
+                    self.central.pos = v_c*delta_t + pos1_c
+                    if self.w_settings.show_pointers.isChecked():
+                        self.sat_pointer.pos = self.sat.pos - \
+                            self.sat_pointer.axis + \
+                            vp.vector(0, self.sat.radius, 0)
+                        self.central_pointer.pos = self.central.pos - \
+                            self.central_pointer.axis + \
+                            vp.vector(0, self.central.radius, 0)
 
-                        # make the current velocities and positions available for next iteration
-                        v_pos1_s = v_s
-                        v_pos1_c = v_c
-                        pos1_s = self.sat.pos
-                        pos1_c = self.central.pos
-                    else:  # same as above but only for sat
-                        F = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
-                        a = F / m
-                        v = a*delta_t + v_pos1
-                        self.sat.pos = v*delta_t + pos1
+                    # make the current velocities and positions available for next iteration
+                    v_pos1_s = v_s
+                    v_pos1_c = v_c
+                    pos1_s = self.sat.pos
+                    pos1_c = self.central.pos
+                else:  # same as above but only for sat
+                    F = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
+                    a = F / m
+                    v = a*delta_t + v_pos1
+                    self.sat.pos = v*delta_t + pos1
 
-                        v_pos1 = v
-                        pos1 = self.sat.pos
-                        if self.w_settings.show_pointers.isChecked():
-                            self.sat_pointer.pos = self.sat.pos - \
-                                self.sat_pointer.axis + \
-                                vp.vector(0, self.sat.radius, 0)
-                else:
-                    # insert testing code here
-                    pass
+                    v_pos1 = v
+                    pos1 = self.sat.pos
+                    if self.w_settings.show_pointers.isChecked():
+                        self.sat_pointer.pos = self.sat.pos - \
+                            self.sat_pointer.axis + \
+                            vp.vector(0, self.sat.radius, 0)
 
                 t += 1
 
