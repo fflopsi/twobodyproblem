@@ -10,7 +10,6 @@ from PyQt5 import uic, QtGui, QtWidgets
 
 class MainWindow(QtWidgets.QMainWindow):
     """main window for inputs"""
-    EXIT_CODE_REBOOT = -123
 
     def __init__(self, *args, parent=None, **kwargs):
         # set up UI
@@ -25,6 +24,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.b_ok.clicked.connect(self.open_vpython)
         self.b_reset.clicked.connect(self.clear_fields)
         self.actionVerlassen.triggered.connect(self.close)
+        self.actionNeu_starten.triggered.connect(self.restart)
         self.actiongespeicherte_Werte_laden.triggered.connect(self.load_values)
         self.actionWertedatei_oeffnen.triggered.connect(
             self.load_values_dialog)
@@ -67,10 +67,8 @@ class MainWindow(QtWidgets.QMainWindow):
             self.central_v0_z.setEnabled(False)
 
     def restart(self):
-        """restart the program after simulation has finished"""
+        """restart the program"""
         os.execl(sys.executable, sys.executable, *sys.argv)
-        # another option (not recommended):
-        # QtWidgets.QApplication.exit(MainWindow.EXIT_CODE_REBOOT)
 
     def read(self):
         """make all the entered values accessible"""
@@ -383,7 +381,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if central_centered:
             scene.camera.follow(self.central)
-        
+
         if testing:
             vp.attach_arrow(self.sat, "axis", scale=1e4)
             vp.attach_arrow(self.central, "axis", scale=1e4)
