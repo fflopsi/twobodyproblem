@@ -40,7 +40,6 @@ class Settings(QtWidgets.QMainWindow):
                 self.update_rate.setValue(conf["update_rate"])
                 self.max_seconds.setValue(conf["max_seconds"])
                 self.t_factor.setValue(conf["t_factor"])
-                self.save_dialog.setChecked(bool(int(conf["save_dialog"])))
         except FileNotFoundError:
             msg = QtWidgets.QMessageBox()
             msg.setIcon(QtWidgets.QMessageBox.Warning)
@@ -81,7 +80,6 @@ class Settings(QtWidgets.QMainWindow):
                 "update_rate": self.update_rate.value(),
                 "max_seconds": self.max_seconds.value(),
                 "t_factor": self.t_factor.value(),
-                "save_dialog": int(self.save_dialog.isChecked())
             }
             f.write(yaml.dump(conf))
 
