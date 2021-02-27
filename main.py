@@ -1,11 +1,11 @@
 import sys
 import input
-from PyQt5 import QtWidgets
+from PySide6 import QtWidgets
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
 
     window = input.MainWindow()
-    window.show()
+    window.ui.show()
 
-    sys.exit(app.exec())
+    sys.exit(app.exec_())

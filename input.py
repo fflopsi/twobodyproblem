@@ -5,7 +5,7 @@ import os
 import signal
 import yaml
 import vpython as vp
-from PyQt5 import uic, QtGui, QtWidgets
+from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -14,27 +14,29 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, parent=None, **kwargs):
         # set up UI
         super(MainWindow, self).__init__(*args, parent, **kwargs)
-        uic.loadUi("ui/input.ui", self)
-        self.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
+        self.ui = QtUiTools.QUiLoader().load(QtCore.QFile("ui/input.ui"))
+        self.ui.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
         # create other windows
         self.w_examples = examples.Examples(parent=self)
         self.w_settings = settings.Settings(parent=self)
 
         # add button and action funcionality
-        self.b_ok.clicked.connect(self.open_vpython)
-        self.b_reset.clicked.connect(self.clear_fields)
-        self.actionVerlassen.triggered.connect(self.close)
-        self.actionNeu_starten.triggered.connect(self.restart)
-        self.actiongespeicherte_Werte_laden.triggered.connect(self.load_values)
-        self.actionWertedatei_oeffnen.triggered.connect(
+        self.ui.b_ok.clicked.connect(self.open_vpython)
+        self.ui.b_reset.clicked.connect(self.clear_fields)
+        self.ui.actionVerlassen.triggered.connect(self.ui.close)
+        self.ui.actionNeu_starten.triggered.connect(self.restart)
+        self.ui.actiongespeicherte_Werte_laden.triggered.connect(
+            self.load_values)
+        self.ui.actionWertedatei_oeffnen.triggered.connect(
             self.load_values_dialog)
-        self.actionWerte_speichern.triggered.connect(self.save_values)
-        self.actionWertedatei_speichern_unter.triggered.connect(
+        self.ui.actionWerte_speichern.triggered.connect(self.save_values)
+        self.ui.actionWertedatei_speichern_unter.triggered.connect(
             self.save_values_as)
-        self.actionVoreinstellungen.triggered.connect(self.w_examples.show)
-        self.actionEinstellungen.triggered.connect(self.w_settings.show)
+        self.ui.actionVoreinstellungen.triggered.connect(
+            self.w_examples.ui.show)
+        self.ui.actionEinstellungen.triggered.connect(self.w_settings.ui.show)
         # set the tab for central as "default"
-        self.tabWidget.setCurrentIndex(0)
+        self.ui.tabWidget.setCurrentIndex(0)
 
         self.presets: list
         with open("saved_data/presets.yml", "r") as f:
@@ -53,7 +55,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # vpython objects for simulation
         self.central: vp.sphere
         self.sat: vp.sphere
-        if self.w_settings.show_pointers.isChecked():
+        if self.w_settings.ui.show_pointers.isChecked():
             self.central_pointer: vp.arrow
             self.sat_pointer: vp.arrow
         self.central_radius_smaller: vp.slider
@@ -61,7 +63,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sat_radius_smaller: vp.slider
         self.sat_radius_bigger: vp.slider
 
-        if self.w_settings.do_central_unmoving.isChecked():
+        if self.w_settings.ui.do_central_unmoving.isChecked():
             self.central_v0_x.setEnabled(False)
             self.central_v0_y.setEnabled(False)
             self.central_v0_z.setEnabled(False)
@@ -73,93 +75,94 @@ class MainWindow(QtWidgets.QMainWindow):
     def read(self):
         """make all the entered values accessible"""
         try:  # check if correct number entered
-            float(self.central_mass.text())
+            float(self.ui.central_mass.text())
         except ValueError:  # enter standard value if an error occurs
-            self.central_mass.setText(str(self.presets["mass"]["Erde"]))
+            self.ui.central_mass.setText(str(self.presets["mass"]["Erde"]))
         finally:  # save entered value for simulation
-            self.CENTRAL_MASS = float(self.central_mass.text())
+            self.CENTRAL_MASS = float(self.ui.central_mass.text())
 
         try:
-            float(self.central_radius.text())
+            float(self.ui.central_radius.text())
         except ValueError:
-            self.central_radius.setText(str(self.presets["radius"]["Erde"]))
+            self.ui.central_radius.setText(str(self.presets["radius"]["Erde"]))
         finally:
-            self.CENTRAL_RADIUS = float(self.central_radius.text())
+            self.CENTRAL_RADIUS = float(self.ui.central_radius.text())
 
         try:
-            float(self.sat_mass.text())
+            float(self.ui.sat_mass.text())
         except ValueError:
-            self.sat_mass.setText(str(self.presets["mass"]["Sputnik 2"]))
+            self.ui.sat_mass.setText(str(self.presets["mass"]["Sputnik 2"]))
         finally:
-            self.SAT_MASS = float(self.sat_mass.text())
+            self.SAT_MASS = float(self.ui.sat_mass.text())
 
         try:
-            float(self.sat_radius.text())
+            float(self.ui.sat_radius.text())
         except ValueError:
-            self.sat_radius.setText(str(self.presets["radius"]["Sputnik 2"]))
+            self.ui.sat_radius.setText(
+                str(self.presets["radius"]["Sputnik 2"]))
         finally:
-            self.SAT_RADIUS = float(self.sat_radius.text())
+            self.SAT_RADIUS = float(self.ui.sat_radius.text())
 
         try:
-            float(self.distance.text())
+            float(self.ui.distance.text())
         except ValueError:
-            self.distance.setText(
+            self.ui.distance.setText(
                 str(self.presets["distance"]["Erde"]["Sputnik 2"]))
         finally:
-            self.DISTANCE = float(self.distance.text()) + \
+            self.DISTANCE = float(self.ui.distance.text()) + \
                 self.CENTRAL_RADIUS + self.SAT_RADIUS  # so lassen?
 
         try:
-            float(self.sat_v0_x.text())
+            float(self.ui.sat_v0_x.text())
         except ValueError:
-            self.sat_v0_x.setText("0")
+            self.ui.sat_v0_x.setText("0")
         try:
-            float(self.sat_v0_y.text())
+            float(self.ui.sat_v0_y.text())
         except ValueError:
-            self.sat_v0_y.setText("0")
+            self.ui.sat_v0_y.setText("0")
         try:
-            float(self.sat_v0_z.text())
+            float(self.ui.sat_v0_z.text())
         except ValueError:
-            self.sat_v0_z.setText("-8000")
+            self.ui.sat_v0_z.setText("-8000")
         finally:
             self.SAT_v0 = vp.vector(
-                float(self.sat_v0_x.text()),
-                float(self.sat_v0_y.text()),
-                float(self.sat_v0_z.text())
+                float(self.ui.sat_v0_x.text()),
+                float(self.ui.sat_v0_y.text()),
+                float(self.ui.sat_v0_z.text())
             )
 
         try:
-            float(self.central_v0_x.text())
+            float(self.ui.central_v0_x.text())
         except ValueError:
-            self.central_v0_x.setText("0")
+            self.ui.central_v0_x.setText("0")
         try:
-            float(self.central_v0_y.text())
+            float(self.ui.central_v0_y.text())
         except ValueError:
-            self.central_v0_y.setText("0")
+            self.ui.central_v0_y.setText("0")
         try:
-            float(self.central_v0_z.text())
+            float(self.ui.central_v0_z.text())
         except ValueError:
-            self.central_v0_z.setText("0")
+            self.ui.central_v0_z.setText("0")
         finally:
             self.CENTRAL_v0 = vp.vector(
-                float(self.central_v0_x.text()),
-                float(self.central_v0_y.text()),
-                float(self.central_v0_z.text())
+                float(self.ui.central_v0_x.text()),
+                float(self.ui.central_v0_y.text()),
+                float(self.ui.central_v0_z.text())
             )
 
     def clear_fields(self):
         """delete all values in all fields"""
-        self.central_radius.setText("")
-        self.central_mass.setText("")
-        self.sat_mass.setText("")
-        self.sat_radius.setText("")
-        self.distance.setText("")
-        self.sat_v0_x.setText("")
-        self.sat_v0_y.setText("")
-        self.sat_v0_z.setText("")
-        self.central_v0_x.setText("")
-        self.central_v0_y.setText("")
-        self.central_v0_z.setText("")
+        self.ui.central_radius.setText("")
+        self.ui.central_mass.setText("")
+        self.ui.sat_mass.setText("")
+        self.ui.sat_radius.setText("")
+        self.ui.distance.setText("")
+        self.ui.sat_v0_x.setText("")
+        self.ui.sat_v0_y.setText("")
+        self.ui.sat_v0_z.setText("")
+        self.ui.central_v0_x.setText("")
+        self.ui.central_v0_y.setText("")
+        self.ui.central_v0_z.setText("")
 
     def values_to_dict(self) -> dict:
         """returns the entered values as dictionary"""
@@ -192,7 +195,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """save values to file with SaveFile dialog"""
         name = QtWidgets.QFileDialog.getSaveFileName(
             parent=self, caption="Eingaben speichern",
-            directory="saved_data", filter="YAML Files (*.yml);;All Files (*)")
+            dir="saved_data", filter="YAML Files (*.yml);;All Files (*)")
         if name[0] != "":
             with open(name[0], "w+") as f:
                 f.write(yaml.dump(self.values_to_dict()))
@@ -200,18 +203,18 @@ class MainWindow(QtWidgets.QMainWindow):
     def fill_in_dict(self, val: dict):
         """fill in the given values"""
         try:
-            self.central_mass.setText(str(val["central_mass"]))
-            self.central_radius.setText(str(val["central_radius"]))
-            self.sat_mass.setText(str(val["sat_mass"]))
-            self.sat_radius.setText(str(val["sat_radius"]))
-            self.distance.setText(str(val["distance"]))
-            self.sat_v0_x.setText(str(val["sat_v0"]["x"]))
-            self.sat_v0_y.setText(str(val["sat_v0"]["y"]))
-            self.sat_v0_z.setText(str(val["sat_v0"]["z"]))
-            if not self.w_settings.do_central_unmoving.isChecked():
-                self.central_v0_x.setText(str(val["central_v0"]["x"]))
-                self.central_v0_y.setText(str(val["central_v0"]["y"]))
-                self.central_v0_z.setText(str(val["central_v0"]["z"]))
+            self.ui.central_mass.setText(str(val["central_mass"]))
+            self.ui.central_radius.setText(str(val["central_radius"]))
+            self.ui.sat_mass.setText(str(val["sat_mass"]))
+            self.ui.sat_radius.setText(str(val["sat_radius"]))
+            self.ui.distance.setText(str(val["distance"]))
+            self.ui.sat_v0_x.setText(str(val["sat_v0"]["x"]))
+            self.ui.sat_v0_y.setText(str(val["sat_v0"]["y"]))
+            self.ui.sat_v0_z.setText(str(val["sat_v0"]["z"]))
+            if not self.w_settings.ui.do_central_unmoving.isChecked():
+                self.ui.central_v0_x.setText(str(val["central_v0"]["x"]))
+                self.ui.central_v0_y.setText(str(val["central_v0"]["y"]))
+                self.ui.central_v0_z.setText(str(val["central_v0"]["z"]))
         except (TypeError, KeyError):
             err = QtWidgets.QMessageBox()
             err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -237,7 +240,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """loading saved values with "open file" dialog"""
         name = QtWidgets.QFileDialog.getOpenFileName(
             parent=self, caption="Wertedatei öffnen",
-            directory="saved_data", filter="YAML Files (*.yml);;All Files (*)"
+            dir="saved_data", filter="YAML Files (*.yml);;All Files (*)"
         )
         if name[0] != "":
             with open(name[0], "r") as f:
@@ -255,7 +258,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def adjust_central_radius(self, value):
         """adjust radius of central (and pointer if needed)"""
         self.central.radius = self.CENTRAL_RADIUS * value
-        if self.w_settings.show_pointers.isChecked():
+        if self.w_settings.ui.show_pointers.isChecked():
             self.central_pointer.pos = self.central.pos - \
                 self.central_pointer.axis + \
                 vp.vector(0, self.central.radius, 0)
@@ -269,7 +272,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def adjust_sat_radius(self, value):
         """adjust radius of sat (and pointer if needed)"""
         self.sat.radius = self.SAT_RADIUS * value
-        if self.w_settings.show_pointers.isChecked():
+        if self.w_settings.ui.show_pointers.isChecked():
             self.sat_pointer.pos = self.sat.pos - \
                 self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
 
@@ -284,40 +287,41 @@ class MainWindow(QtWidgets.QMainWindow):
         # read values and set up variables
         self.read()
         t = 0
-        t_max = self.w_settings.update_rate.value() * self.w_settings.max_seconds.value()
-        testing = self.w_settings.do_testing.isChecked()
-        central_unmoving = self.w_settings.do_central_unmoving.isChecked()
-        central_centered = self.w_settings.do_central_centered.isChecked()
+        t_max = self.w_settings.ui.update_rate.value() * \
+            self.w_settings.ui.max_seconds.value()
+        testing = self.w_settings.ui.do_testing.isChecked()
+        central_unmoving = self.w_settings.ui.do_central_unmoving.isChecked()
+        central_centered = self.w_settings.ui.do_central_centered.isChecked()
 
         # set up vpython canvas, objects and pointers (arrows to the objects because the scales are too large)
         scene = vp.canvas(
             title="Simulation zum Zweikörperproblem",
-            height=self.w_settings.canvas_height.value(),
-            width=self.w_settings.canvas_width.value()
+            height=self.w_settings.ui.canvas_height.value(),
+            width=self.w_settings.ui.canvas_width.value()
         )
         self.central = vp.sphere(
             radius=self.CENTRAL_RADIUS, make_trail=True,
             color=vp.vector(
-                self.w_settings.color_objects_r.value()/255,
-                self.w_settings.color_objects_g.value()/255,
-                self.w_settings.color_objects_b.value()/255
+                self.w_settings.ui.color_objects_r.value()/255,
+                self.w_settings.ui.color_objects_g.value()/255,
+                self.w_settings.ui.color_objects_b.value()/255
             )
         )
         self.sat = vp.sphere(
             pos=vp.vector(self.DISTANCE, 0, 0), radius=self.SAT_RADIUS, make_trail=True,
             color=vp.vector(
-                self.w_settings.color_objects_r.value()/255,
-                self.w_settings.color_objects_g.value()/255,
-                self.w_settings.color_objects_b.value()/255
+                self.w_settings.ui.color_objects_r.value()/255,
+                self.w_settings.ui.color_objects_g.value()/255,
+                self.w_settings.ui.color_objects_b.value()/255
             )
         )
-        if self.w_settings.show_pointers.isChecked():
+        if self.w_settings.ui.show_pointers.isChecked():
             self.central_pointer = vp.arrow(
                 axis=vp.vector(0, -(self.DISTANCE / 2), 0),
                 color=vp.vector(
-                    self.w_settings.color_pointer_r.value()/255,
-                    self.w_settings.color_pointer_g.value()/255,
-                    self.w_settings.color_pointer_b.value()/255
+                    self.w_settings.ui.color_pointer_r.value()/255,
+                    self.w_settings.ui.color_pointer_g.value()/255,
+                    self.w_settings.ui.color_pointer_b.value()/255
                 )
             )
             self.central_pointer.pos = self.central.pos - self.central_pointer.axis + \
@@ -325,9 +329,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.sat_pointer = vp.arrow(
                 axis=vp.vector(0, -(self.DISTANCE / 2), 0),
                 color=vp.vector(
-                    self.w_settings.color_pointer_r.value()/255,
-                    self.w_settings.color_pointer_g.value()/255,
-                    self.w_settings.color_pointer_b.value()/255
+                    self.w_settings.ui.color_pointer_r.value()/255,
+                    self.w_settings.ui.color_pointer_g.value()/255,
+                    self.w_settings.ui.color_pointer_b.value()/255
                 )
             )
 
@@ -369,7 +373,7 @@ class MainWindow(QtWidgets.QMainWindow):
         G = 6.67430e-11  # gravitational constant
         M = self.CENTRAL_MASS
         m = self.SAT_MASS
-        delta_t = self.w_settings.t_factor.value()
+        delta_t = self.w_settings.ui.t_factor.value()
         if not central_unmoving:
             pos1_s = self.sat.pos
             pos1_c = self.central.pos
@@ -389,7 +393,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # movement while simulation time not over
         while t < t_max:
             if not self.pause:
-                vp.rate(self.w_settings.update_rate.value())
+                vp.rate(self.w_settings.ui.update_rate.value())
                 r = self.sat.pos - self.central.pos
                 if not central_unmoving:
                     # calculations of force, acceleration and velocity: _s for sat, _c for central
@@ -406,7 +410,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         self.sat.axis = v_s
                         self.central.axis = v_c
                     self.central.pos = v_c*delta_t + pos1_c
-                    if self.w_settings.show_pointers.isChecked():
+                    if self.w_settings.ui.show_pointers.isChecked():
                         self.sat_pointer.pos = self.sat.pos - \
                             self.sat_pointer.axis + \
                             vp.vector(0, self.sat.radius, 0)
@@ -427,12 +431,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
                     v_pos1 = v
                     pos1 = self.sat.pos
-                    if self.w_settings.show_pointers.isChecked():
+                    if self.w_settings.ui.show_pointers.isChecked():
                         self.sat_pointer.pos = self.sat.pos - \
                             self.sat_pointer.axis + \
                             vp.vector(0, self.sat.radius, 0)
 
                 t += 1
 
-        if self.w_settings.do_restart.isChecked():
+        if self.w_settings.ui.do_restart.isChecked():
             self.restart()

@@ -1,5 +1,5 @@
 import yaml
-from PyQt5 import uic, QtWidgets
+from PySide6 import QtWidgets, QtUiTools, QtCore
 
 
 class Examples(QtWidgets.QMainWindow):
@@ -7,11 +7,11 @@ class Examples(QtWidgets.QMainWindow):
 
     def __init__(self, *args, parent=None, **kwargs):
         super(Examples, self).__init__(*args, parent, **kwargs)  # set up UI
-        uic.loadUi("ui/examples.ui", self)
-        self.actionVerlassen.triggered.connect(self.close)
-        self.b_cancel.clicked.connect(self.close)
-        self.b_ok.clicked.connect(lambda: (self.fill(), self.close()))
-        self.b_fill.clicked.connect(self.fill)
+        self.ui = QtUiTools.QUiLoader().load(QtCore.QFile("ui/examples.ui"))
+        self.ui.actionVerlassen.triggered.connect(self.ui.close)
+        self.ui.b_cancel.clicked.connect(self.ui.close)
+        self.ui.b_ok.clicked.connect(lambda: (self.fill(), self.ui.close()))
+        self.ui.b_fill.clicked.connect(self.fill)
 
         with open("saved_data/presets.yml", "r") as f:
             self.values = yaml.load(f, Loader=yaml.FullLoader)
@@ -19,7 +19,7 @@ class Examples(QtWidgets.QMainWindow):
     def fill(self):
         """fill entry window fields with selected values"""
         # if satellite mass is bigger than central mass
-        if self.values["mass"][str(self.choice_central.currentText())] < self.values["mass"][str(self.choice_sat.currentText())]:
+        if self.values["mass"][str(self.ui.choice_central.currentText())] < self.values["mass"][str(self.ui.choice_sat.currentText())]:
             msg = QtWidgets.QMessageBox()
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.setText(
@@ -27,17 +27,17 @@ class Examples(QtWidgets.QMainWindow):
             msg.setWindowTitle("Warnung")
             msg.exec()  # show an error message box
         else:
-            self.parent().central_mass.setText(
+            self.parent().ui.central_mass.setText(
                 str(self.values["mass"]
-                    [str(self.choice_central.currentText())]))
-            self.parent().central_radius.setText(
+                    [str(self.ui.choice_central.currentText())]))
+            self.parent().ui.central_radius.setText(
                 str(self.values["radius"]
-                    [str(self.choice_central.currentText())]))
-            self.parent().sat_mass.setText(
-                str(self.values["mass"][str(self.choice_sat.currentText())]))
-            self.parent().sat_radius.setText(
-                str(self.values["radius"][str(self.choice_sat.currentText())]))
-            self.parent().distance.setText(
+                    [str(self.ui.choice_central.currentText())]))
+            self.parent().ui.sat_mass.setText(
+                str(self.values["mass"][str(self.ui.choice_sat.currentText())]))
+            self.parent().ui.sat_radius.setText(
+                str(self.values["radius"][str(self.ui.choice_sat.currentText())]))
+            self.parent().ui.distance.setText(
                 str(self.values["distance"]
-                    [str(self.choice_central.currentText())]
-                    [str(self.choice_sat.currentText())]))
+                    [str(self.ui.choice_central.currentText())]
+                    [str(self.ui.choice_sat.currentText())]))
