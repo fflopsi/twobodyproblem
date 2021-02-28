@@ -4,6 +4,7 @@ eigene Klassen für Objekte in der Simulation, um eigene Attribute (Geschwindigk
 Einstellungen speicher- und ladbar wie Werte, Standard-Einstellungen definierbar
 Slider für Geschwindigkeit und Delta t
 mehr Standardwerte (Baumstruktur), Standardwerte-Einstellung
+Programm übersetzen bzw. verschiedene Sprachen einbauen
 Drei-Körper-Problem, relativistische Formeln einbauen
 Daten zu Körper in Arrays speichern, Mehr-Körper-Simulation ermöglichen, Körper-Hinzufügen-Funktion
 Kollisionsdetektion
