@@ -195,7 +195,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """save values to file with SaveFile dialog"""
         name = QtWidgets.QFileDialog.getSaveFileName(
             parent=self, caption="Eingaben speichern",
-            dir="saved_data", filter="YAML Files (*.yml);;All Files (*)")
+            dir="saved_data", filter="YAML (*.yml)")
         if name[0] != "":
             with open(name[0], "w+") as f:
                 f.write(yaml.dump(self.values_to_dict()))
@@ -240,7 +240,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """loading saved values with "open file" dialog"""
         name = QtWidgets.QFileDialog.getOpenFileName(
             parent=self, caption="Wertedatei öffnen",
-            dir="saved_data", filter="YAML Files (*.yml);;All Files (*)"
+            dir="saved_data", filter="YAML (*.yml))"
         )
         if name[0] != "":
             with open(name[0], "r") as f:
