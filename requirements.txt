@@ -1,4 +1,4 @@
 # a list of all required python3 packages
-pyqt5
+pyside6
 vpython
 pyyaml
