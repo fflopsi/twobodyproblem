@@ -24,7 +24,7 @@ Read below for detailed instructions on how to use my program.
 - Python prerequisites:
   1. Download and install [Python 3.9](https://www.python.org/downloads/).
 - Git and repository prerequisites:
-  1. Download and install [Git Bash](https://gitforwindows.org/)
+  1. Download and install [Git SCM](https://gitforwindows.org/)
   2. Run the following commands from *git bash*:
       1. `mkdir Two\ Body\ Problem && cd "$_"`
       2. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
@@ -32,7 +32,7 @@ Read below for detailed instructions on how to use my program.
       1. `cd C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation`
       2. `pip install .`
 
-Now, the code is available and runnable with `python twobodyproblem`
+Now, the code is available and runnable with `python -m twobodyproblem`
 
 (You may need Microsoft Visual C++ to run vpython, so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) if needed.)
 
@@ -50,6 +50,6 @@ Now, the code is available and runnable with `python twobodyproblem`
   6. `cd two-body-problem_simulation`
   7. `pip3 install .`
 
-Now, the code is available and runnable with `python3 twobodyproblem`
+Now, the code is available and runnable with `python3 -m twobodyproblem`
 
 *Participation in this README is always welcome!*
