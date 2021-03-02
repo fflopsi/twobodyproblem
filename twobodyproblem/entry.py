@@ -1,7 +1,7 @@
+from twobodyproblem import settings
+from twobodyproblem import examples
+from twobodyproblem.visualization import simulation
 import sys
-import examples
-import settings
-import simulation
 import os
 import signal
 import yaml
@@ -15,7 +15,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, *args, parent=None, **kwargs):
         # set up UI
         super(MainWindow, self).__init__(*args, parent, **kwargs)
-        self.ui = QtUiTools.QUiLoader().load(QtCore.QFile("ui/input.ui"))
+        self.directory = os.path.dirname(os.path.realpath(__file__))
+        self.ui = QtUiTools.QUiLoader().load(
+            QtCore.QFile(self.directory + "/ui/entry.ui"))
         self.ui.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
         # create other windows
         self.w_examples = examples.Examples(parent=self)
@@ -40,7 +42,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.tabWidget.setCurrentIndex(0)
 
         self.presets: list
-        with open("saved_data/presets.yml", "r") as f:
+        with open(self.directory + "/saved_data/presets.yml", "r") as f:
             self.presets = yaml.load(f, Loader=yaml.FullLoader)
         # values needed during simulation
         self.pause = False
@@ -110,8 +112,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.distance.setText(
                 str(self.presets["distance"]["Erde"]["Sputnik 2"]))
         finally:
-            self.DISTANCE = float(self.ui.distance.text()) + \
-                self.CENTRAL_RADIUS + self.SAT_RADIUS  # so lassen?
+            self.DISTANCE = float(self.ui.distance.text())
 
         try:
             float(self.ui.sat_v0_x.text())
@@ -189,7 +190,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def save_values(self):
         """save values into standard file"""
-        with open("saved_data/values.yml", "w+") as f:
+        with open(self.directory + "/saved_data/values.yml", "w+") as f:
             f.write(yaml.dump(self.values_to_dict()))
 
     def save_values_as(self):
@@ -227,7 +228,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """loading and filling in saved values"""
         # try to load the value file
         try:
-            with open("saved_data/values.yml", "r") as f:
+            with open(self.directory + "/saved_data/values.yml", "r") as f:
                 values = yaml.load(f, Loader=yaml.FullLoader)
                 self.fill_in_dict(values)
         except FileNotFoundError:
@@ -340,7 +341,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 )
             )
             self.sat = vp.sphere(
-                pos=vp.vector(self.DISTANCE, 0, 0), radius=self.SAT_RADIUS, make_trail=True,
+                pos=vp.vector(self.DISTANCE + self.SAT_RADIUS + self.CENTRAL_RADIUS, 0, 0),
+                radius=self.SAT_RADIUS, make_trail=True,
                 color=vp.vector(
                     self.w_settings.ui.color_objects_r.value()/255,
                     self.w_settings.ui.color_objects_g.value()/255,
@@ -368,7 +370,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 )
 
             # set up buttons
-            self.pause_sim = vp.button(text="Pause", bind=self.pause_simulation)
+            self.pause_sim = vp.button(
+                text="Pause", bind=self.pause_simulation)
             vp.button(text="Stop", bind=lambda: os.kill(
                 os.getpid(), signal.SIGINT))
             vp.button(text="Restart", bind=self.restart)

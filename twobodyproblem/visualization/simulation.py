@@ -91,8 +91,9 @@ class Simulation():
             scene.camera.follow(central)
 
         while t < t_max:
+            # vp.rate(self.options["update_rate"])  # does not work apparently
+            vp.sleep(1/self.options["update_rate"])
             if not self.paused:
-                vp.rate(self.options["update_rate"])
                 r = sat.pos - central.pos
                 if not central_unmoving:
                     F_s = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)

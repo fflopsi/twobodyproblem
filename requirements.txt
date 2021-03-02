@@ -1,4 +1,4 @@
 # a list of all required python3 packages
-pyside6
-vpython
-pyyaml
+pyside6>=6.0.1
+vpython>=7.6.1
+pyyaml>=5.4.1

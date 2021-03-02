@@ -28,11 +28,11 @@ Read below for detailed instructions on how to use my program.
   2. Run the following commands from *git bash*:
       1. `mkdir Two\ Body\ Problem && cd "$_"`
       2. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
-  3. Run the following commands from the command line:
+  3. Run the following command from the command line:
       1. `cd C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation`
-      2. `pip install -r requirements.txt`
+      2. `pip install .`
 
-Now, the code is available and runnable with `python "C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation\main.py"`
+Now, the code is available and runnable with `python twobodyproblem`
 
 (You may need Microsoft Visual C++ to run vpython, so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) if needed.)
 
@@ -47,8 +47,8 @@ Now, the code is available and runnable with `python "C:\Users\[Your Username]\T
   3. `mkdir Two\ Body\ Problem && cd "$_"`
   4. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
   5. `cd two-body-problem_simulation`
-  6. `pip3 install -r requirements.txt`
+  6. `pip3 install .`
 
-Now, the code is available and runnable with `python3 /home/[Your Username]/Two\ Body\ Problem/two-body-problem_simulation/main.py`
+Now, the code is available and runnable with `python3 twobodyproblem`
 
 *Participation in this README is always welcome!*

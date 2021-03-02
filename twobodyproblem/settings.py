@@ -1,4 +1,5 @@
 import yaml
+import os
 from PySide6 import QtWidgets, QtUiTools, QtCore
 
 
@@ -6,8 +7,11 @@ class Settings(QtWidgets.QMainWindow):
     """window for settings"""
 
     def __init__(self, *args, parent=None, **kwargs):
-        super(Settings, self).__init__(*args, parent, **kwargs)  # set up UI
-        self.ui = QtUiTools.QUiLoader().load(QtCore.QFile("ui/settings.ui"))
+        # set up UI
+        super(Settings, self).__init__(*args, parent, **kwargs)
+        self.directory = os.path.dirname(os.path.realpath(__file__))
+        self.ui = QtUiTools.QUiLoader().load(
+            QtCore.QFile(self.directory + "/ui/settings.ui"))
         self.ui.actionVerlassen.triggered.connect(self.ui.close)
         self.ui.b_cancel.clicked.connect(self.ui.close)
         self.ui.b_ok.clicked.connect(lambda: (self.save(), self.ui.close()))
@@ -20,7 +24,7 @@ class Settings(QtWidgets.QMainWindow):
 
         try:
             # set the different values to display in settings window
-            with open("saved_data/settings.yml", "r") as f:
+            with open(self.directory + "/saved_data/settings.yml", "r") as f:
                 conf = yaml.load(f, Loader=yaml.FullLoader)
                 self.ui.canvas_width.setValue(conf["canvas"]["width"])
                 self.ui.canvas_height.setValue(conf["canvas"]["height"])
@@ -55,7 +59,7 @@ class Settings(QtWidgets.QMainWindow):
 
     def save(self):
         """save the entered settings to a file"""
-        with open("saved_data/settings.yml", "w+") as f:
+        with open(self.directory + "/saved_data/settings.yml", "w+") as f:
             conf = {  # create the new settings content with the entered values
                 "canvas": {
                     "width": self.ui.canvas_width.value(),
