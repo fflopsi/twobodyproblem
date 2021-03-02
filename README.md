@@ -44,10 +44,11 @@ Now, the code is available and runnable with `python twobodyproblem`
   - Not necessary, but recommended: `sudo apt-get update && sudo apt-get upgrade`
   1. `sudo apt-get install python3`
   2. `sudo apt-get install git`
-  3. `mkdir Two\ Body\ Problem && cd "$_"`
-  4. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
-  5. `cd two-body-problem_simulation`
-  6. `pip3 install .`
+  3. `sudo apt-get install libopengl0`
+  4. `mkdir Two\ Body\ Problem && cd "$_"`
+  5. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
+  6. `cd two-body-problem_simulation`
+  7. `pip3 install .`
 
 Now, the code is available and runnable with `python3 twobodyproblem`
 
