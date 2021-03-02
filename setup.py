@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="twobodyproblem",
-    version="0.2.2",
+    version="1.0.0",
     description="This is a little simulation for the gravitational two body problem.",
     long_description=long_description,
     long_description_content_type="text/markdown",
