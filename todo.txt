@@ -1,4 +1,4 @@
-README.md erweitern
+README.md erweitern, __main__.py erweitern, Kommandozeilenargumente verwerten (run, gui, cli, debug, info, "")
 Pfeile an Körper anheften (mit vpython selbst), Geschwindigkeit, Beschleunigung etc. mit Pfeilen darstellen
 Simulation in eigene Klasse auslagern, weniger Klassenvariablen
 eigene Klassen für Objekte in der Simulation, um eigene Attribute (Geschwindigkeit, Beschleunigung etc.) zu definieren
