@@ -18,7 +18,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.directory = os.path.dirname(os.path.realpath(__file__))
         self.ui = QtUiTools.QUiLoader().load(
             QtCore.QFile(self.directory + "/ui/entry.ui"))
-        self.ui.setWindowIcon(QtGui.QIcon("ui/icon.gif"))
+        self.ui.setWindowIcon(QtGui.QIcon(self.directory + "/ui/icon.gif"))
         # create other windows
         self.w_examples = examples.Examples(parent=self)
         self.w_settings = settings.Settings(parent=self)
