@@ -7,3 +7,5 @@ _values.yml
 .vscode
 .vs
 twobodyproblem.egg-info
+build
+dist
