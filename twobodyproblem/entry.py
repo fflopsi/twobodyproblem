@@ -67,9 +67,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.sat_radius_bigger: vp.slider
 
         if self.w_settings.ui.do_central_unmoving.isChecked():
-            self.central_v0_x.setEnabled(False)
-            self.central_v0_y.setEnabled(False)
-            self.central_v0_z.setEnabled(False)
+            self.ui.central_v0_x.setEnabled(False)
+            self.ui.central_v0_y.setEnabled(False)
+            self.ui.central_v0_z.setEnabled(False)
 
     def restart(self):
         """restart the program"""
