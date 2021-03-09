@@ -9,3 +9,5 @@ _values.yml
 twobodyproblem.egg-info
 build
 dist
+venv
+.idea
