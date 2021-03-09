@@ -4,6 +4,7 @@ from twobodyproblem.visualization import simulation
 import sys
 import os
 import signal
+from pathlib import Path
 import yaml
 import vpython as vp
 from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
@@ -12,10 +13,12 @@ from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
 class MainWindow(QtWidgets.QMainWindow):
     """main window for inputs"""
 
-    def __init__(self, *args, parent=None, **kwargs):
+    def __init__(self, *args, parent=None, debug=False, **kwargs):
         # set up UI
         super(MainWindow, self).__init__(*args, parent, **kwargs)
         self.directory = os.path.dirname(os.path.realpath(__file__))
+        if debug:
+            print(self.directory)
         self.ui = QtUiTools.QUiLoader().load(
             QtCore.QFile(self.directory + "/ui/entry.ui"))
         self.ui.setWindowIcon(QtGui.QIcon(self.directory + "/ui/icon.gif"))
@@ -197,7 +200,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """save values to file with SaveFile dialog"""
         name = QtWidgets.QFileDialog.getSaveFileName(
             parent=self, caption="Eingaben speichern",
-            dir="saved_data", filter="YAML (*.yml)")
+            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml)")
         if name[0] != "":
             with open(name[0], "w+") as f:
                 f.write(yaml.dump(self.values_to_dict()))
@@ -242,7 +245,7 @@ class MainWindow(QtWidgets.QMainWindow):
         """loading saved values with "open file" dialog"""
         name = QtWidgets.QFileDialog.getOpenFileName(
             parent=self, caption="Wertedatei öffnen",
-            dir="saved_data", filter="YAML (*.yml))"
+            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml))"
         )
         if name[0] != "":
             with open(name[0], "r") as f:
@@ -341,7 +344,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 )
             )
             self.sat = vp.sphere(
-                pos=vp.vector(self.DISTANCE + self.SAT_RADIUS + self.CENTRAL_RADIUS, 0, 0),
+                pos=vp.vector(self.DISTANCE + self.SAT_RADIUS +
+                              self.CENTRAL_RADIUS, 0, 0),
                 radius=self.SAT_RADIUS, make_trail=True,
                 color=vp.vector(
                     self.w_settings.ui.color_objects_r.value()/255,
