@@ -1,9 +1,9 @@
 # Two Body Problem
-## a small simulation
+### a small simulation
 
 **Welcome!**
 
-This is my matriculation project. I wrote a small program to simulate the two body problem. You can either choose from the presets (like Sun, Earth, Moon etc.) or type in your own masses and volumes. The program will show you an approximation of the suitable conic section.
+I wrote a small program to simulate the two body problem. You can either choose from presets (like Sun, Earth, Moon etc.) or type in your own masses and volumes. The program will show you a visualization of the simulation.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ This is my matriculation project. I wrote a small program to simulate the two bo
 
 ## Installation Instructions
 
-Read below for detailed instructions on how to use my program.
+Read below for detailed instructions on how to install my program.
 
 <a name="win10"/>
 
