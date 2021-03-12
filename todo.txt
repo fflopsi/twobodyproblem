@@ -1,3 +1,4 @@
+delta_t besser mitgeben und abrufen
 README.md erweitern, values und options als Objekte bzw. Klassen
 Pfeile an Körper anheften (mit vpython selbst), Geschwindigkeit, Beschleunigung etc. mit Pfeilen darstellen
 Simulation in eigene Klasse auslagern, weniger Klassenvariablen
