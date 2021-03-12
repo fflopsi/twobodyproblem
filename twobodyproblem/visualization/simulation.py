@@ -17,9 +17,6 @@ class Simulation():
         self.paused = False
         self.delta_t = self.options["t_factor"]
 
-    def do(self):
-        pass
-
     def pause(self, button: vp.button):
         """pause and un-pause the simulation"""
         if button.text == "Pause":
@@ -34,7 +31,7 @@ class Simulation():
         # os.execv(sys.executable, ["python"] + sys.argv)
 
     def adjust_radius(self, slider: vp.slider, sphere: body.Body):
-        """adjust the visual size of the spheres according to the slider values"""
+        """adjust the visual size of the sphere according to the slider value"""
         sphere.radius = self.values[sphere.name + "_radius"] * slider.value
 
     def reset_slider(self, slider: vp.slider):
@@ -43,9 +40,8 @@ class Simulation():
         slider.bind()
 
     def start(self):
-        """start the simulation and open the vpython window"""
-        t = 0
-        t_max = self.options["update_rate"] * self.options["max_seconds"]
+        """open the vpython window and start the simulation"""
+        # set up important boolean values from options
         testing = bool(self.options["do_testing"])
         central_centered = bool(self.options["do_central_centered"])
         show_pointers = bool(self.options["show_pointers"])
@@ -124,7 +120,7 @@ class Simulation():
         vp.button(text="Restart", bind=self.restart)
         scene.append_to_caption("\n")
 
-        # sliders for changing the radius magnification of the two objects
+        # set up sliders for changing the radius magnification of the two objects
         central_radius_slider: vp.slider = vp.slider(
             max=(self.values["distance"]+self.values["central_radius"])
             / self.values["central_radius"],
@@ -145,9 +141,12 @@ class Simulation():
         vp.button(text="Reset", bind=lambda: self.reset_slider(
             sat_radius_slider))
 
+        # set up time variables
+        t = 0
+        t_max = self.options["update_rate"] * self.options["max_seconds"]
+        # main simulation loop
         if central_centered:
             scene.camera.follow(central)
-
         while t < t_max:
             vp.rate(self.options["update_rate"])
             # vp.sleep(1/self.options["update_rate"])  # weird behaviour of those two
@@ -156,12 +155,14 @@ class Simulation():
                 if testing:
                     central.calculate(sat)
                     if show_pointers:
+                        # move pointers
                         central_pointer.pos = central.pos - \
                             central_pointer.axis + \
                             vp.vector(0, central.radius, 0)
                         sat_pointer.pos = sat.pos - sat_pointer.axis + \
                             vp.vector(0, sat.radius, 0)
                 else:
+                    # calculate everything needed for the new positions
                     force_value = (G*central.mass*sat.mass) / (vp.mag(r)**2)
                     sat.force = force_value * vp.norm(-r)
                     central.force = force_value * vp.norm(r)
@@ -169,9 +170,9 @@ class Simulation():
                     central.acceleration = central.force / central.mass
                     sat.velocity = sat.acceleration*self.delta_t + sat.velocity
                     central.velocity = central.acceleration*self.delta_t + central.velocity
-
+                    # reposition the objects
                     sat.pos = sat.velocity*self.delta_t + sat.pos
                     central.pos = central.velocity*self.delta_t + central.pos
                 t += 1
-        if self.options["do_restart"]:
+        if bool(self.options["do_restart"]):
             self.restart()

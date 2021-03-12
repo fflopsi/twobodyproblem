@@ -15,7 +15,7 @@ class Body(vp.sphere):
         self._mass = mass
         self._force: vp.vector
         self._acceleration: vp.vector
-    
+
     @property
     def name(self):
         return self._name
@@ -55,12 +55,17 @@ class Body(vp.sphere):
         self._velocity = value
 
     def calculate(self, other):
+        """calculate force, acceleration, velocity and position of both bodies and reposition them"""
+        # vector for distance
         r = other.pos - self.pos
+        # scalar value of the gravitational force
         force_value = (6.67430e-11*self.mass*other.mass) / (vp.mag(r)**2)
+        # calculation for self
         self.force = force_value * vp.norm(r)
         self.acceleration = self.force / self.mass
         self.velocity = self.acceleration*self.parent.delta_t + self.velocity
         self.pos = self.velocity*self.parent.delta_t + self.pos
+        # calculation for other
         other.force = force_value * vp.norm(-r)
         other.acceleration = other.force / other.mass
         other.velocity = other.acceleration*self.parent.delta_t + other.velocity
