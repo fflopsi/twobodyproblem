@@ -148,27 +148,14 @@ class Simulation():
             # vp.sleep(1/self.options["update_rate"])  # weird behaviour of those two
             if pause_sim.text == "Pause":
                 r = sat.pos - central.pos
-                if testing:
-                    central.calculate(sat)
-                    if show_pointers:
-                        # move pointers
-                        central_pointer.pos = central.pos - \
-                            central_pointer.axis + \
-                            vp.vector(0, central.radius, 0)
-                        sat_pointer.pos = sat.pos - sat_pointer.axis + \
-                            vp.vector(0, sat.radius, 0)
-                else:
-                    # calculate everything needed for the new positions
-                    force_value = (G*central.mass*sat.mass) / (vp.mag(r)**2)
-                    sat.force = force_value * vp.norm(-r)
-                    central.force = force_value * vp.norm(r)
-                    sat.acceleration = sat.force / sat.mass
-                    central.acceleration = central.force / central.mass
-                    sat.velocity = sat.acceleration*self.delta_t + sat.velocity
-                    central.velocity = central.acceleration*self.delta_t + central.velocity
-                    # reposition the objects
-                    sat.pos = sat.velocity*self.delta_t + sat.pos
-                    central.pos = central.velocity*self.delta_t + central.pos
+                central.calculate(sat)
+                if show_pointers:
+                    # move pointers
+                    central_pointer.pos = central.pos - \
+                        central_pointer.axis + \
+                        vp.vector(0, central.radius, 0)
+                    sat_pointer.pos = sat.pos - sat_pointer.axis + \
+                        vp.vector(0, sat.radius, 0)
                 t += 1
         if bool(self.options["do_restart"]):
             self.restart()
