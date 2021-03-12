@@ -9,13 +9,9 @@ import sys
 class Simulation():
     """class used for the visualization of the simulation"""
 
-    def __init__(self, window, values: dict, options: dict):
-        self.parent = window
+    def __init__(self, values: dict, options: dict):
         self.values = values
         self.options = options
-        # self.pause_sim: vp.button
-        self.paused = False
-        self.delta_t = self.options["t_factor"]
 
     def pause(self, button: vp.button):
         """pause and un-pause the simulation"""

@@ -320,7 +320,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 "t_factor": self.w_settings.ui.t_factor.value(),
             }
             sim = simulation.Simulation(
-                window=self, values=self.values_to_dict(), options=options)
+                values=self.values_to_dict(), options=options)
             sim.start()
         else:
             t = 0
