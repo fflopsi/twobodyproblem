@@ -58,16 +58,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.DISTANCE: float
         self.SAT_v0: vp.vector
         self.CENTRAL_v0: vp.vector
-        # vpython objects for simulation
-        self.central: vp.sphere
-        self.sat: vp.sphere
-        if self.w_settings.ui.show_pointers.isChecked():
-            self.central_pointer: vp.arrow
-            self.sat_pointer: vp.arrow
-        self.central_radius_smaller: vp.slider
-        self.central_radius_bigger: vp.slider
-        self.sat_radius_smaller: vp.slider
-        self.sat_radius_bigger: vp.slider
 
         if self.w_settings.ui.do_central_unmoving.isChecked():
             self.ui.central_v0_x.setEnabled(False)
@@ -252,230 +242,39 @@ class MainWindow(QtWidgets.QMainWindow):
                 values = yaml.load(f, Loader=yaml.FullLoader)
                 self.fill_in_dict(values)
 
-    def pause_simulation(self):
-        """pause or un-pause the simulation"""
-        self.pause = not self.pause
-        if self.pause:
-            self.pause_sim.text = "Play"
-        else:
-            self.pause_sim.text = "Pause"
-
-    def adjust_central_radius(self, value):
-        """adjust radius of central (and pointer if needed)"""
-        self.central.radius = self.CENTRAL_RADIUS * value
-        if self.w_settings.ui.show_pointers.isChecked():
-            self.central_pointer.pos = self.central.pos - \
-                self.central_pointer.axis + \
-                vp.vector(0, self.central.radius, 0)
-
-    def reset_central_radius_slider(self):
-        """reset the central radius sliders"""
-        self.central_radius_smaller.value = 1
-        self.central_radius_bigger.value = 1
-        self.adjust_central_radius(value=1)
-
-    def adjust_sat_radius(self, value):
-        """adjust radius of sat (and pointer if needed)"""
-        self.sat.radius = self.SAT_RADIUS * value
-        if self.w_settings.ui.show_pointers.isChecked():
-            self.sat_pointer.pos = self.sat.pos - \
-                self.sat_pointer.axis + vp.vector(0, self.sat.radius, 0)
-
-    def reset_sat_radius_slider(self):
-        """reset the sat radius sliders"""
-        self.sat_radius_slider_smaller.value = 1
-        self.sat_radius_bigger.value = 1
-        self.adjust_sat_radius(value=1)
-
     def open_vpython(self):
-        """open vpython window with entered values"""
+        """open vpython window with entered values
+
+        *to be replaced*
+        """
         # read values and set up variables
         self.read()
-        testing = self.w_settings.ui.do_testing.isChecked()
-        if testing:
-            options = {  # create the new settings content with the entered values
-                "canvas": {
-                    "width": self.w_settings.ui.canvas_width.value(),
-                    "height": self.w_settings.ui.canvas_height.value()
+        options = {  # create the new settings content with the entered values
+            "canvas": {
+                "width": self.w_settings.ui.canvas_width.value(),
+                "height": self.w_settings.ui.canvas_height.value()
+            },
+            "do_restart": int(self.w_settings.ui.do_restart.isChecked()),
+            "do_testing": int(self.w_settings.ui.do_testing.isChecked()),
+            "do_central_unmoving": int(self.w_settings.ui.do_central_unmoving.isChecked()),
+            "do_central_centered": int(self.w_settings.ui.do_central_centered.isChecked()),
+            "color": {
+                "objects": {
+                    "r": self.w_settings.ui.color_objects_r.value(),
+                    "g": self.w_settings.ui.color_objects_g.value(),
+                    "b": self.w_settings.ui.color_objects_b.value()
                 },
-                "do_restart": int(self.w_settings.ui.do_restart.isChecked()),
-                "do_testing": int(self.w_settings.ui.do_testing.isChecked()),
-                "do_central_unmoving": int(self.w_settings.ui.do_central_unmoving.isChecked()),
-                "do_central_centered": int(self.w_settings.ui.do_central_centered.isChecked()),
-                "color": {
-                    "objects": {
-                        "r": self.w_settings.ui.color_objects_r.value(),
-                        "g": self.w_settings.ui.color_objects_g.value(),
-                        "b": self.w_settings.ui.color_objects_b.value()
-                    },
-                    "pointer": {
-                        "r": self.w_settings.ui.color_pointer_r.value(),
-                        "g": self.w_settings.ui.color_pointer_g.value(),
-                        "b": self.w_settings.ui.color_pointer_b.value()
-                    }
-                },
-                "show_pointers": int(self.w_settings.ui.show_pointers.isChecked()),
-                "update_rate": self.w_settings.ui.update_rate.value(),
-                "max_seconds": self.w_settings.ui.max_seconds.value(),
-                "t_factor": self.w_settings.ui.t_factor.value(),
-            }
-            sim = simulation.Simulation(
-                values=self.values_to_dict(), options=options)
-            sim.start()
-        else:
-            t = 0
-            t_max = self.w_settings.ui.update_rate.value() * \
-                self.w_settings.ui.max_seconds.value()
-            central_unmoving = self.w_settings.ui.do_central_unmoving.isChecked()
-            central_centered = self.w_settings.ui.do_central_centered.isChecked()
-
-            # set up vpython canvas, objects and pointers (arrows to the objects because the scales are too large)
-            scene = vp.canvas(
-                title="Simulation zum Zweikörperproblem",
-                height=self.w_settings.ui.canvas_height.value(),
-                width=self.w_settings.ui.canvas_width.value()
-            )
-            self.central = vp.sphere(
-                radius=self.CENTRAL_RADIUS, make_trail=True,
-                color=vp.vector(
-                    self.w_settings.ui.color_objects_r.value()/255,
-                    self.w_settings.ui.color_objects_g.value()/255,
-                    self.w_settings.ui.color_objects_b.value()/255
-                )
-            )
-            self.sat = vp.sphere(
-                pos=vp.vector(self.DISTANCE + self.SAT_RADIUS +
-                              self.CENTRAL_RADIUS, 0, 0),
-                radius=self.SAT_RADIUS, make_trail=True,
-                color=vp.vector(
-                    self.w_settings.ui.color_objects_r.value()/255,
-                    self.w_settings.ui.color_objects_g.value()/255,
-                    self.w_settings.ui.color_objects_b.value()/255
-                )
-            )
-            if self.w_settings.ui.show_pointers.isChecked():
-                self.central_pointer = vp.arrow(
-                    axis=vp.vector(0, -(self.DISTANCE / 2), 0),
-                    color=vp.vector(
-                        self.w_settings.ui.color_pointer_r.value()/255,
-                        self.w_settings.ui.color_pointer_g.value()/255,
-                        self.w_settings.ui.color_pointer_b.value()/255
-                    )
-                )
-                self.central_pointer.pos = self.central.pos - self.central_pointer.axis + \
-                    vp.vector(0, self.CENTRAL_RADIUS, 0)
-                self.sat_pointer = vp.arrow(
-                    axis=vp.vector(0, -(self.DISTANCE / 2), 0),
-                    color=vp.vector(
-                        self.w_settings.ui.color_pointer_r.value()/255,
-                        self.w_settings.ui.color_pointer_g.value()/255,
-                        self.w_settings.ui.color_pointer_b.value()/255
-                    )
-                )
-
-            # set up buttons
-            self.pause_sim = vp.button(
-                text="Pause", bind=self.pause_simulation)
-            vp.button(text="Stop", bind=lambda: os.kill(
-                os.getpid(), signal.SIGINT))
-            vp.button(text="Restart", bind=self.restart)
-            scene.append_to_caption("\n")
-
-            # sliders for changing the radius magnification of the two objects
-            self.central_radius_smaller = vp.slider(
-                min=0.01, max=1, step=0.01, value=1,
-                bind=lambda: self.adjust_central_radius(
-                    value=self.central_radius_smaller.value),
-                top=12, bottom=12
-            )
-            self.central_radius_bigger = vp.slider(
-                min=1, max=100, step=1, value=1,
-                bind=lambda: self.adjust_central_radius(
-                    value=self.central_radius_bigger.value),
-                top=12, bottom=12
-            )
-            vp.button(text="Reset", bind=self.reset_central_radius_slider)
-            scene.append_to_caption("\n")
-            self.sat_radius_smaller = vp.slider(
-                min=0.01, max=1, step=0.01, value=1, top=12, bottom=12,
-                bind=lambda: self.adjust_sat_radius(
-                    value=self.sat_radius_smaller.value)
-            )
-            self.sat_radius_bigger = vp.slider(
-                min=1, max=100, step=1, value=1, top=12, bottom=12,
-                bind=lambda: self.adjust_sat_radius(
-                    value=self.sat_radius_bigger.value)
-            )
-            vp.button(text="Reset", bind=self.reset_sat_radius_slider)
-
-            # some values for calculations
-            G = 6.67430e-11  # gravitational constant
-            M = self.CENTRAL_MASS
-            m = self.SAT_MASS
-            delta_t = self.w_settings.ui.t_factor.value()
-            if not central_unmoving:
-                pos1_s = self.sat.pos
-                pos1_c = self.central.pos
-                v_pos1_s = self.SAT_v0
-                v_pos1_c = self.CENTRAL_v0
-            else:
-                pos1 = self.sat.pos
-                v_pos1 = self.SAT_v0
-
-            if central_centered:
-                scene.camera.follow(self.central)
-
-            if testing:
-                vp.attach_arrow(self.sat, "axis", scale=1e4)
-                vp.attach_arrow(self.central, "axis", scale=1e4)
-
-            # movement while simulation time not over
-            while t < t_max:
-                if not self.pause:
-                    vp.rate(self.w_settings.ui.update_rate.value())
-                    r = self.sat.pos - self.central.pos
-                    if not central_unmoving:
-                        # calculations of force, acceleration and velocity: _s for sat, _c for central
-                        F_s = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
-                        F_c = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(r)
-                        a_s = F_s / m
-                        a_c = F_c / M
-                        v_s = a_s*delta_t + v_pos1_s
-                        v_c = a_c*delta_t + v_pos1_c
-
-                        # move sat, central (and pointers if needed) to new positions
-                        self.sat.pos = v_s*delta_t + pos1_s
-                        if testing:
-                            self.sat.axis = v_s
-                            self.central.axis = v_c
-                        self.central.pos = v_c*delta_t + pos1_c
-                        if self.w_settings.ui.show_pointers.isChecked():
-                            self.sat_pointer.pos = self.sat.pos - \
-                                self.sat_pointer.axis + \
-                                vp.vector(0, self.sat.radius, 0)
-                            self.central_pointer.pos = self.central.pos - \
-                                self.central_pointer.axis + \
-                                vp.vector(0, self.central.radius, 0)
-
-                        # make the current velocities and positions available for next iteration
-                        v_pos1_s = v_s
-                        v_pos1_c = v_c
-                        pos1_s = self.sat.pos
-                        pos1_c = self.central.pos
-                    else:  # same as above but only for sat
-                        F = ((G*M*m) / (vp.mag(r)**2)) * vp.norm(-r)
-                        a = F / m
-                        v = a*delta_t + v_pos1
-                        self.sat.pos = v*delta_t + pos1
-
-                        v_pos1 = v
-                        pos1 = self.sat.pos
-                        if self.w_settings.ui.show_pointers.isChecked():
-                            self.sat_pointer.pos = self.sat.pos - \
-                                self.sat_pointer.axis + \
-                                vp.vector(0, self.sat.radius, 0)
-
-                    t += 1
-
-            if self.w_settings.ui.do_restart.isChecked():
-                self.restart()
+                "pointer": {
+                    "r": self.w_settings.ui.color_pointer_r.value(),
+                    "g": self.w_settings.ui.color_pointer_g.value(),
+                    "b": self.w_settings.ui.color_pointer_b.value()
+                }
+            },
+            "show_pointers": int(self.w_settings.ui.show_pointers.isChecked()),
+            "update_rate": self.w_settings.ui.update_rate.value(),
+            "max_seconds": self.w_settings.ui.max_seconds.value(),
+            "t_factor": self.w_settings.ui.t_factor.value(),
+        }
+        sim = simulation.Simulation(
+            values=self.values_to_dict(), options=options)
+        sim.start()
