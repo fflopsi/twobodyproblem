@@ -6,10 +6,7 @@ class Body(vp.sphere):
 
     def __init__(self, sim, name: str, mass=1, velocity=vp.vector(0, 0, 0), **kwargs):
         super(Body, self).__init__(**kwargs)
-        if sim == None:
-            self.parent.delta_t = 1
-        else:
-            self.parent = sim
+        self.parent = sim
         self._name = name
         self._velocity = velocity
         self._mass = mass
@@ -63,10 +60,10 @@ class Body(vp.sphere):
         # calculation for self
         self.force = force_value * vp.norm(r)
         self.acceleration = self.force / self.mass
-        self.velocity = self.acceleration*self.parent.delta_t + self.velocity
-        self.pos = self.velocity*self.parent.delta_t + self.pos
+        self.velocity = self.acceleration*self.parent.options["t_factor"] + self.velocity
+        self.pos = self.velocity*self.parent.options["t_factor"] + self.pos
         # calculation for other
         other.force = force_value * vp.norm(-r)
         other.acceleration = other.force / other.mass
-        other.velocity = other.acceleration*self.parent.delta_t + other.velocity
-        other.pos = other.velocity*self.parent.delta_t + other.pos
+        other.velocity = other.acceleration*self.parent.options["t_factor"] + other.velocity
+        other.pos = other.velocity*self.parent.options["t_factor"] + other.pos
