@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>683</width>
-    <height>604</height>
+    <width>558</width>
+    <height>537</height>
    </rect>
   </property>
   <property name="font">
@@ -62,12 +62,12 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>621</width>
-             <height>357</height>
+             <width>502</width>
+             <height>326</height>
             </rect>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="0" colspan="2">
              <layout class="QGridLayout" name="gridLayout_3">
               <item row="0" column="0">
                <widget class="QLabel" name="label">
@@ -111,7 +111,7 @@
               </item>
              </layout>
             </item>
-            <item>
+            <item row="1" column="0" colspan="2">
              <layout class="QGridLayout" name="gridLayout">
               <item row="0" column="1">
                <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -204,7 +204,7 @@
               </item>
              </layout>
             </item>
-            <item>
+            <item row="2" column="0" colspan="2">
              <layout class="QGridLayout" name="gridLayout_4">
               <item row="0" column="1">
                <widget class="QSpinBox" name="update_rate">
@@ -274,78 +274,61 @@
               </item>
              </layout>
             </item>
-            <item>
-             <layout class="QGridLayout" name="gridLayout_2">
-              <item row="1" column="1">
-               <widget class="QRadioButton" name="do_central_centered">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der Zentralkörper wird bei Aktivieren dieses Feldes immer in der Mitte der Visualisierung angezeigt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="toolTipDuration">
-                 <number>-1</number>
-                </property>
-                <property name="statusTip">
-                 <string/>
-                </property>
-                <property name="whatsThis">
-                 <string/>
-                </property>
-                <property name="accessibleName">
-                 <string/>
-                </property>
-                <property name="accessibleDescription">
-                 <string/>
-                </property>
-                <property name="text">
-                 <string>zentrierter Zentralkörper</string>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QRadioButton" name="do_central_moving">
-                <property name="toolTip">
-                 <string/>
-                </property>
-                <property name="toolTipDuration">
-                 <number>-1</number>
-                </property>
-                <property name="statusTip">
-                 <string/>
-                </property>
-                <property name="whatsThis">
-                 <string/>
-                </property>
-                <property name="accessibleName">
-                 <string/>
-                </property>
-                <property name="accessibleDescription">
-                 <string/>
-                </property>
-                <property name="text">
-                 <string>beweglicher Zentralkörper</string>
-                </property>
-                <property name="checked">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" rowspan="2">
-               <widget class="QRadioButton" name="do_central_unmoving">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bei Aktivieren dieses Feldes werden die Kräfte, die auf den Zentralkörper wirken, vernachlässigt werden. Somit wird er unbeweglich im Zentrum der Visualisierung stehen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="statusTip">
-                 <string>to be removed</string>
-                </property>
-                <property name="text">
-                 <string>unbeweglicher Zentralkörper</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+            <item row="3" column="0">
+             <widget class="QRadioButton" name="do_central_moving">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="toolTipDuration">
+               <number>-1</number>
+              </property>
+              <property name="statusTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="accessibleName">
+               <string/>
+              </property>
+              <property name="accessibleDescription">
+               <string/>
+              </property>
+              <property name="text">
+               <string>beweglicher Zentralkörper</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QRadioButton" name="do_central_centered">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Der Zentralkörper wird bei Aktivieren dieses Feldes immer in der Mitte der Visualisierung angezeigt werden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>-1</number>
+              </property>
+              <property name="statusTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="accessibleName">
+               <string/>
+              </property>
+              <property name="accessibleDescription">
+               <string/>
+              </property>
+              <property name="text">
+               <string>zentrierter Zentralkörper</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -368,8 +351,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>621</width>
-             <height>357</height>
+             <width>502</width>
+             <height>326</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -489,8 +472,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>683</width>
-     <height>34</height>
+     <width>558</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptionen">
