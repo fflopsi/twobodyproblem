@@ -6,14 +6,22 @@ from PySide6 import QtWidgets
 
 
 def run(cli=False, debug=False):
-    """runs the simulation"""
+    """runs the simulation
+
+    args:
+        cli: true if the program (value and option inputting) should be ran on
+        the command line instead of a gui (default False)
+        debug: true if the program should be run in debug mode (default False)
+    """
     if debug:
         print("debugging activated ...")
         print("passed arguments:")
         print(sys.argv)
     if cli:
-        print("This is the command line interface for inputting the required options and values for the simulation.")
-        print("If you leave something blank, the standard values in parentheses () will be used.")
+        print("This is the command line interface for inputting the required "
+              "options and values for the simulation.")
+        print("If you leave something blank, the standard values in "
+              "parentheses () will be used.")
         print("The unit is indicated in brackets [] if needed.")
         print("For the inputs that are yes/no, type 1 for yes and 0 for no.")
         print("\nFirst, you need to input the options:")
@@ -115,12 +123,12 @@ def run(cli=False, debug=False):
         print("\nNext, you need to input the values:")
         values = {
             "central_mass": 5.972e+24,
-            "central_radius": 6371000,
-            "central_v0": {"x": 0, "y": 0, "z": 0},
-            "sat_mass": 500,
-            "sat_radius": 2,
-            "sat_v0": {"x": 0, "y": 0, "z": -8000},
-            "distance": 1000000
+            "central_radius": 6371000.0,
+            "central_v0": {"x": 0.0, "y": 0.0, "z": 0.0},
+            "sat_mass": 500.0,
+            "sat_radius": 2.0,
+            "sat_v0": {"x": 0.0, "y": 0.0, "z": -8000.0},
+            "distance": 1000000.0
         }
         print("central body:")
         try:
@@ -179,7 +187,7 @@ def run(cli=False, debug=False):
             print(values)
 
         sim = simulation.Simulation(
-            window=None, values=values, options=options)
+            values=values, options=options)
         sim.start()
 
     else:
@@ -194,8 +202,12 @@ if __name__ == "__main__":
         prog="twobodyproblem",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         usage="python/python3 -m twobodyproblem [-h | -v | [-d] [-n]]",
-        description="This is a little simulation of the gravitational two body problem.\nTo use it normally in GUI mode, just run the command without any of the optional arguments.",
-        epilog="For further information, visit:\nhttps://github.com/flopsi-l-f/two-body-problem_simulation"
+        description="This is a little simulation of the gravitational two "
+                    "body problem.\nTo use it normally in GUI mode, just run "
+                    "the command without any of the optional arguments.",
+        epilog="For further information, "
+               "visit:\nhttps://github.com/flopsi-l-f/two-body"
+               "-problem_simulation"
     )
     parser.add_argument(
         "-v", "--version", action="version",
@@ -208,7 +220,8 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-n", "--nogui", action="store_true",
-        help="run the program (the input section only) without the GUI, but with a CLI"
+        help="run the program (the input section only) without the GUI, "
+             "but with a CLI"
     )
     args = parser.parse_args()
 

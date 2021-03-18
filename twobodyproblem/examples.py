@@ -4,11 +4,22 @@ from PySide6 import QtWidgets, QtUiTools, QtCore
 
 
 class Examples(QtWidgets.QMainWindow):
-    """window for presets"""
+    """window for presets
 
-    def __init__(self, *args, parent=None, **kwargs):
+    inherits from: QtWidgets.QMainWindow
+    """
+
+    def __init__(self, *args, parent=None, debug=False, **kwargs):
+        """constructor extends QtWidgets.QMainWindow constructor
+
+        args:
+            parent: parent window (default None)
+            debug: true if should be run in debug mode (default False)
+            *args and **kwargs: additional args to be passed
+        """
         # set up UI
         super(Examples, self).__init__(*args, parent, **kwargs)
+        self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
         self.ui = QtUiTools.QUiLoader().load(
             QtCore.QFile(self.directory + "/ui/examples.ui"))
@@ -22,14 +33,6 @@ class Examples(QtWidgets.QMainWindow):
 
     def fill(self):
         """fill entry window fields with selected values"""
-        # if satellite mass is bigger than central mass
-        if self.values["mass"][str(self.ui.choice_central.currentText())] < self.values["mass"][str(self.ui.choice_sat.currentText())]:
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setText(
-                "Zentralmasse kleiner als Zweitmasse\nEmpfehlung: bewegter Zentralkörper")
-            msg.setWindowTitle("Warnung")
-            msg.exec()  # show a warning message box
         # fill in the requested values
         self.parent().ui.central_mass.setText(
             str(self.values["mass"]

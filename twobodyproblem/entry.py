@@ -3,7 +3,6 @@ from twobodyproblem import examples
 from twobodyproblem.visualization import simulation
 import sys
 import os
-import signal
 from pathlib import Path
 import yaml
 import vpython as vp
@@ -11,13 +10,24 @@ from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
 
 
 class MainWindow(QtWidgets.QMainWindow):
-    """main window for inputs"""
+    """main window for inputs
+
+    inherits from: QtWidgets.QMainWindow
+    """
 
     def __init__(self, *args, parent=None, debug=False, **kwargs):
+        """constructor extends QtWidgets.QMainWindow constructor
+
+        args:
+            parent: parent window (default None)
+            debug: true if should be run in debug mode (default False)
+            *args and **kwargs: additional args to be passed
+        """
         # set up UI
         super(MainWindow, self).__init__(*args, parent, **kwargs)
+        self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
-        if debug:
+        if self.debug:
             print(self.directory)
         self.ui = QtUiTools.QUiLoader().load(
             QtCore.QFile(self.directory + "/ui/entry.ui"))
@@ -26,7 +36,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.w_examples = examples.Examples(parent=self)
         self.w_settings = settings.Settings(parent=self)
 
-        # add button and action funcionality
+        # add button and action functionality
         self.ui.b_ok.clicked.connect(self.open_vpython)
         self.ui.b_reset.clicked.connect(self.clear_fields)
         self.ui.actionVerlassen.triggered.connect(self.ui.close)
@@ -44,6 +54,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # set the tab for central as "default"
         self.ui.tabWidget.setCurrentIndex(0)
 
+        # load presets
         self.presets: list
         with open(self.directory + "/saved_data/presets.yml", "r") as f:
             self.presets = yaml.load(f, Loader=yaml.FullLoader)
@@ -51,18 +62,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.pause = False
         self.pause_sim: vp.button
         # constants needed for calculations
-        self.CENTRAL_MASS: float
-        self.CENTRAL_RADIUS: float
-        self.SAT_MASS: float
-        self.SAT_RADIUS: float
-        self.DISTANCE: float
-        self.SAT_v0: vp.vector
-        self.CENTRAL_v0: vp.vector
-
-        if self.w_settings.ui.do_central_unmoving.isChecked():
-            self.ui.central_v0_x.setEnabled(False)
-            self.ui.central_v0_y.setEnabled(False)
-            self.ui.central_v0_z.setEnabled(False)
+        self.CENTRAL_MASS = 1.0
+        self.CENTRAL_RADIUS = 1.0
+        self.SAT_MASS = 1.0
+        self.SAT_RADIUS = 1.0
+        self.DISTANCE = 1.0
+        self.SAT_v0 = vp.vector(0, 0, 0)
+        self.CENTRAL_v0 = vp.vector(0, 0, 0)
 
     def restart(self):
         """restart the program"""
@@ -160,7 +166,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.central_v0_z.setText("")
 
     def values_to_dict(self) -> dict:
-        """returns the entered values as dictionary"""
+        """packs all entered values in a dictionary
+
+        returns: dict
+        """
         self.read()
         values = {
             "central_mass": self.CENTRAL_MASS,
@@ -187,7 +196,7 @@ class MainWindow(QtWidgets.QMainWindow):
             f.write(yaml.dump(self.values_to_dict()))
 
     def save_values_as(self):
-        """save values to file with SaveFile dialog"""
+        """save values to file with QFileDialog"""
         name = QtWidgets.QFileDialog.getSaveFileName(
             parent=self, caption="Eingaben speichern",
             dir=str(Path.home()) + "/Documents", filter="YAML (*.yml)")
@@ -195,8 +204,12 @@ class MainWindow(QtWidgets.QMainWindow):
             with open(name[0], "w+") as f:
                 f.write(yaml.dump(self.values_to_dict()))
 
-    def fill_in_dict(self, val: dict):
-        """fill in the given values"""
+    def fill_values(self, val: dict):
+        """fill in the given values
+
+        args:
+            val: dictionary of values to be filled in
+        """
         try:
             self.ui.central_mass.setText(str(val["central_mass"]))
             self.ui.central_radius.setText(str(val["central_radius"]))
@@ -206,10 +219,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.sat_v0_x.setText(str(val["sat_v0"]["x"]))
             self.ui.sat_v0_y.setText(str(val["sat_v0"]["y"]))
             self.ui.sat_v0_z.setText(str(val["sat_v0"]["z"]))
-            if not self.w_settings.ui.do_central_unmoving.isChecked():
-                self.ui.central_v0_x.setText(str(val["central_v0"]["x"]))
-                self.ui.central_v0_y.setText(str(val["central_v0"]["y"]))
-                self.ui.central_v0_z.setText(str(val["central_v0"]["z"]))
+            self.ui.central_v0_x.setText(str(val["central_v0"]["x"]))
+            self.ui.central_v0_y.setText(str(val["central_v0"]["y"]))
+            self.ui.central_v0_z.setText(str(val["central_v0"]["z"]))
         except (TypeError, KeyError):
             err = QtWidgets.QMessageBox()
             err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -223,7 +235,7 @@ class MainWindow(QtWidgets.QMainWindow):
         try:
             with open(self.directory + "/saved_data/values.yml", "r") as f:
                 values = yaml.load(f, Loader=yaml.FullLoader)
-                self.fill_in_dict(values)
+                self.fill_values(values)
         except FileNotFoundError:
             err = QtWidgets.QMessageBox()
             err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -232,7 +244,7 @@ class MainWindow(QtWidgets.QMainWindow):
             err.exec()
 
     def load_values_dialog(self):
-        """loading saved values with "open file" dialog"""
+        """loading saved values with QFileDialog"""
         name = QtWidgets.QFileDialog.getOpenFileName(
             parent=self, caption="Wertedatei öffnen",
             dir=str(Path.home()) + "/Documents", filter="YAML (*.yml))"
@@ -240,7 +252,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if name[0] != "":
             with open(name[0], "r") as f:
                 values = yaml.load(f, Loader=yaml.FullLoader)
-                self.fill_in_dict(values)
+                self.fill_values(values)
 
     def open_vpython(self):
         """open vpython window with entered values
@@ -256,8 +268,8 @@ class MainWindow(QtWidgets.QMainWindow):
             },
             "do_restart": int(self.w_settings.ui.do_restart.isChecked()),
             "do_testing": int(self.w_settings.ui.do_testing.isChecked()),
-            "do_central_unmoving": int(self.w_settings.ui.do_central_unmoving.isChecked()),
-            "do_central_centered": int(self.w_settings.ui.do_central_centered.isChecked()),
+            "do_central_centered": int(
+                self.w_settings.ui.do_central_centered.isChecked()),
             "color": {
                 "objects": {
                     "r": self.w_settings.ui.color_objects_r.value(),

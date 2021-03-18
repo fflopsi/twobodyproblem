@@ -1,20 +1,35 @@
 from twobodyproblem.visualization import body
 import vpython as vp
-from scipy.constants import G
 import signal
 import os
 import sys
 
 
-class Simulation():
+class Simulation:
     """class used for the visualization of the simulation"""
 
     def __init__(self, values: dict, options: dict):
-        self.values = values
-        self.options = options
+        """args:
+            values: dictionary of required values for simulation
+            option: dictionary of additional options for the simulation
+        """
+        self._values = values
+        self._options = options
+
+    @property
+    def values(self):
+        return self._values
+
+    @property
+    def options(self):
+        return self._options
 
     def pause(self, button: vp.button):
-        """pause and un-pause the simulation"""
+        """pause and un-pause the simulation
+
+        args:
+            button: pause button itself
+        """
         if button.text == "Pause":
             button.text = "Play"
         else:
@@ -27,11 +42,20 @@ class Simulation():
         # os.execv(sys.executable, ["python"] + sys.argv)
 
     def adjust_radius(self, slider: vp.slider, sphere: body.Body):
-        """adjust the visual size of the sphere according to the slider value"""
+        """adjust the visual size of the body according to the slider value
+
+        args:
+            slider: slider which was changed
+            sphere: body associated with the slider
+        """
         sphere.radius = self.values[sphere.name + "_radius"] * slider.value
 
     def reset_slider(self, slider: vp.slider):
-        """reset the slider to the default value"""
+        """reset the slider to the default value
+
+        args:
+            slider: slider to be reset
+        """
         slider.value = 1
         slider.bind()
 
@@ -70,8 +94,9 @@ class Simulation():
                 self.values["sat_v0"]["z"]
             ),
             pos=vp.vector(
-                self.values["distance"] +
-                self.values["central_radius"] + self.values["sat_radius"], 0, 0),
+                self.values["distance"] + self.values["central_radius"]
+                + self.values["sat_radius"],
+                0, 0),
             radius=self.values["sat_radius"], make_trail=True,
             color=vp.vector(
                 self.options["color"]["objects"]["r"] / 255,
@@ -79,11 +104,14 @@ class Simulation():
                 self.options["color"]["objects"]["b"] / 255
             )
         )
+        central_ptr = vp.arrow()
+        sat_ptr = vp.arrow()
         if show_pointers:
-            central_pointer = vp.arrow(
+            central_ptr = vp.arrow(
                 axis=vp.vector(
                     0,
-                    -((self.values["distance"]+central.radius+sat.radius)/2),
+                    -((self.values["distance"] + central.radius +
+                       sat.radius) / 2),
                     0
                 ),
                 color=vp.vector(
@@ -92,12 +120,13 @@ class Simulation():
                     self.options["color"]["pointer"]["b"]
                 )
             )
-            central_pointer.pos = central.pos - central_pointer.axis + \
-                vp.vector(0, self.values["central_radius"], 0)
-            sat_pointer = vp.arrow(
+            central_ptr.pos = (central.pos - central_ptr.axis) + vp.vector(
+                0, self.values["central_radius"], 0)
+            sat_ptr = vp.arrow(
                 axis=vp.vector(
                     0,
-                    -((self.values["distance"]+central.radius+sat.radius)/2),
+                    -((self.values["distance"] + central.radius +
+                       sat.radius) / 2),
                     0
                 ),
                 color=vp.vector(
@@ -106,19 +135,19 @@ class Simulation():
                     self.options["color"]["pointer"]["b"]
                 )
             )
-            sat_pointer.pos = sat.pos - sat_pointer.axis + \
-                vp.vector(0, self.values["sat_radius"], 0)
+            sat_ptr.pos = sat.pos - sat_ptr.axis + vp.vector(
+                0, self.values["sat_radius"], 0)
 
         # set up buttons
         pause_sim = vp.button(text="Pause", bind=self.pause)
-        vp.button(text="Stop", bind=lambda: os.kill(
-            os.getpid(), signal.SIGINT))
+        vp.button(text="Stop",
+                  bind=lambda: os.kill(os.getpid(), signal.SIGINT))
         vp.button(text="Restart", bind=self.restart)
         scene.append_to_caption("\n")
 
-        # set up sliders for changing the radius magnification of the two objects
+        # set up sliders for changing the radius of the two bodies
         central_radius_slider: vp.slider = vp.slider(
-            max=(self.values["distance"]+self.values["central_radius"])
+            max=(self.values["distance"] + self.values["central_radius"])
             / self.values["central_radius"],
             min=1, value=1, top=12, bottom=12,
             bind=lambda: self.adjust_radius(
@@ -128,14 +157,14 @@ class Simulation():
             central_radius_slider))
         scene.append_to_caption("\n")
         sat_radius_slider: vp.slider = vp.slider(
-            max=(self.values["distance"]+self.values["sat_radius"])
+            max=(self.values["distance"] + self.values["sat_radius"])
             / self.values["sat_radius"],
             min=1, value=1, top=12, bottom=12,
             bind=lambda: self.adjust_radius(
                 slider=sat_radius_slider, sphere=sat)
         )
-        vp.button(text="Reset", bind=lambda: self.reset_slider(
-            sat_radius_slider))
+        vp.button(text="Reset",
+                  bind=lambda: self.reset_slider(sat_radius_slider))
 
         # set up time variables
         t = 0
@@ -144,18 +173,17 @@ class Simulation():
         if central_centered:
             scene.camera.follow(central)
         while t < t_max:
+            # weird behaviour of those two
             vp.rate(self.options["update_rate"])
-            # vp.sleep(1/self.options["update_rate"])  # weird behaviour of those two
+            # vp.sleep(1/self.options["update_rate"])
             if pause_sim.text == "Pause":
-                r = sat.pos - central.pos
                 central.calculate(sat)
                 if show_pointers:
                     # move pointers
-                    central_pointer.pos = central.pos - \
-                        central_pointer.axis + \
-                        vp.vector(0, central.radius, 0)
-                    sat_pointer.pos = sat.pos - sat_pointer.axis + \
-                        vp.vector(0, sat.radius, 0)
+                    central_ptr.pos = central.pos - central_ptr.axis + \
+                                      vp.vector(0, central.radius, 0)
+                    sat_ptr.pos = sat.pos - sat_ptr.axis + vp.vector(
+                        0, sat.radius, 0)
                 t += 1
         if bool(self.options["do_restart"]):
             self.restart()
