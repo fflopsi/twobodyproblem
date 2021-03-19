@@ -1,9 +1,5 @@
 __pycache__
 debug.log
-settings.yml
-_settings.yml
-values.yml
-_values.yml
 .vscode
 .vs
 twobodyproblem.egg-info
@@ -11,3 +7,5 @@ build
 dist
 venv
 .idea
+twobodyproblem/saved_data/*
+!twobodyproblem/saved_data/presets.yml
