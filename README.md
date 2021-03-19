@@ -1,55 +1,93 @@
 # Two Body Problem
+
 ### a small simulation
 
 **Welcome!**
 
-I wrote a small program to simulate the two body problem. You can either choose from presets (like Sun, Earth, Moon etc.) or type in your own masses and volumes. The program will show you a visualization of the simulation.
+I wrote a small program to simulate the two body problem.
+You can either choose from presets (like Sun, Earth, Moon etc.)
+or type in your own masses and volumes.
+The program will show you a visualization of the simulation.
+
+***
 
 ## Table of Contents
 
-[Installation Instructions](#installation)  
-- [Windows 10](#win10)  
-- [Ubuntu, Debian and other Linux distros](#linux)  
+[Installation Instructions](#installation-instructions)  
+- [via PyPi](#via-pypi)  
+- [via GitHub](#via-github)  
 
-<a name="installation"/>
+[Usage](#usage)
 
+***
+  
 ## Installation Instructions
 
-Read below for detailed instructions on how to install my program.
+### via PyPi
 
-<a name="win10"/>
+*The Python package manager pip will install the last uploaded version
+from the Python Package Index [PyPi](https://pypi.org/project/twobodyproblem).
+This will not always be the latest version, so if you want to install all the latest features,
+install it from git (see [below](#via-github)).*
 
-### Windows 10
+1. Make sure [Python](https://www.python.org/downloads) and pip are installed correctly.
+1. Run `pip3 install twobodyproblem` from a command line.
+1. Now, the program is runnable with `python -m twobodyproblem` or `python3 -m twobodyproblem`.
 
-- Python prerequisites:
-  1. Download and install [Python 3.9](https://www.python.org/downloads/).
-- Git and repository prerequisites:
-  1. Download and install [Git SCM](https://gitforwindows.org/)
-  2. Run the following commands from *git bash*:
-      1. `mkdir Two\ Body\ Problem && cd "$_"`
-      2. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
-  3. Run the following command from the command line:
-      1. `cd C:\Users\[Your Username]\Two Body Problem\two-body-problem_simulation`
-      2. `pip install .`
+(You may need Microsoft Visual C++ to be able to run the program,
+so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools) if needed.)
 
-Now, the code is available and runnable with `python -m twobodyproblem`
+### via GitHub
 
-(You may need Microsoft Visual C++ to run vpython, so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) if needed.)
+1. Make sure [Python](https://www.python.org/downloads) and pip are installed correctly.
+1. Make sure [Git SCM](https://git-scm.com/downloads) is installed correctly.
+1. Run these commands from a command line:
+    1. `mkdir TwoBody` and `cd TwoBody`
+    1. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
+    1. `pip3 install two-body-problem_simulation`
+1. Now, the program is runnable with `python -m twobodyproblem` or `python3 -m twobodyproblem`.
+    
+(You may need Microsoft Visual C++ to be able to run the program,
+so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools) if needed.)
 
-<a name="linux"/>
+***
 
-### Ubuntu, Debian and other Linux distros
+## Usage
 
-- Run the following commands in bash:
-  - Not necessary, but recommended: `sudo apt-get update && sudo apt-get upgrade`
-  1. `sudo apt-get install python3`
-  2. `sudo apt-get install git`
-  3. `sudo apt-get install libopengl0`
-  4. `mkdir Two\ Body\ Problem && cd "$_"`
-  5. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
-  6. `cd two-body-problem_simulation`
-  7. `pip3 install .`
+*To learn more about how to run the program with different options,
+run `python -m twbodyproblem -h` or `python3 -m twbodyproblem -h` respectively.*
 
-Now, the code is available and runnable with `python3 -m twobodyproblem`
+The program (better: the inputting section) can be run either
+with a graphical user interface (GUI) or with a command line interface (CLI).
+
+No matter if you run the program in GUI or CLI mode, you will have to input *options* and *values*.
+The options define the particular behavior of the simulation,
+the values define the dimensions (i.e. mass, radius, distance, velocity) of the bodies.
+
+Saving options and values is currently only supported in GUI mode.
+The options are automatically saved if you press one of the two buttons
+in the lower right corner of the settings window (open it with <kbd>Ctrl</kbd>+<kbd>I</kbd>).
+To save values, press <kbd>Ctrl</kbd>+<kbd>S</kbd>. The values will then be saved into a file.
+If you do this action repeatedly, the former contents of the file (i.e. the saved values) will be **overwritten**!
+To load saved values from this file, press <kbd>Ctrl</kbd>+<kbd>L</kbd>.
+To save or load values through a file dialog,
+press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>.
+These files will be saved in the [YAML](https://yaml.org) format (*.yml).
+
+In GUI mode, you can select from a few presets (e.g. Sun, Moon, Earth) to fill in some values.
+To do so, press <kbd>Ctrl</kbd>+<kbd>E</kbd>, select from the drop-down menu
+and press one of the two buttons in the lower right corner.
+
+In CLI mode, the simulation will start automatically after the last input.
+To start the simulation from GUI mode, press the button in the lower right corner.
+
+During the simulation, you are able to pause, un-pause and stop the simulation
+with the accordingly named buttons below the black rectangle.
+The restart button restarts the *whole* program, not just the simulation.
+
+The sliders below the buttons can be used to magnify the bodies in the simulation.
+This magnification does not affect the physics, it is only a visual help.
+
+***
 
 *Participation in this README is always welcome!*
