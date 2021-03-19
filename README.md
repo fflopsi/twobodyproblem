@@ -9,8 +9,6 @@ You can either choose from presets (like Sun, Earth, Moon etc.)
 or type in your own masses and volumes.
 The program will show you a visualization of the simulation.
 
-***
-
 ## Table of Contents
 
 [Installation Instructions](#installation-instructions)  
@@ -18,8 +16,6 @@ The program will show you a visualization of the simulation.
 - [via GitHub](#via-github)  
 
 [Usage](#usage)
-
-***
   
 ## Installation Instructions
 
@@ -49,8 +45,6 @@ so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-to
     
 (You may need Microsoft Visual C++ to be able to run the program,
 so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools) if needed.)
-
-***
 
 ## Usage
 
