@@ -1,8 +1,10 @@
-from twobodyproblem import entry
-from twobodyproblem.visualization import simulation
 import argparse
 import sys
+
 from PySide6 import QtWidgets
+
+from twobodyproblem import entry
+from twobodyproblem.visualization import simulation
 
 
 def run(cli=False, debug=False):
@@ -17,7 +19,14 @@ def run(cli=False, debug=False):
         print("debugging activated ...")
         print("passed arguments:")
         print(sys.argv)
-    if cli:
+    if not cli:
+        # run the GUI app
+        app = QtWidgets.QApplication(sys.argv)
+        window = entry.MainWindow(debug=debug)
+        window.ui.show()
+        sys.exit(app.exec_())
+    else:
+        # run the CLI
         print("This is the command line interface for inputting the required "
               "options and values for the simulation.")
         print("If you leave something blank, the standard values in "
@@ -25,6 +34,7 @@ def run(cli=False, debug=False):
         print("The unit is indicated in brackets [] if needed.")
         print("For the inputs that are yes/no, type 1 for yes and 0 for no.")
         print("\nFirst, you need to input the options:")
+        # default options
         options = {
             "canvas": {"width": 1000, "height": 600},
             "color": {
@@ -121,6 +131,7 @@ def run(cli=False, debug=False):
             print(options)
 
         print("\nNext, you need to input the values:")
+        # default values
         values = {
             "central_mass": 5.972e+24,
             "central_radius": 6371000.0,
@@ -186,18 +197,14 @@ def run(cli=False, debug=False):
         if debug:
             print(values)
 
+        # create and start simulation
         sim = simulation.Simulation(
             values=values, options=options)
         sim.start()
 
-    else:
-        app = QtWidgets.QApplication(sys.argv)
-        window = entry.MainWindow(debug=debug)
-        window.ui.show()
-        sys.exit(app.exec_())
-
 
 if __name__ == "__main__":
+    # add CLI arguments
     parser = argparse.ArgumentParser(
         prog="twobodyproblem",
         formatter_class=argparse.RawDescriptionHelpFormatter,
