@@ -1,8 +1,10 @@
-from twobodyproblem.visualization import body
-import vpython as vp
-import signal
 import os
+import signal
 import sys
+
+import vpython as vp
+
+from twobodyproblem.visualization import body
 
 
 class Simulation:
@@ -10,7 +12,7 @@ class Simulation:
 
     def __init__(self, values: dict, options: dict):
         """args:
-            values: dictionary of required values for simulation
+            values: dictionary of required values for the simulation
             option: dictionary of additional options for the simulation
         """
         self._values = values

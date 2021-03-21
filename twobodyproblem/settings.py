@@ -1,5 +1,6 @@
-import yaml
 import os
+
+import yaml
 from PySide6 import QtWidgets, QtUiTools, QtCore
 
 

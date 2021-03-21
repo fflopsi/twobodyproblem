@@ -1,12 +1,14 @@
-from twobodyproblem import settings
-from twobodyproblem import examples
-from twobodyproblem.visualization import simulation
-import sys
 import os
+import sys
 from pathlib import Path
-import yaml
+
 import vpython as vp
+import yaml
 from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
+
+from twobodyproblem import examples
+from twobodyproblem import settings
+from twobodyproblem.visualization import simulation
 
 
 class MainWindow(QtWidgets.QMainWindow):
