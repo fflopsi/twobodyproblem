@@ -21,6 +21,7 @@ def run(cli=False, debug=False):
         print(sys.argv)
     if not cli:
         # run the GUI app
+        # TODO: internationalization (English, German, ...)
         app = QtWidgets.QApplication(sys.argv)
         window = entry.MainWindow(debug=debug)
         window.ui.show()
@@ -35,6 +36,7 @@ def run(cli=False, debug=False):
         print("For the inputs that are yes/no, type 1 for yes and 0 for no.")
         print("\nFirst, you need to input the options:")
         # default options
+        # TODO: options and values as classes
         options = {
             "canvas": {"width": 1000, "height": 600},
             "color": {
@@ -205,6 +207,7 @@ def run(cli=False, debug=False):
 
 if __name__ == "__main__":
     # add CLI arguments
+    # TODO: better documentation
     parser = argparse.ArgumentParser(
         prog="twobodyproblem",
         formatter_class=argparse.RawDescriptionHelpFormatter,

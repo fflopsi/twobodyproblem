@@ -10,6 +10,9 @@ class Examples(QtWidgets.QMainWindow):
     inherits from: QtWidgets.QMainWindow
     """
 
+    # TODO: more different values (--> tree structure?)
+    # TODO: own standard values definable?
+
     def __init__(self, *args, parent=None, debug=False, **kwargs):
         """constructor extends QtWidgets.QMainWindow constructor
 

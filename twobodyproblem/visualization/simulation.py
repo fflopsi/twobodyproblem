@@ -106,6 +106,7 @@ class Simulation:
                 self.options["color"]["objects"]["b"] / 255
             )
         )
+        # TODO: three (or more?) bodies
         central_ptr = vp.arrow()
         sat_ptr = vp.arrow()
         if show_pointers:
@@ -167,10 +168,12 @@ class Simulation:
         )
         vp.button(text="Reset",
                   bind=lambda: self.reset_slider(sat_radius_slider))
+        # TODO: sliders for "update_rate" and "t_factor"
 
         # set up time variables
         t = 0
         t_max = self.options["update_rate"] * self.options["max_seconds"]
+        # TODO: optional endless simulation
         # main simulation loop
         if central_centered:
             scene.camera.follow(central)
