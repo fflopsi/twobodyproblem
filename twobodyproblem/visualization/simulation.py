@@ -179,7 +179,7 @@ class Simulation:
             vp.rate(self.options["update_rate"])
             # vp.sleep(1/self.options["update_rate"])
             if pause_sim.text == "Pause":
-                central.calculate(sat)
+                central.calculate(sat, self.options["t_factor"])
                 if show_pointers:
                     # move pointers
                     central_ptr.pos = central.pos - central_ptr.axis + \
