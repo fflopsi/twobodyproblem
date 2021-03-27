@@ -27,7 +27,7 @@ This will not always be the latest version, so if you want to install all the la
 install it from git (see [below](#via-github)).*
 
 1. Make sure [Python](https://www.python.org/downloads) and pip are installed correctly.
-1. Run `pip3 install setuptools wheel twobodyproblem --upgrade` from a command line.
+1. Run `pip3 install --upgrade pip setuptools wheel twobodyproblem` from a command line.
 1. Now, the program is runnable with `python -m twobodyproblem` or `python3 -m twobodyproblem`.
 
 (You may need Microsoft Visual C++ to be able to run the program,
@@ -40,7 +40,7 @@ so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-to
 1. Run these commands from a command line:
     1. `mkdir TwoBody` and `cd TwoBody`
     1. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
-    1. `pip3 install setuptools wheel --upgrade`
+    1. `pip3 install --upgrade pip setuptools wheel`
     1. `pip3 install two-body-problem_simulation`
 1. Now, the program is runnable with `python -m twobodyproblem` or `python3 -m twobodyproblem`.
     
