@@ -4,7 +4,7 @@ import yaml
 from PySide6 import QtWidgets, QtUiTools, QtCore
 
 
-class Examples(QtWidgets.QMainWindow):
+class ExamplesWindow(QtWidgets.QMainWindow):
     """window for presets
 
     inherits from: QtWidgets.QMainWindow
@@ -22,7 +22,7 @@ class Examples(QtWidgets.QMainWindow):
             *args and **kwargs: additional args to be passed
         """
         # set up UI
-        super(Examples, self).__init__(*args, parent, **kwargs)
+        super(ExamplesWindow, self).__init__(*args, parent, **kwargs)
         self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
         self.ui = QtUiTools.QUiLoader().load(

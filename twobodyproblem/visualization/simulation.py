@@ -4,7 +4,7 @@ import sys
 
 import vpython as vp
 
-from twobodyproblem.visualization import body
+from twobodyproblem.visualization.body import Body
 
 
 class Simulation:
@@ -43,7 +43,7 @@ class Simulation:
         os.execl(sys.executable, sys.executable, *sys.argv)
         # os.execv(sys.executable, ["python"] + sys.argv)
 
-    def adjust_radius(self, slider: vp.slider, sphere: body.Body):
+    def adjust_radius(self, slider: vp.slider, sphere: Body):
         """adjust the visual size of the body according to the slider value
 
         args:
@@ -74,7 +74,7 @@ class Simulation:
             height=self.options["canvas"]["height"],
             width=self.options["canvas"]["width"]
         )
-        central = body.Body(
+        central = Body(
             sim=self, name="central", mass=self.values["central_mass"],
             velocity=vp.vector(
                 self.values["central_v0"]["x"],
@@ -88,7 +88,7 @@ class Simulation:
                 self.options["color"]["objects"]["b"] / 255
             )
         )
-        sat = body.Body(
+        sat = Body(
             sim=self, name="sat", mass=self.values["sat_mass"],
             velocity=vp.vector(
                 self.values["sat_v0"]["x"],

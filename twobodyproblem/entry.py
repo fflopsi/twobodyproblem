@@ -6,12 +6,12 @@ import vpython as vp
 import yaml
 from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
 
-from twobodyproblem import examples
-from twobodyproblem import settings
-from twobodyproblem.visualization import simulation
+from twobodyproblem.examples import ExamplesWindow
+from twobodyproblem.settings import SettingsWindow
+from twobodyproblem.visualization.simulation import Simulation
 
 
-class MainWindow(QtWidgets.QMainWindow):
+class EntryWindow(QtWidgets.QMainWindow):
     """main window for inputs
 
     inherits from: QtWidgets.QMainWindow
@@ -26,7 +26,7 @@ class MainWindow(QtWidgets.QMainWindow):
             *args and **kwargs: additional args to be passed
         """
         # set up UI
-        super(MainWindow, self).__init__(*args, parent, **kwargs)
+        super(EntryWindow, self).__init__(*args, parent, **kwargs)
         self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
         if self.debug:
@@ -35,8 +35,8 @@ class MainWindow(QtWidgets.QMainWindow):
             QtCore.QFile(self.directory + "/ui/entry.ui"))
         self.ui.setWindowIcon(QtGui.QIcon(self.directory + "/ui/icon.gif"))
         # create other windows
-        self.w_examples = examples.Examples(parent=self)
-        self.w_settings = settings.Settings(parent=self)
+        self.w_examples = ExamplesWindow(parent=self)
+        self.w_settings = SettingsWindow(parent=self)
 
         # add button and action functionality
         self.ui.b_ok.clicked.connect(self.open_vpython)
@@ -289,6 +289,5 @@ class MainWindow(QtWidgets.QMainWindow):
             "max_seconds": self.w_settings.ui.max_seconds.value(),
             "t_factor": self.w_settings.ui.t_factor.value(),
         }
-        sim = simulation.Simulation(
-            values=self.values_to_dict(), options=options)
+        sim = Simulation(values=self.values_to_dict(), options=options)
         sim.start()

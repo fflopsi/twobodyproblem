@@ -4,7 +4,7 @@ import yaml
 from PySide6 import QtWidgets, QtUiTools, QtCore
 
 
-class Settings(QtWidgets.QMainWindow):
+class SettingsWindow(QtWidgets.QMainWindow):
     """window for settings
 
     inherits from: QtWidgets.QMainWindow
@@ -19,7 +19,7 @@ class Settings(QtWidgets.QMainWindow):
             *args and **kwargs: additional args to be passed
         """
         # set up UI
-        super(Settings, self).__init__(*args, parent, **kwargs)
+        super(SettingsWindow, self).__init__(*args, parent, **kwargs)
         self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
         self.ui = QtUiTools.QUiLoader().load(

@@ -3,8 +3,8 @@ import sys
 
 from PySide6 import QtWidgets
 
-from twobodyproblem import entry
-from twobodyproblem.visualization import simulation
+from twobodyproblem.entry import EntryWindow
+from twobodyproblem.visualization.simulation import Simulation
 
 
 def run(cli=False, debug=False):
@@ -23,7 +23,7 @@ def run(cli=False, debug=False):
         # run the GUI app
         # TODO: internationalization (English, German, ...)
         app = QtWidgets.QApplication(sys.argv)
-        window = entry.MainWindow(debug=debug)
+        window = EntryWindow(debug=debug)
         window.ui.show()
         sys.exit(app.exec_())
     else:
@@ -200,8 +200,7 @@ def run(cli=False, debug=False):
             print(values)
 
         # create and start simulation
-        sim = simulation.Simulation(
-            values=values, options=options)
+        sim = Simulation(values=values, options=options)
         sim.start()
 
 
