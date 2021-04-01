@@ -39,7 +39,7 @@ so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-to
 1. Make sure [Git SCM](https://git-scm.com/downloads) is installed correctly.
 1. Run these commands from a command line:
     1. `mkdir TwoBody` and `cd TwoBody`
-    1. `git clone https://github.com/flopsi-l-f/two-body-problem_simulation.git`
+    1. `git clone https://github.com/Two-Body-Problem/simulation-python.git`
     1. `pip3 install --upgrade pip setuptools wheel`
     1. `pip3 install two-body-problem_simulation`
 1. Now, the program is runnable with `python -m twobodyproblem` or `python3 -m twobodyproblem`.
