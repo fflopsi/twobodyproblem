@@ -41,7 +41,7 @@ so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-to
     1. `mkdir TwoBody` and `cd TwoBody`
     1. `git clone https://github.com/Two-Body-Problem/simulation-python.git`
     1. `pip3 install --upgrade pip setuptools wheel`
-    1. `pip3 install two-body-problem_simulation`
+    1. `pip3 install simulation-python`
 1. Now, the program is runnable with `python -m twobodyproblem` or `python3 -m twobodyproblem`.
     
 (You may need Microsoft Visual C++ to be able to run the program,
