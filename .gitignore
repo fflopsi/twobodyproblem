@@ -9,3 +9,4 @@ venv
 .idea
 twobodyproblem/saved_data/*
 !twobodyproblem/saved_data/presets.yml
+install.bat
