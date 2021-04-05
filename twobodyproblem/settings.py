@@ -3,6 +3,8 @@ import os
 import yaml
 from PySide6 import QtWidgets, QtUiTools, QtCore
 
+from twobodyproblem.options import Options
+
 
 class SettingsWindow(QtWidgets.QMainWindow):
     """window for settings
@@ -58,43 +60,37 @@ class SettingsWindow(QtWidgets.QMainWindow):
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.setWindowTitle("Einstellungsdatei nicht gefunden")
             msg.setText("Es werden die Standard-Einstellungen angewendet.")
-            msg.setStandardButton(QtWidgets.QMessageBox.Ok)
-            msg.setDefaultButton(QtWidgets.QMessageBox.Ok)
             msg.exec()
 
         self.show_pointers_changed_action()
+
+    def get_options(self) -> Options:
+        """get the entered options for further use
+
+        returns: Options
+        """
+        return Options(canvas_width=self.ui.canvas_width.value(),
+                       canvas_height=self.ui.canvas_height.value(),
+                       color_objects_r=self.ui.color_objects_r.value(),
+                       color_objects_g=self.ui.color_objects_g.value(),
+                       color_objects_b=self.ui.color_objects_r.value(),
+                       color_pointers_r=self.ui.color_pointer_r.value(),
+                       color_pointers_g=self.ui.color_pointer_g.value(),
+                       color_pointers_b=self.ui.color_pointer_b.value(),
+                       show_pointers=int(self.ui.show_pointers.isChecked()),
+                       update_rate=self.ui.update_rate.value(),
+                       max_seconds=self.ui.max_seconds.value(),
+                       delta_t=self.ui.t_factor.value(),
+                       central_centered=int(
+                           self.ui.do_central_centered.isChecked()),
+                       testing=int(self.ui.do_testing.isChecked()),
+                       restart=int(self.ui.do_restart.isChecked()))
 
     def save(self):
         """save the entered settings to a file"""
         # TODO: make settings savable and loadable like values (defaults?)
         with open(self.directory + "/saved_data/settings.yml", "w+") as f:
-            conf = {  # create the new settings content with the entered values
-                "canvas": {
-                    "width": self.ui.canvas_width.value(),
-                    "height": self.ui.canvas_height.value()
-                },
-                "do_restart": int(self.ui.do_restart.isChecked()),
-                "do_testing": int(self.ui.do_testing.isChecked()),
-                "do_central_centered": int(
-                    self.ui.do_central_centered.isChecked()),
-                "color": {
-                    "objects": {
-                        "r": self.ui.color_objects_r.value(),
-                        "g": self.ui.color_objects_g.value(),
-                        "b": self.ui.color_objects_b.value()
-                    },
-                    "pointer": {
-                        "r": self.ui.color_pointer_r.value(),
-                        "g": self.ui.color_pointer_g.value(),
-                        "b": self.ui.color_pointer_b.value()
-                    }
-                },
-                "show_pointers": int(self.ui.show_pointers.isChecked()),
-                "update_rate": self.ui.update_rate.value(),
-                "max_seconds": self.ui.max_seconds.value(),
-                "t_factor": self.ui.t_factor.value(),
-            }
-            f.write(yaml.dump(conf))
+            f.write(yaml.dump(self.get_options().to_dict()))
 
     def show_pointers_changed_action(self):
         """changes enabled state of the pointer color choosing fields"""
