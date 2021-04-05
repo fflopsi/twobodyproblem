@@ -149,7 +149,6 @@ class Simulation:
         # set up time variables
         t = 0
         t_max = self.options.rate * self.options.sim_time
-        # TODO: optional endless simulation
         # main simulation loop
         if central_centered:
             scene.camera.follow(central)
