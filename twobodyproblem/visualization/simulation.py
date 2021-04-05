@@ -5,12 +5,14 @@ import sys
 import vpython as vp
 
 from twobodyproblem.visualization.body import Body
+from twobodyproblem.values import Values
+from twobodyproblem.options import Options
 
 
 class Simulation:
     """class used for the visualization of the simulation"""
 
-    def __init__(self, values: dict, options: dict):
+    def __init__(self, values: Values, options: Options):
         """args:
             values: dictionary of required values for the simulation
             option: dictionary of additional options for the simulation
@@ -50,7 +52,8 @@ class Simulation:
             slider: slider which was changed
             sphere: body associated with the slider
         """
-        sphere.radius = self.values[sphere.name + "_radius"] * slider.value
+        valdict = self.values.to_dict()
+        sphere.radius = valdict[sphere.name + "_radius"] * slider.value
 
     def reset_slider(self, slider: vp.slider):
         """reset the slider to the default value
@@ -64,82 +67,57 @@ class Simulation:
     def start(self):
         """open the vpython window and start the simulation"""
         # set up important boolean values from options
-        testing = bool(self.options["do_testing"])
-        central_centered = bool(self.options["do_central_centered"])
-        show_pointers = bool(self.options["show_pointers"])
+        testing = self.options.testing
+        central_centered = self.options.central_centered
+        show_pointers = self.options.pointers
 
         # set up canvas, bodies and pointers
-        scene = vp.canvas(
-            title="Simulation zum Zweikörperproblem",
-            height=self.options["canvas"]["height"],
-            width=self.options["canvas"]["width"]
-        )
-        central = Body(
-            sim=self, name="central", mass=self.values["central_mass"],
-            velocity=vp.vector(
-                self.values["central_v0"]["x"],
-                self.values["central_v0"]["y"],
-                self.values["central_v0"]["z"]
-            ),
-            radius=self.values["central_radius"], make_trail=True,
-            color=vp.vector(
-                self.options["color"]["objects"]["r"] / 255,
-                self.options["color"]["objects"]["g"] / 255,
-                self.options["color"]["objects"]["b"] / 255
-            )
-        )
-        sat = Body(
-            sim=self, name="sat", mass=self.values["sat_mass"],
-            velocity=vp.vector(
-                self.values["sat_v0"]["x"],
-                self.values["sat_v0"]["y"],
-                self.values["sat_v0"]["z"]
-            ),
-            pos=vp.vector(
-                self.values["distance"] + self.values["central_radius"]
-                + self.values["sat_radius"],
-                0, 0),
-            radius=self.values["sat_radius"], make_trail=True,
-            color=vp.vector(
-                self.options["color"]["objects"]["r"] / 255,
-                self.options["color"]["objects"]["g"] / 255,
-                self.options["color"]["objects"]["b"] / 255
-            )
-        )
+        scene = vp.canvas(title="Simulation zum Zweikörperproblem",
+                          height=self.options.canvas.height,
+                          width=self.options.canvas.width)
+        central = Body(sim=self, name="central", mass=self.values.central.mass,
+                       velocity=vp.vector(self.values.central.velocity.x,
+                                          self.values.central.velocity.y,
+                                          self.values.central.velocity.z),
+                       radius=self.values.central.radius, make_trail=True,
+                       color=vp.vector(self.options.colors.bodies.x / 255,
+                                       self.options.colors.bodies.y / 255,
+                                       self.options.colors.bodies.z / 255))
+        sat = Body(sim=self, name="sat", mass=self.values.sat.mass,
+                   velocity=vp.vector(self.values.sat.velocity.x,
+                                      self.values.sat.velocity.y,
+                                      self.values.sat.velocity.z),
+                   pos=vp.vector(self.values.distance
+                                 + self.values.central.radius
+                                 + self.values.sat.radius, 0, 0),
+                   radius=self.values.sat.radius, make_trail=True,
+                   color=vp.vector(self.options.colors.bodies.x / 255,
+                                   self.options.colors.bodies.y / 255,
+                                   self.options.colors.bodies.z / 255))
         # TODO: three (or more?) bodies
         central_ptr = vp.arrow()
         sat_ptr = vp.arrow()
         if show_pointers:
-            central_ptr = vp.arrow(
-                axis=vp.vector(
-                    0,
-                    -((self.values["distance"] + central.radius +
-                       sat.radius) / 2),
-                    0
-                ),
-                color=vp.vector(
-                    self.options["color"]["pointer"]["r"],
-                    self.options["color"]["pointer"]["g"],
-                    self.options["color"]["pointer"]["b"]
-                )
-            )
+            central_ptr = vp.arrow(axis=vp.vector(0,
+                                                  -((self.values.distance
+                                                     + central.radius
+                                                     + sat.radius) / 2),
+                                                  0),
+                                   color=vp.vector(
+                                       self.options.colors.pointers.x,
+                                       self.options.colors.pointers.y,
+                                       self.options.colors.pointers.z))
             central_ptr.pos = (central.pos - central_ptr.axis) + vp.vector(
-                0, self.values["central_radius"], 0)
-            sat_ptr = vp.arrow(
-                axis=vp.vector(
-                    0,
-                    -((self.values["distance"] + central.radius +
-                       sat.radius) / 2),
-                    0
-                ),
-                color=vp.vector(
-                    self.options["color"]["pointer"]["r"],
-                    self.options["color"]["pointer"]["g"],
-                    self.options["color"]["pointer"]["b"]
-                )
-            )
+                0, self.values.central.radius, 0)
+            sat_ptr = vp.arrow(axis=vp.vector(0, -((self.values.distance +
+                                                    central.radius +
+                                                    sat.radius) / 2), 0),
+                               color=vp.vector(
+                                   self.options.colors.pointers.x,
+                                   self.options.colors.pointers.y,
+                                   self.options.colors.pointers.z))
             sat_ptr.pos = sat.pos - sat_ptr.axis + vp.vector(
-                0, self.values["sat_radius"], 0)
+                0, self.values.sat.radius, 0)
 
         # set up buttons
         pause_sim = vp.button(text="Pause", bind=self.pause)
@@ -149,46 +127,46 @@ class Simulation:
         scene.append_to_caption("\n")
 
         # set up sliders for changing the radius of the two bodies
-        central_radius_slider: vp.slider = vp.slider(
-            max=(self.values["distance"] + self.values["central_radius"])
-            / self.values["central_radius"],
-            min=1, value=1, top=12, bottom=12,
-            bind=lambda: self.adjust_radius(
-                slider=central_radius_slider, sphere=central)
-        )
+        central_slider = vp.slider(max=((self.values.distance +
+                                         self.values.central.radius) /
+                                        self.values.central.radius),
+                                   min=1, value=1, top=12, bottom=12,
+                                   bind=lambda: self.adjust_radius(
+                                       slider=central_slider, sphere=central))
         vp.button(text="Reset", bind=lambda: self.reset_slider(
-            central_radius_slider))
+            central_slider))
         scene.append_to_caption("\n")
-        sat_radius_slider: vp.slider = vp.slider(
-            max=(self.values["distance"] + self.values["sat_radius"])
-            / self.values["sat_radius"],
-            min=1, value=1, top=12, bottom=12,
-            bind=lambda: self.adjust_radius(
-                slider=sat_radius_slider, sphere=sat)
-        )
+        sat_slider = vp.slider(max=((self.values.distance +
+                                     self.values.sat.radius) /
+                                    self.values.sat.radius),
+                               min=1, value=1, top=12, bottom=12,
+                               bind=lambda: self.adjust_radius(
+                                   slider=sat_slider, sphere=sat))
         vp.button(text="Reset",
-                  bind=lambda: self.reset_slider(sat_radius_slider))
+                  bind=lambda: self.reset_slider(sat_slider))
         # TODO: sliders for "update_rate" and "t_factor"
 
         # set up time variables
         t = 0
-        t_max = self.options["update_rate"] * self.options["max_seconds"]
+        t_max = self.options.rate * self.options.sim_time
         # TODO: optional endless simulation
         # main simulation loop
         if central_centered:
             scene.camera.follow(central)
-        while t < t_max:
+        while t <= t_max:
             # weird behaviour of those two
-            vp.rate(self.options["update_rate"])
+            vp.rate(self.options.rate)
             # vp.sleep(1/self.options["update_rate"])
             if pause_sim.text == "Pause":
-                central.calculate(sat, self.options["t_factor"])
+                # TODO: move most calculations here
+                central.calculate(sat, self.options.delta_t)
                 if show_pointers:
                     # move pointers
                     central_ptr.pos = central.pos - central_ptr.axis + \
                                       vp.vector(0, central.radius, 0)
                     sat_ptr.pos = sat.pos - sat_ptr.axis + vp.vector(
                         0, sat.radius, 0)
-                t += 1
-        if bool(self.options["do_restart"]):
+                if self.options.sim_time > 0:
+                    t += 1
+        if bool(self.options.restart):
             self.restart()

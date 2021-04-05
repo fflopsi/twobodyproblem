@@ -51,13 +51,7 @@ class OptionsColor:
             pointers_*: RGB value of pointer color (defaults 255, 0, 0)
         """
         self.bodies = vp.vector(bodies_r, bodies_g, bodies_b)
-        self.bodies.r = self.bodies.x
-        self.bodies.g = self.bodies.y
-        self.bodies.b = self.bodies.z
         self.pointers = vp.vector(pointers_r, pointers_g, pointers_b)
-        self.pointers.r = self.pointers.x
-        self.pointers.g = self.pointers.y
-        self.pointers.b = self.pointers.z
 
     @property
     def bodies(self):
@@ -184,8 +178,8 @@ class Options:
         """set simulation time"""
         if not isinstance(value, int):
             raise TypeError("sim_time must be an integer")
-        if value < 1:
-            raise ValueError("sim_time must be positive")
+        if value < 0:
+            raise ValueError("sim_time must be greater than 0 (zero)")
         self._sim_time = value
 
     @property

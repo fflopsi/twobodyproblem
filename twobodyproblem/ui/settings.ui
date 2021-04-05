@@ -244,8 +244,11 @@
               </item>
               <item row="1" column="1">
                <widget class="QSpinBox" name="max_seconds">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Echtzeit-Sekunden bis zum Ende der Simulation. Eingabe 0 (null) ergibt eine endlose Simulation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
                 <property name="minimum">
-                 <number>5</number>
+                 <number>0</number>
                 </property>
                 <property name="maximum">
                  <number>3600</number>
