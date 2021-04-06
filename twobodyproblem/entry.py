@@ -45,18 +45,18 @@ class EntryWindow(QtWidgets.QMainWindow):
 
         # add button and action functionality
         self.ui.b_ok.clicked.connect(lambda: Simulation(
-            values=self.get_values(),
-            options=self.w_settings.get_options()).start())
-        self.ui.b_reset.clicked.connect(self.clear_fields)
+            values=self.get(),
+            options=self.w_settings.get_settings()).start())
+        self.ui.b_reset.clicked.connect(self.clear)
         self.ui.actionVerlassen.triggered.connect(self.ui.close)
         self.ui.actionNeu_starten.triggered.connect(self.restart)
         self.ui.actiongespeicherte_Werte_laden.triggered.connect(
-            self.load_values)
+            self.load)
         self.ui.actionWertedatei_oeffnen.triggered.connect(
-            self.load_values_dialog)
-        self.ui.actionWerte_speichern.triggered.connect(self.save_values)
+            self.load_from)
+        self.ui.actionWerte_speichern.triggered.connect(self.save)
         self.ui.actionWertedatei_speichern_unter.triggered.connect(
-            self.save_values_as)
+            self.save_as)
         self.ui.actionVoreinstellungen.triggered.connect(
             self.w_examples.ui.show)
         self.ui.actionEinstellungen.triggered.connect(self.w_settings.ui.show)
@@ -71,7 +71,7 @@ class EntryWindow(QtWidgets.QMainWindow):
         """restart the program"""
         os.execl(sys.executable, sys.executable, *sys.argv)
 
-    def clear_fields(self):
+    def clear(self):
         """delete all values in all fields"""
         self.ui.central_radius.setText("")
         self.ui.central_mass.setText("")
@@ -135,39 +135,7 @@ class EntryWindow(QtWidgets.QMainWindow):
             self.ui.distance.setText(
                 str(self.preset["distance"]["Erde"]["Sputnik 2"]))
 
-    def get_values(self) -> Values:
-        """get the entered values for further use
-
-        returns: Values
-        """
-        self.fill_standards()
-        return Values(central_mass=float(self.ui.central_mass.text()),
-                      central_radius=float(self.ui.central_radius.text()),
-                      central_v0_x=float(self.ui.central_v0_x.text()),
-                      central_v0_y=float(self.ui.central_v0_y.text()),
-                      central_v0_z=float(self.ui.central_v0_z.text()),
-                      sat_mass=float(self.ui.sat_mass.text()),
-                      sat_radius=float(self.ui.sat_radius.text()),
-                      sat_v0_x=float(self.ui.sat_v0_x.text()),
-                      sat_v0_y=float(self.ui.sat_v0_y.text()),
-                      sat_v0_z=float(self.ui.sat_v0_z.text()),
-                      distance=float(self.ui.distance.text()))
-
-    def save_values(self):
-        """save values into standard file"""
-        with open(self.directory + "/saved_data/values.yml", "w+") as f:
-            f.write(yaml.dump(self.get_values().to_dict()))
-
-    def save_values_as(self):
-        """save values to file with QFileDialog"""
-        name = QtWidgets.QFileDialog.getSaveFileName(
-            parent=self, caption="Eingaben speichern",
-            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml)")
-        if name[0] != "":
-            with open(name[0], "w+") as f:
-                f.write(yaml.dump(self.get_values().to_dict()))
-
-    def fill_values(self, val: Values):
+    def fill(self, val: Values):
         """fill in the given values
 
         args:
@@ -185,12 +153,44 @@ class EntryWindow(QtWidgets.QMainWindow):
         self.ui.sat_v0_z.setText(str(val.sat.velocity.z))
         self.ui.distance.setText(str(val.distance))
 
-    def load_values(self):
+    def get(self) -> Values:
+        """get the entered values for further use
+
+        returns: Values
+        """
+        self.fill_standards()
+        return Values(central_mass=float(self.ui.central_mass.text()),
+                      central_radius=float(self.ui.central_radius.text()),
+                      central_v0_x=float(self.ui.central_v0_x.text()),
+                      central_v0_y=float(self.ui.central_v0_y.text()),
+                      central_v0_z=float(self.ui.central_v0_z.text()),
+                      sat_mass=float(self.ui.sat_mass.text()),
+                      sat_radius=float(self.ui.sat_radius.text()),
+                      sat_v0_x=float(self.ui.sat_v0_x.text()),
+                      sat_v0_y=float(self.ui.sat_v0_y.text()),
+                      sat_v0_z=float(self.ui.sat_v0_z.text()),
+                      distance=float(self.ui.distance.text()))
+
+    def save(self):
+        """save values into standard file"""
+        with open(self.directory + "/saved_data/values.yml", "w+") as f:
+            f.write(yaml.dump(self.get().to_dict()))
+
+    def save_as(self):
+        """save values to file with QFileDialog"""
+        name = QtWidgets.QFileDialog.getSaveFileName(
+            parent=self, caption="Eingaben speichern",
+            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml)")
+        if name[0] != "":
+            with open(name[0], "w+") as f:
+                f.write(yaml.dump(self.get().to_dict()))
+
+    def load(self):
         """loading and filling in saved values"""
         # try to load the value file
         try:
             with open(self.directory + "/saved_data/values.yml", "r") as f:
-                self.fill_values(Values.from_dict(
+                self.fill(Values.from_dict(
                     yaml.load(f, Loader=yaml.FullLoader)))
         except FileNotFoundError:
             err = QtWidgets.QMessageBox()
@@ -199,7 +199,7 @@ class EntryWindow(QtWidgets.QMainWindow):
             err.setWindowTitle("Fehler")
             err.exec()
 
-    def load_values_dialog(self):
+    def load_from(self):
         """loading saved values with QFileDialog"""
         name = QtWidgets.QFileDialog.getOpenFileName(
             parent=self, caption="Wertedatei öffnen",
@@ -207,5 +207,5 @@ class EntryWindow(QtWidgets.QMainWindow):
         )
         if name[0] != "":
             with open(name[0], "r") as f:
-                self.fill_values(Values.from_dict(
+                self.fill(Values.from_dict(
                     yaml.load(f, Loader=yaml.FullLoader)))
