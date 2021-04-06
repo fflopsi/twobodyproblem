@@ -52,7 +52,7 @@ so install it from [here](https://visualstudio.microsoft.com/visual-cpp-build-to
 *To learn more about how to run the program with different options,
 run `python -m twbodyproblem -h` or `python3 -m twbodyproblem -h` respectively.*
 
-The program (better: the inputting section) can be run either
+The program (better: the input section) can be run either
 with a graphical user interface (GUI) or with a command line interface (CLI).
 
 No matter if you run the program in GUI or CLI mode, you will have to input *options* and *values*.
@@ -60,13 +60,13 @@ The options define the particular behavior of the simulation,
 the values define the dimensions (i.e. mass, radius, distance, velocity) of the bodies.
 
 Saving options and values is currently only supported in GUI mode.
-The options are automatically saved if you press one of the two buttons
-in the lower right corner of the settings window (open it with <kbd>Ctrl</kbd>+<kbd>I</kbd>).
 To save values, press <kbd>Ctrl</kbd>+<kbd>S</kbd>. The values will then be saved into a file.
 If you do this action repeatedly, the former contents of the file (i.e. the saved values) will be **overwritten**!
 To load saved values from this file, press <kbd>Ctrl</kbd>+<kbd>L</kbd>.
 To save or load values through a file dialog,
 press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>.
+It works the same way for saving and loading settings
+from the settings window (open it with <kbd>Ctrl</kbd>+<kbd>I</kbd>).
 These files will be saved in the [YAML](https://yaml.org) format (*.yml).
 
 In GUI mode, you can select from a few presets (e.g. Sun, Moon, Earth) to fill in some values.
