@@ -212,7 +212,7 @@ class Options:
                     "g": self.colors.bodies.y,
                     "b": self.colors.bodies.z
                 },
-                "pointer": {
+                "pointers": {
                     "r": self.colors.pointers.x,
                     "g": self.colors.pointers.y,
                     "b": self.colors.pointers.z
