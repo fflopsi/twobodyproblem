@@ -40,7 +40,6 @@ class EntryWindow(QtWidgets.QMainWindow):
         self.w_settings = SettingsWindow(parent=self)
 
         # load presets
-        # TODO: presets as class
         with open(self.directory + "/saved_data/presets.yml", "r") as f:
             self.preset = yaml.load(f, Loader=yaml.FullLoader)
 

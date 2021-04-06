@@ -88,7 +88,6 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
     def save(self):
         """save the entered settings to a file"""
-        # TODO: make settings savable and loadable like values (defaults?)
         with open(self.directory + "/saved_data/settings.yml", "w+") as f:
             f.write(yaml.dump(self.get_options().to_dict()))
 

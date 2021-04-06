@@ -94,7 +94,6 @@ class Simulation:
                    color=vp.vector(self.options.colors.bodies.x / 255,
                                    self.options.colors.bodies.y / 255,
                                    self.options.colors.bodies.z / 255))
-        # TODO: three (or more?) bodies
         central_ptr = vp.arrow()
         sat_ptr = vp.arrow()
         if show_pointers:
@@ -144,7 +143,6 @@ class Simulation:
                                    slider=sat_slider, sphere=sat))
         vp.button(text="Reset",
                   bind=lambda: self.reset_slider(sat_slider))
-        # TODO: sliders for "update_rate" and "t_factor"
 
         # set up time variables
         t = 0
@@ -157,7 +155,6 @@ class Simulation:
             vp.rate(self.options.rate)
             # vp.sleep(1/self.options["update_rate"])
             if pause_sim.text == "Pause":
-                # TODO: move most calculations here
                 central.calculate(sat, self.options.delta_t)
                 if show_pointers:
                     # move pointers

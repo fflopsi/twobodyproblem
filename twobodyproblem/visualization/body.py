@@ -7,8 +7,6 @@ class Body(vp.sphere):
     inherits from: vpython.sphere
     """
 
-    # TODO: collision detection
-
     def __init__(self, sim, name: str, mass=1.0, velocity=vp.vector(0, 0, 0),
                  **kwargs):
         """constructor extends vpython.sphere constructor
@@ -84,8 +82,6 @@ class Body(vp.sphere):
         r = other.pos - self.pos
         # scalar value of the gravitational force
         force_value = (6.67430e-11 * self.mass * other.mass) / (vp.mag(r) ** 2)
-        # TODO: visualize force, acceleration and velocity with arrows
-        # TODO: relativistic formulae
         # calculation for self
         self.force = force_value * vp.norm(r)
         self.acceleration = self.force / self.mass

@@ -23,7 +23,6 @@ def run(cli=False, debug=False):
         print(sys.argv)
     if not cli:
         # run the GUI app
-        # TODO: internationalization (English, German, ...)
         app = QtWidgets.QApplication(sys.argv)
         window = EntryWindow(debug=debug)
         window.ui.show()
@@ -167,7 +166,6 @@ def run(cli=False, debug=False):
 
 if __name__ == "__main__":
     # add CLI arguments
-    # TODO: better documentation
     parser = argparse.ArgumentParser(
         prog="twobodyproblem",
         formatter_class=argparse.RawDescriptionHelpFormatter,
