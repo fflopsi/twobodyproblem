@@ -46,7 +46,7 @@ class EntryWindow(QtWidgets.QMainWindow):
         # add button and action functionality
         self.ui.b_ok.clicked.connect(lambda: Simulation(
             values=self.get(),
-            options=self.w_settings.get_settings()).start())
+            options=self.w_settings.get()).start())
         self.ui.b_reset.clicked.connect(self.clear)
         self.ui.actionVerlassen.triggered.connect(self.ui.close)
         self.ui.actionNeu_starten.triggered.connect(self.restart)
@@ -135,23 +135,23 @@ class EntryWindow(QtWidgets.QMainWindow):
             self.ui.distance.setText(
                 str(self.preset["distance"]["Erde"]["Sputnik 2"]))
 
-    def fill(self, val: Values):
+    def fill(self, values: Values):
         """fill in the given values
 
         args:
-            val: Values to be filled in
+            values: Values object to be filled in
         """
-        self.ui.central_mass.setText(str(val.central.mass))
-        self.ui.central_radius.setText(str(val.central.radius))
-        self.ui.central_v0_x.setText(str(val.central.velocity.x))
-        self.ui.central_v0_y.setText(str(val.central.velocity.y))
-        self.ui.central_v0_z.setText(str(val.central.velocity.z))
-        self.ui.sat_mass.setText(str(val.sat.mass))
-        self.ui.sat_radius.setText(str(val.sat.radius))
-        self.ui.sat_v0_x.setText(str(val.sat.velocity.x))
-        self.ui.sat_v0_y.setText(str(val.sat.velocity.y))
-        self.ui.sat_v0_z.setText(str(val.sat.velocity.z))
-        self.ui.distance.setText(str(val.distance))
+        self.ui.central_mass.setText(str(values.central.mass))
+        self.ui.central_radius.setText(str(values.central.radius))
+        self.ui.central_v0_x.setText(str(values.central.velocity.x))
+        self.ui.central_v0_y.setText(str(values.central.velocity.y))
+        self.ui.central_v0_z.setText(str(values.central.velocity.z))
+        self.ui.sat_mass.setText(str(values.sat.mass))
+        self.ui.sat_radius.setText(str(values.sat.radius))
+        self.ui.sat_v0_x.setText(str(values.sat.velocity.x))
+        self.ui.sat_v0_y.setText(str(values.sat.velocity.y))
+        self.ui.sat_v0_z.setText(str(values.sat.velocity.z))
+        self.ui.distance.setText(str(values.distance))
 
     def get(self) -> Values:
         """get the entered values for further use
@@ -172,7 +172,7 @@ class EntryWindow(QtWidgets.QMainWindow):
                       distance=float(self.ui.distance.text()))
 
     def save(self):
-        """save values into standard file"""
+        """save values to standard file"""
         with open(self.directory + "/saved_data/values.yml", "w+") as f:
             f.write(yaml.dump(self.get().to_dict()))
 
@@ -186,7 +186,7 @@ class EntryWindow(QtWidgets.QMainWindow):
                 f.write(yaml.dump(self.get().to_dict()))
 
     def load(self):
-        """loading and filling in saved values"""
+        """load and fill in saved values"""
         # try to load the value file
         try:
             with open(self.directory + "/saved_data/values.yml", "r") as f:
@@ -200,11 +200,10 @@ class EntryWindow(QtWidgets.QMainWindow):
             err.exec()
 
     def load_from(self):
-        """loading saved values with QFileDialog"""
+        """load values file with QFileDialog"""
         name = QtWidgets.QFileDialog.getOpenFileName(
             parent=self, caption="Wertedatei öffnen",
-            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml))"
-        )
+            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml))")
         if name[0] != "":
             with open(name[0], "r") as f:
                 self.fill(Values.from_dict(

@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import yaml
 from PySide6 import QtWidgets, QtUiTools, QtCore
@@ -26,45 +27,43 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.directory = os.path.dirname(os.path.realpath(__file__))
         self.ui = QtUiTools.QUiLoader().load(
             QtCore.QFile(self.directory + "/ui/settings.ui"))
+        self.ui.actionSpeichern.triggered.connect(self.save)
+        self.ui.actionSpeichern_unter.triggered.connect(self.save_as)
+        self.ui.actionLaden.triggered.connect(self.load)
+        self.ui.actionLaden_von.triggered.connect(self.load_from)
         self.ui.actionVerlassen.triggered.connect(self.ui.close)
-        self.ui.b_cancel.clicked.connect(self.ui.close)
         self.ui.b_ok.clicked.connect(lambda: (self.save(), self.ui.close()))
-        self.ui.b_save.clicked.connect(self.save)
+        self.ui.b_close.clicked.connect(self.ui.close)
         self.ui.show_pointers.stateChanged.connect(
             self.show_pointers_changed_action)
         self.ui.tabWidget.setCurrentIndex(0)
 
-        try:
-            # set the different values to display in settings window
-            with open(self.directory + "/saved_data/settings.yml", "r") as f:
-                conf = yaml.load(f, Loader=yaml.FullLoader)
-                self.ui.canvas_width.setValue(conf["canvas"]["width"])
-                self.ui.canvas_height.setValue(conf["canvas"]["height"])
-                self.ui.do_restart.setChecked(bool(int(conf["do_restart"])))
-                self.ui.do_testing.setChecked(bool(int(conf["do_testing"])))
-                self.ui.do_central_centered.setChecked(
-                    bool(int(conf["do_central_centered"])))
-                self.ui.color_objects_r.setValue(conf["color"]["objects"]["r"])
-                self.ui.color_objects_g.setValue(conf["color"]["objects"]["g"])
-                self.ui.color_objects_g.setValue(conf["color"]["objects"]["g"])
-                self.ui.color_pointer_r.setValue(conf["color"]["pointer"]["r"])
-                self.ui.color_pointer_g.setValue(conf["color"]["pointer"]["g"])
-                self.ui.color_pointer_b.setValue(conf["color"]["pointer"]["b"])
-                self.ui.show_pointers.setChecked(
-                    bool(int(conf["show_pointers"])))
-                self.ui.update_rate.setValue(conf["update_rate"])
-                self.ui.max_seconds.setValue(conf["max_seconds"])
-                self.ui.t_factor.setValue(conf["t_factor"])
-        except FileNotFoundError:
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setWindowTitle("Einstellungsdatei nicht gefunden")
-            msg.setText("Es werden die Standard-Einstellungen angewendet.")
-            msg.exec()
-
+        self.load()
         self.show_pointers_changed_action()
 
-    def get_options(self) -> Options:
+    def fill(self, options: Options):
+        """fill in the given options
+
+        args:
+            options: Options object to be filled in
+        """
+        self.ui.canvas_width.setValue(options.canvas.width)
+        self.ui.canvas_height.setValue(options.canvas.height)
+        self.ui.color_objects_r.setValue(options.colors.bodies.x)
+        self.ui.color_objects_g.setValue(options.colors.bodies.y)
+        self.ui.color_objects_b.setValue(options.colors.bodies.z)
+        self.ui.color_pointer_r.setValue(options.colors.pointers.x)
+        self.ui.color_pointer_g.setValue(options.colors.pointers.y)
+        self.ui.color_pointer_b.setValue(options.colors.pointers.z)
+        self.ui.show_pointers.setChecked(options.pointers)
+        self.ui.update_rate.setValue(options.rate)
+        self.ui.max_seconds.setValue(options.sim_time)
+        self.ui.t_factor.setValue(options.delta_t)
+        self.ui.do_central_centered.setChecked(options.central_centered)
+        self.ui.do_testing.setChecked(options.testing)
+        self.ui.do_restart.setChecked(options.restart)
+
+    def get(self) -> Options:
         """get the entered options for further use
 
         returns: Options
@@ -87,9 +86,42 @@ class SettingsWindow(QtWidgets.QMainWindow):
                        restart=int(self.ui.do_restart.isChecked()))
 
     def save(self):
-        """save the entered settings to a file"""
+        """save the entered settings to standard file"""
         with open(self.directory + "/saved_data/settings.yml", "w+") as f:
-            f.write(yaml.dump(self.get_options().to_dict()))
+            f.write(yaml.dump(self.get().to_dict()))
+
+    def save_as(self):
+        """save settings to file with QFileDialog"""
+        name = QtWidgets.QFileDialog.getSaveFileName(
+            parent=self, caption="Einstellungen speichern",
+            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml)")
+        if name[0] != "":
+            with open(name[0], "w+") as f:
+                f.write(yaml.dump(self.get().to_dict()))
+
+    def load(self):
+        """load and fill in saved settings"""
+        # try to load the settings file
+        try:
+            with open(self.directory + "/saved_data/settings.yml", "r") as f:
+                self.fill(Options.from_dict(
+                    yaml.load(f, Loader=yaml.FullLoader)))
+        except FileNotFoundError:
+            err = QtWidgets.QMessageBox()
+            err.setIcon(QtWidgets.QMessageBox.Critical)
+            err.setText("keine gespeicherten Einstellungen vorhanden")
+            err.setWindowTitle("Fehler")
+            err.exec()
+
+    def load_from(self):
+        """load settings file with QFileDialog"""
+        name = QtWidgets.QFileDialog.getOpenFileName(
+            parent=self, caption="Einstellungsdatei öffnen",
+            dir=str(Path.home()) + "/Documents", filter="YAML (*.yml))")
+        if name[0] != "":
+            with open(name[0], "r") as f:
+                self.fill(Options.from_dict(
+                    yaml.load(f, Loader=yaml.FullLoader)))
 
     def show_pointers_changed_action(self):
         """changes enabled state of the pointer color choosing fields"""

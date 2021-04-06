@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>537</height>
+    <width>544</width>
+    <height>486</height>
    </rect>
   </property>
   <property name="font">
@@ -20,21 +20,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
-    <property name="spacing">
-     <number>8</number>
-    </property>
-    <property name="leftMargin">
-     <number>16</number>
-    </property>
-    <property name="topMargin">
-     <number>16</number>
-    </property>
-    <property name="rightMargin">
-     <number>16</number>
-    </property>
-    <property name="bottomMargin">
-     <number>16</number>
-    </property>
     <item>
      <widget class="QLabel" name="label_17">
       <property name="text">
@@ -63,7 +48,7 @@
              <x>0</x>
              <y>0</y>
              <width>502</width>
-             <height>326</height>
+             <height>293</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
@@ -355,7 +340,7 @@
              <x>0</x>
              <y>0</y>
              <width>502</width>
-             <height>326</height>
+             <height>293</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout">
@@ -406,28 +391,6 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="b_cancel">
-        <property name="toolTip">
-         <string extracomment="Verlassen ohne zu speichern">schliessen ohne zu speichern</string>
-        </property>
-        <property name="statusTip">
-         <string/>
-        </property>
-        <property name="whatsThis">
-         <string/>
-        </property>
-        <property name="accessibleName">
-         <string/>
-        </property>
-        <property name="accessibleDescription">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Abbrechen</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -441,19 +404,19 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="b_save">
+       <widget class="QPushButton" name="b_close">
         <property name="toolTip">
-         <string>speichern</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;schliessen ohne zu speichern&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
-         <string>Übernehmen</string>
+         <string>Schliessen</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="b_ok">
         <property name="toolTip">
-         <string>speichern und schliessen</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;speichern und schliessen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>OK</string>
@@ -475,7 +438,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>558</width>
+     <width>544</width>
      <height>26</height>
     </rect>
    </property>
@@ -485,15 +448,73 @@
     </property>
     <addaction name="actionVerlassen"/>
    </widget>
+   <widget class="QMenu" name="menuEinstellungen">
+    <property name="title">
+     <string>Einstellungen</string>
+    </property>
+    <addaction name="actionSpeichern"/>
+    <addaction name="actionSpeichern_unter"/>
+    <addaction name="separator"/>
+    <addaction name="actionLaden"/>
+    <addaction name="actionLaden_von"/>
+   </widget>
    <addaction name="menuOptionen"/>
+   <addaction name="menuEinstellungen"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionVerlassen">
    <property name="text">
     <string>Verlassen</string>
    </property>
+   <property name="toolTip">
+    <string>Fenster schliessen ohne zu speichern</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionSpeichern">
+   <property name="text">
+    <string>Speichern</string>
+   </property>
+   <property name="toolTip">
+    <string>Einstellungen speichern</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSpeichern_unter">
+   <property name="text">
+    <string>Speichern unter...</string>
+   </property>
+   <property name="toolTip">
+    <string>Einstellungen speichern unter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionLaden">
+   <property name="text">
+    <string>Laden</string>
+   </property>
+   <property name="toolTip">
+    <string>Einstellungen laden</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionLaden_von">
+   <property name="text">
+    <string>Laden von...</string>
+   </property>
+   <property name="toolTip">
+    <string>Einstellungsdatei öffnen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+L</string>
    </property>
   </action>
  </widget>
@@ -510,8 +531,6 @@
   <tabstop>max_seconds</tabstop>
   <tabstop>do_testing</tabstop>
   <tabstop>do_restart</tabstop>
-  <tabstop>b_cancel</tabstop>
-  <tabstop>b_save</tabstop>
   <tabstop>b_ok</tabstop>
  </tabstops>
  <resources/>
