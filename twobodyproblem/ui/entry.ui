@@ -420,6 +420,9 @@
    <property name="text">
     <string>Einstellungen...</string>
    </property>
+   <property name="toolTip">
+    <string>Einstellungen öffnen</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
    </property>
@@ -428,13 +431,19 @@
    <property name="text">
     <string>Verlassen</string>
    </property>
+   <property name="toolTip">
+    <string>Programm schliessen</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actiongespeicherte_Werte_laden">
    <property name="text">
-    <string>gespeicherte Werte laden...</string>
+    <string>Laden</string>
+   </property>
+   <property name="toolTip">
+    <string>Werte laden und eintragen</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
@@ -444,13 +453,19 @@
    <property name="text">
     <string>Voreinstellungen...</string>
    </property>
+   <property name="toolTip">
+    <string>Voreinstellungen öffnen</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
    </property>
   </action>
   <action name="actionWertedatei_oeffnen">
    <property name="text">
-    <string>Wertedatei öffnen...</string>
+    <string>Öffnen von...</string>
+   </property>
+   <property name="toolTip">
+    <string>Wertedatei öffnen</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+L</string>
@@ -458,6 +473,9 @@
   </action>
   <action name="actionWerte_speichern">
    <property name="text">
+    <string>Speichern</string>
+   </property>
+   <property name="toolTip">
     <string>Werte speichern</string>
    </property>
    <property name="shortcut">
@@ -466,7 +484,10 @@
   </action>
   <action name="actionWertedatei_speichern_unter">
    <property name="text">
-    <string>Wertedatei speichern unter...</string>
+    <string>Speichern unter...</string>
+   </property>
+   <property name="toolTip">
+    <string>Werte speichern unter</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
@@ -475,6 +496,9 @@
   <action name="actionNeu_starten">
    <property name="text">
     <string>Neu starten</string>
+   </property>
+   <property name="toolTip">
+    <string>Programm neu starten</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Q</string>
