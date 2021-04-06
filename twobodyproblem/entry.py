@@ -156,7 +156,7 @@ class EntryWindow(QtWidgets.QMainWindow):
     def save_values(self):
         """save values into standard file"""
         with open(self.directory + "/saved_data/values.yml", "w+") as f:
-            f.write(yaml.dump(self.get_values()))
+            f.write(yaml.dump(self.get_values().to_dict()))
 
     def save_values_as(self):
         """save values to file with QFileDialog"""
@@ -165,34 +165,33 @@ class EntryWindow(QtWidgets.QMainWindow):
             dir=str(Path.home()) + "/Documents", filter="YAML (*.yml)")
         if name[0] != "":
             with open(name[0], "w+") as f:
-                f.write(yaml.dump(self.get_values()))
+                f.write(yaml.dump(self.get_values().to_dict()))
 
-    def fill_values(self, val: dict):
+    def fill_values(self, val: Values):
         """fill in the given values
 
         args:
-            val: dictionary of values to be filled in
+            val: Values to be filled in
         """
-        values = Values.from_dict(val)
-        self.ui.central_mass.setText(str(values.central.mass))
-        self.ui.central_radius.setText(str(values.central.radius))
-        self.ui.central_v0_x.setText(str(values.central.velocity.x))
-        self.ui.central_v0_y.setText(str(values.central.velocity.y))
-        self.ui.central_v0_z.setText(str(values.central.velocity.z))
-        self.ui.sat_mass.setText(str(values.sat.mass))
-        self.ui.sat_radius.setText(str(values.sat.radius))
-        self.ui.sat_v0_x.setText(str(values.sat.velocity.x))
-        self.ui.sat_v0_y.setText(str(values.sat.velocity.y))
-        self.ui.sat_v0_z.setText(str(values.sat.velocity.z))
-        self.ui.distance.setText(str(values.distance))
+        self.ui.central_mass.setText(str(val.central.mass))
+        self.ui.central_radius.setText(str(val.central.radius))
+        self.ui.central_v0_x.setText(str(val.central.velocity.x))
+        self.ui.central_v0_y.setText(str(val.central.velocity.y))
+        self.ui.central_v0_z.setText(str(val.central.velocity.z))
+        self.ui.sat_mass.setText(str(val.sat.mass))
+        self.ui.sat_radius.setText(str(val.sat.radius))
+        self.ui.sat_v0_x.setText(str(val.sat.velocity.x))
+        self.ui.sat_v0_y.setText(str(val.sat.velocity.y))
+        self.ui.sat_v0_z.setText(str(val.sat.velocity.z))
+        self.ui.distance.setText(str(val.distance))
 
     def load_values(self):
         """loading and filling in saved values"""
         # try to load the value file
         try:
             with open(self.directory + "/saved_data/values.yml", "r") as f:
-                values = yaml.load(f, Loader=yaml.FullLoader)
-                self.fill_values(values)
+                self.fill_values(Values.from_dict(
+                    yaml.load(f, Loader=yaml.FullLoader)))
         except FileNotFoundError:
             err = QtWidgets.QMessageBox()
             err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -208,5 +207,5 @@ class EntryWindow(QtWidgets.QMainWindow):
         )
         if name[0] != "":
             with open(name[0], "r") as f:
-                values = yaml.load(f, Loader=yaml.FullLoader)
-                self.fill_values(values)
+                self.fill_values(Values.from_dict(
+                    yaml.load(f, Loader=yaml.FullLoader)))
