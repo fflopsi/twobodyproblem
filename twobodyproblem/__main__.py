@@ -184,7 +184,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-d", "--debug", action="store_true",
-        help="run the program in debug mode"
+        help="run the program with debug info prints"
     )
     parser.add_argument(
         "-n", "--nogui", action="store_true",
