@@ -9,23 +9,43 @@ from twobodyproblem.options import Options
 from twobodyproblem.values import Values
 from twobodyproblem.visualization.simulation import Simulation
 
+if __name__ == "__main__":
+    # add CLI arguments
+    parser = argparse.ArgumentParser(
+        prog="twobodyproblem",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        usage="python/python3 -m twobodyproblem [-h | -v | [-d] [-n]]",
+        description="This is a little simulation of the gravitational two "
+                    "body problem.\nTo use it normally in GUI mode, just run "
+                    "the command without any of the optional arguments.",
+        epilog="For further information, "
+               "visit:\nhttps://github.com/flopsi-l-f/two-body"
+               "-problem_simulation"
+    )
+    parser.add_argument(
+        "-v", "--version", action="version",
+        version="%(prog)s version " + twobodyproblem.__version__,
+        help="show the version of the program and exit"
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true",
+        help="run the program with debug info prints"
+    )
+    parser.add_argument(
+        "-n", "--nogui", action="store_true",
+        help="run the program (the input section only) without the GUI, "
+             "but with a CLI"
+    )
+    args = parser.parse_args()
 
-def run(cli=False, debug=False):
-    """runs the simulation
-
-    args:
-        cli: true if the program (value and option inputting) should be ran on
-        the command line instead of a gui (default False)
-        debug: true if the program should be run in debug mode (default False)
-    """
-    if debug:
+    if args.debug:
         print("debugging activated ...")
         print("passed arguments:")
         print(sys.argv)
-    if not cli:
+    if not args.nogui:
         # run the GUI app
         app = QtWidgets.QApplication(sys.argv)
-        window = EntryWindow(debug=debug)
+        window = EntryWindow(debug=args.debug)
         window.ui.show()
         sys.exit(app.exec_())
     else:
@@ -104,7 +124,7 @@ def run(cli=False, debug=False):
                 input("restart the program after a simulation (1): ")))
         except ValueError:
             pass
-        if debug:
+        if args.debug:
             print(options)
 
         print("\nNext, you need to input the values:")
@@ -158,40 +178,8 @@ def run(cli=False, debug=False):
             values.distance = float(input("\tinitial distance (1000000)[m]: "))
         except ValueError:
             pass
-        if debug:
+        if args.debug:
             print(values)
 
         # create and start simulation
         Simulation(values=values, options=options).start()
-
-
-if __name__ == "__main__":
-    # add CLI arguments
-    parser = argparse.ArgumentParser(
-        prog="twobodyproblem",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage="python/python3 -m twobodyproblem [-h | -v | [-d] [-n]]",
-        description="This is a little simulation of the gravitational two "
-                    "body problem.\nTo use it normally in GUI mode, just run "
-                    "the command without any of the optional arguments.",
-        epilog="For further information, "
-               "visit:\nhttps://github.com/flopsi-l-f/two-body"
-               "-problem_simulation"
-    )
-    parser.add_argument(
-        "-v", "--version", action="version",
-        version="%(prog)s version " + twobodyproblem.__version__,
-        help="show the version of the program and exit"
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true",
-        help="run the program with debug info prints"
-    )
-    parser.add_argument(
-        "-n", "--nogui", action="store_true",
-        help="run the program (the input section only) without the GUI, "
-             "but with a CLI"
-    )
-    args = parser.parse_args()
-
-    run(cli=args.nogui, debug=args.debug)
