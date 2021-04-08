@@ -4,7 +4,7 @@
 
 **Welcome!**
 
-I wrote a small program to simulate the two body problem.
+I wrote a small program in Python to simulate the two body problem.
 You can either choose from presets (like Sun, Earth, Moon etc.)
 or type in your own masses and volumes.
 The program will show you a visualization of the simulation.
