@@ -7,7 +7,9 @@
 import argparse
 import sys
 
-from twobodyproblem.visualization import simulation
+from twobodyproblem.visualization.simulation import Simulation
+from twobodyproblem.values import Values
+from twobodyproblem.options import Options
 
 if __name__ == "__main__":
     # add CLI arguments
@@ -44,8 +46,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-o", "--options", nargs="*", default=[1000, 600, 255, 255, 255, 255,
-                                               0, 0, 1, 100, 30, 10, 0, 0,
-                                               1],
+                                               0, 0, 1, 100, 30, 10, 0, 0, 1],
         help="input the options in the following order (1 for yes, 0 for no): "
              "canvas width, canvas height, color objects RGB, color pointers "
              "RGB, show pointers, calculations per second, simulation length "
@@ -55,50 +56,26 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # convert inputs to dictionaries
+    # convert inputs to usable objects
     try:
-        values = {
-            "central_mass": args.input[0],
-            "central_radius": args.input[1],
-            "central_v0": {"x": args.input[2], "y": args.input[3],
-                           "z": args.input[4]},
-            "sat_mass": args.input[5],
-            "sat_radius": args.input[6],
-            "sat_v0": {"x": args.input[7], "y": args.input[8],
-                       "z": args.input[9]},
-            "distance": args.input[10]
-        }
+        args.input[10]
     except IndexError:
         raise ValueError("please provide more values")
     try:
-        options = {
-            "canvas": {"width": args.options[0], "height": args.options[1]},
-            "color": {
-                "objects": {"r": args.options[2], "g": args.options[3],
-                            "b": args.options[4]},
-                "pointer": {"r": args.options[5], "g": args.options[6],
-                            "b": args.options[7]},
-            },
-            "show_pointers": args.options[8],
-            "update_rate": args.options[9],
-            "max_seconds": args.options[10],
-            "t_factor": args.options[11],
-            "do_central_centered": args.options[12],
-            "do_testing": args.options[13],
-            "do_restart": args.options[14]
-        }
+        args.options[14]
     except IndexError:
         raise ValueError("please provide more options")
+    values = Values.from_list(args.input)
+    options = Options.from_list(args.options)
 
     if args.debug:
         print("debugging activated ...")
         print("passed arguments:", end=" ")
         print(sys.argv)
-        print("options:", end=" ")
-        print(options)
         print("values:", end=" ")
-        print(values)
+        print(values.to_dict())
+        print("options:", end=" ")
+        print(options.to_dict())
 
     # create and start simulation
-    sim = simulation.Simulation(values=values, options=options)
-    sim.start()
+    Simulation(values=values, options=options).start()
