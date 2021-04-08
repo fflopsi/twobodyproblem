@@ -3,10 +3,11 @@ import sys
 
 from PySide6 import QtWidgets
 
+import twobodyproblem
 from twobodyproblem.entry import EntryWindow
-from twobodyproblem.visualization.simulation import Simulation
 from twobodyproblem.options import Options
 from twobodyproblem.values import Values
+from twobodyproblem.visualization.simulation import Simulation
 
 
 def run(cli=False, debug=False):
@@ -179,7 +180,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-v", "--version", action="version",
-        version="use \"pip3 show %(prog)s\"",
+        version="%(prog)s version " + twobodyproblem.__version__,
         help="show the version of the program and exit"
     )
     parser.add_argument(

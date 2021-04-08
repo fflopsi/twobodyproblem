@@ -7,9 +7,10 @@
 import argparse
 import sys
 
-from twobodyproblem.visualization.simulation import Simulation
-from twobodyproblem.values import Values
+import twobodyproblem
 from twobodyproblem.options import Options
+from twobodyproblem.values import Values
+from twobodyproblem.visualization.simulation import Simulation
 
 if __name__ == "__main__":
     # add CLI arguments
@@ -27,7 +28,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-v", "--version", action="version",
-        version="use \"pip3 show %(prog)s\"",
+        version="%(prog)s version " + twobodyproblem.__version__,
         help="show the version of the program and exit"
     )
     parser.add_argument(
