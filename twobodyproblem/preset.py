@@ -1,3 +1,19 @@
+MASS = {
+    "UNIT": "kg",
+    "Sun": 1.989e30,
+    "Earth": 5.972e24,
+    "Moon": 7.342e22,
+    "Sputnik2": 5.0e2
+}
+
+RADIUS = {
+    "UNIT": "m",
+    "Sun": 6.9634e8,
+    "Earth": 6.371e6,
+    "Moon": 1.737e6,
+    "Sputnik2": 2.0e0
+}
+
 DISTANCE = {
     "UNIT": "m",
     "Sun": {
@@ -26,23 +42,31 @@ class AstroBody:
 
 
 class Sun(AstroBody):
-    mass = 1.989e30
-    radius = 6.9634e8
+    mass = MASS["Sun"]
+    radius = RADIUS["Sun"]
 
 
 class Earth(AstroBody):
-    mass = 5.972e24
-    radius = 6.371e6
+    mass = MASS["Earth"]
+    radius = RADIUS["Earth"]
 
 
 class Moon(AstroBody):
-    mass = 7.342e22
-    radius = 1.737e6
+    mass = MASS["Moon"]
+    radius = RADIUS["Moon"]
 
 
 class Sputnik2(AstroBody):
-    mass = 5e2
-    radius = 2e0
+    mass = MASS["Sputnik2"]
+    radius = RADIUS["Sputnik2"]
+
+
+def mass(body: AstroBody) -> float:
+    return body.mass
+
+
+def radius(body: AstroBody) -> float:
+    return body.radius
 
 
 def distance(one: AstroBody, two: AstroBody) -> float:
