@@ -1,3 +1,10 @@
+import os
+
+import yaml
+
+with open(os.path.dirname(os.path.realpath(__file__)) + "/saved_data/preset.yml") as f:
+    presets = yaml.load(f, Loader=yaml.FullLoader)
+
 MASS = {
     "UNIT": "kg",
     "Sun": 1.989e30,
@@ -35,6 +42,7 @@ DISTANCE = {
 
 
 class AstroBody:
+    """base class of which all preset classes should inherit"""
     mass: float
     radius: float
     mass_unit = "kg"
@@ -42,34 +50,60 @@ class AstroBody:
 
 
 class Sun(AstroBody):
+    """class for Sun presets, inherits from AstroBody"""
     mass = MASS["Sun"]
     radius = RADIUS["Sun"]
 
 
 class Earth(AstroBody):
+    """class for Earth presets, inherits from AstroBody"""
     mass = MASS["Earth"]
     radius = RADIUS["Earth"]
 
 
 class Moon(AstroBody):
+    """class for Moon presets, inherits from AstroBody"""
     mass = MASS["Moon"]
     radius = RADIUS["Moon"]
 
 
 class Sputnik2(AstroBody):
+    """class for Sputnik 2 presets, inherits from AstroBody"""
     mass = MASS["Sputnik2"]
     radius = RADIUS["Sputnik2"]
 
 
 def mass(body: AstroBody) -> float:
+    """returns mass of given body
+
+    args:
+        body: AstroBody of which mass should be given
+
+    returns: float
+    """
     return body.mass
 
 
 def radius(body: AstroBody) -> float:
+    """returns radius of given body
+
+    args:
+        body: AstroBody of which radius should be given
+
+    returns: float
+    """
     return body.radius
 
 
 def distance(one: AstroBody, two: AstroBody) -> float:
+    """returns distance between two given bodies
+
+    args:
+        one: first AstroBody
+        two: second AstroBody
+
+    returns: float
+    """
     if one.mass > two.mass:
         return DISTANCE[one.__name__][two.__name__]
     else:
