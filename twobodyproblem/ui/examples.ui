@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
-    <height>232</height>
+    <width>469</width>
+    <height>268</height>
    </rect>
   </property>
   <property name="font">
@@ -79,17 +79,17 @@
        <widget class="QComboBox" name="choice_central">
         <item>
          <property name="text">
-          <string>Sonne</string>
+          <string notr="true">Sun</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Erde</string>
+          <string notr="true">Earth</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Mond</string>
+          <string notr="true">Moon</string>
          </property>
         </item>
        </widget>
@@ -98,17 +98,17 @@
        <widget class="QComboBox" name="choice_sat">
         <item>
          <property name="text">
-          <string>Erde</string>
+          <string notr="true">Earth</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Mond</string>
+          <string notr="true">Moon</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Sputnik 2</string>
+          <string notr="true">Sputnik2</string>
          </property>
         </item>
        </widget>
@@ -182,8 +182,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>376</width>
-     <height>26</height>
+     <width>469</width>
+     <height>34</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOptionen">
