@@ -6,10 +6,11 @@ import vpython as vp
 import yaml
 from PySide6 import QtGui, QtWidgets, QtCore, QtUiTools
 
+from twobodyproblem import preset
 from twobodyproblem.examples import ExamplesWindow
 from twobodyproblem.settings import SettingsWindow
-from twobodyproblem.visualization.simulation import Simulation
 from twobodyproblem.values import Values
+from twobodyproblem.visualization.simulation import Simulation
 
 
 class EntryWindow(QtWidgets.QMainWindow):
@@ -28,6 +29,7 @@ class EntryWindow(QtWidgets.QMainWindow):
         """
         # set up UI
         super(EntryWindow, self).__init__(*args, parent, **kwargs)
+        self.parent = parent
         self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
         if self.debug:
@@ -38,10 +40,6 @@ class EntryWindow(QtWidgets.QMainWindow):
         # create other windows
         self.w_examples = ExamplesWindow(parent=self)
         self.w_settings = SettingsWindow(parent=self)
-
-        # load presets
-        with open(self.directory + "/saved_data/presets.yml", "r") as f:
-            self.preset = yaml.load(f, Loader=yaml.FullLoader)
 
         # add button and action functionality
         self.ui.b_ok.clicked.connect(lambda: Simulation(
@@ -90,11 +88,11 @@ class EntryWindow(QtWidgets.QMainWindow):
         try:  # check if valid number entered
             float(self.ui.central_mass.text())
         except ValueError:  # enter standard value if an error occurs
-            self.ui.central_mass.setText(str(self.preset["mass"]["Erde"]))
+            self.ui.central_mass.setText(str(preset.Earth.mass))
         try:
             float(self.ui.central_radius.text())
         except ValueError:
-            self.ui.central_radius.setText(str(self.preset["radius"]["Erde"]))
+            self.ui.central_radius.setText(str(preset.Earth.radius))
         try:
             float(self.ui.central_v0_x.text())
         except ValueError:
@@ -111,11 +109,11 @@ class EntryWindow(QtWidgets.QMainWindow):
         try:
             float(self.ui.sat_mass.text())
         except ValueError:
-            self.ui.sat_mass.setText(str(self.preset["mass"]["Sputnik 2"]))
+            self.ui.sat_mass.setText(str(preset.Sputnik2.mass))
         try:
             float(self.ui.sat_radius.text())
         except ValueError:
-            self.ui.sat_radius.setText(str(self.preset["radius"]["Sputnik 2"]))
+            self.ui.sat_radius.setText(str(preset.Sputnik2.radius))
         try:
             float(self.ui.sat_v0_x.text())
         except ValueError:
@@ -133,7 +131,7 @@ class EntryWindow(QtWidgets.QMainWindow):
             float(self.ui.distance.text())
         except ValueError:
             self.ui.distance.setText(
-                str(self.preset["distance"]["Erde"]["Sputnik 2"]))
+                str(preset.distance("EarthSat")))
 
     def fill(self, values: Values):
         """fill in the given values
