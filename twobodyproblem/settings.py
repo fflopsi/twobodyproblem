@@ -23,6 +23,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         """
         # set up UI
         super(SettingsWindow, self).__init__(*args, parent, **kwargs)
+        self.parent = parent
         self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
         self.ui = QtUiTools.QUiLoader().load(
