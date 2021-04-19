@@ -33,7 +33,7 @@ class EntryWindow(QtWidgets.QMainWindow):
         self.debug = debug
         self.directory = os.path.dirname(os.path.realpath(__file__))
         if self.debug:
-            print(self.directory)
+            print("directory: " + self.directory)
         self.ui = QtUiTools.QUiLoader().load(
             QtCore.QFile(self.directory + "/ui/entry.ui"))
         self.ui.setWindowIcon(QtGui.QIcon(self.directory + "/ui/icon.gif"))
@@ -48,10 +48,8 @@ class EntryWindow(QtWidgets.QMainWindow):
         self.ui.b_reset.clicked.connect(self.clear)
         self.ui.actionVerlassen.triggered.connect(self.ui.close)
         self.ui.actionNeu_starten.triggered.connect(self.restart)
-        self.ui.actiongespeicherte_Werte_laden.triggered.connect(
-            self.load)
-        self.ui.actionWertedatei_oeffnen.triggered.connect(
-            self.load_from)
+        self.ui.actiongespeicherte_Werte_laden.triggered.connect(self.load)
+        self.ui.actionWertedatei_oeffnen.triggered.connect(self.load_from)
         self.ui.actionWerte_speichern.triggered.connect(self.save)
         self.ui.actionWertedatei_speichern_unter.triggered.connect(
             self.save_as)
@@ -67,6 +65,8 @@ class EntryWindow(QtWidgets.QMainWindow):
 
     def restart(self):
         """restart the program"""
+        if self.debug:
+            print("restarting in debug mode...")
         os.execl(sys.executable, sys.executable, *sys.argv)
 
     def clear(self):
@@ -133,6 +133,9 @@ class EntryWindow(QtWidgets.QMainWindow):
             self.ui.distance.setText(
                 str(preset.distance("EarthSat")))
 
+        if self.debug:
+            print("standard values have been applied")
+
     def fill(self, values: Values):
         """fill in the given values
 
@@ -173,6 +176,9 @@ class EntryWindow(QtWidgets.QMainWindow):
         """save values to standard file"""
         with open(self.directory + "/saved_data/values.yml", "w+") as f:
             f.write(yaml.dump(self.get().to_dict()))
+        if self.debug:
+            print("values have been saved to: "
+                  + self.directory + "/saved_data/values.yml")
 
     def save_as(self):
         """save values to file with QFileDialog"""
@@ -182,6 +188,8 @@ class EntryWindow(QtWidgets.QMainWindow):
         if name[0] != "":
             with open(name[0], "w+") as f:
                 f.write(yaml.dump(self.get().to_dict()))
+            if self.debug:
+                print("values have been saved to: " + name[0])
 
     def load(self):
         """load and fill in saved values"""
@@ -190,6 +198,9 @@ class EntryWindow(QtWidgets.QMainWindow):
             with open(self.directory + "/saved_data/values.yml", "r") as f:
                 self.fill(Values.from_dict(
                     yaml.load(f, Loader=yaml.FullLoader)))
+            if self.debug:
+                print("values have been loaded from: "
+                      + self.directory + "/saved_data/values.yml")
         except FileNotFoundError:
             err = QtWidgets.QMessageBox()
             err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -206,3 +217,5 @@ class EntryWindow(QtWidgets.QMainWindow):
             with open(name[0], "r") as f:
                 self.fill(Values.from_dict(
                     yaml.load(f, Loader=yaml.FullLoader)))
+            if self.debug:
+                print("values have been loaded from: " + name[0])

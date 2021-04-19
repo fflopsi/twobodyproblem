@@ -70,7 +70,7 @@ if __name__ == "__main__":
     options = Options.from_list(args.options)
 
     if args.debug:
-        print("debugging activated ...")
+        print("debugging activated...")
         print("passed arguments:", end=" ")
         print(sys.argv)
         print("values:", end=" ")

@@ -39,8 +39,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.debug:
-        print("debugging activated ...")
-        print("passed arguments:")
+        print("debugging activated...")
+        print("passed arguments:", end=" ")
         print(sys.argv)
     if not args.nogui:
         # run the GUI app
@@ -125,7 +125,8 @@ if __name__ == "__main__":
         except ValueError:
             pass
         if args.debug:
-            print(options)
+            print("options:", end=" ")
+            print(options.to_dict())
 
         print("\nNext, you need to input the values:")
         # default values
@@ -179,7 +180,8 @@ if __name__ == "__main__":
         except ValueError:
             pass
         if args.debug:
-            print(values)
+            print("values:", end=" ")
+            print(values.to_dict())
 
         # create and start simulation
         Simulation(values=values, options=options).start()

@@ -90,6 +90,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
         """save the entered settings to standard file"""
         with open(self.directory + "/saved_data/settings.yml", "w+") as f:
             f.write(yaml.dump(self.get().to_dict()))
+        if self.debug:
+            print("settings have been saved to: "
+                  + self.directory + "/saved_data/settings.yml")
 
     def save_as(self):
         """save settings to file with QFileDialog"""
@@ -99,6 +102,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         if name[0] != "":
             with open(name[0], "w+") as f:
                 f.write(yaml.dump(self.get().to_dict()))
+            if self.debug:
+                print("settings have been saved to: " + name[0])
 
     def load(self):
         """load and fill in saved settings"""
@@ -107,6 +112,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
             with open(self.directory + "/saved_data/settings.yml", "r") as f:
                 self.fill(Options.from_dict(
                     yaml.load(f, Loader=yaml.FullLoader)))
+            if self.debug:
+                print("settings have been loaded from: "
+                      + self.directory + "/saved_data/settings.yml")
         except FileNotFoundError:
             err = QtWidgets.QMessageBox()
             err.setIcon(QtWidgets.QMessageBox.Critical)
@@ -123,6 +131,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
             with open(name[0], "r") as f:
                 self.fill(Options.from_dict(
                     yaml.load(f, Loader=yaml.FullLoader)))
+            if self.debug:
+                print("settings have been loaded from: " + name[0])
 
     def show_pointers_changed_action(self):
         """changes enabled state of the pointer color choosing fields"""
