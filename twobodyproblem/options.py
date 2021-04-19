@@ -14,12 +14,11 @@ class OptionsCanvas:
 
     @property
     def width(self):
-        """get width"""
+        """get and set width"""
         return self._width
 
     @width.setter
     def width(self, value):
-        """set width"""
         if not isinstance(value, int):
             raise TypeError("width must be an integer")
         if value < 100:
@@ -28,12 +27,11 @@ class OptionsCanvas:
 
     @property
     def height(self):
-        """get height"""
+        """get and set height"""
         return self._height
 
     @height.setter
     def height(self, value):
-        """set height"""
         if not isinstance(value, int):
             raise TypeError("height must be an integer")
         if value < 50:
@@ -55,12 +53,11 @@ class OptionsColor:
 
     @property
     def bodies(self):
-        """get bodies color vector"""
+        """get and set bodies color vector"""
         return self._bodies
 
     @bodies.setter
     def bodies(self, value):
-        """set bodies color vector"""
         if not (0 <= value.x <= 255 and 0 <= value.y <= 255
                 and 0 <= value.z <= 255):
             raise ValueError("RGB values must be between 0 and 255")
@@ -68,12 +65,11 @@ class OptionsColor:
 
     @property
     def pointers(self):
-        """get pointers color vector"""
+        """get and set pointers color vector"""
         return self._pointers
 
     @pointers.setter
     def pointers(self, value):
-        """set pointers color vector"""
         if not (0 <= value.x <= 255 and 0 <= value.y <= 255
                 and 0 <= value.z <= 255):
             raise ValueError("RGB values must be between 0 and 255")
@@ -156,12 +152,11 @@ class Options:
 
     @property
     def rate(self):
-        """get update rate"""
+        """get and set update rate"""
         return self._rate
 
     @rate.setter
     def rate(self, value):
-        """set update rate"""
         if not isinstance(value, int):
             raise TypeError("rate must be an integer")
         if value < 1:
@@ -170,12 +165,11 @@ class Options:
 
     @property
     def sim_time(self):
-        """get simulation time"""
+        """get and set simulation time"""
         return self._sim_time
 
     @sim_time.setter
     def sim_time(self, value):
-        """set simulation time"""
         if not isinstance(value, int):
             raise TypeError("sim_time must be an integer")
         if value < 0:
@@ -184,12 +178,11 @@ class Options:
 
     @property
     def delta_t(self):
-        """get Δt"""
+        """get and set Δt"""
         return self._delta_t
 
     @delta_t.setter
     def delta_t(self, value):
-        """set Δt"""
         if not isinstance(value, int) and not isinstance(value, float):
             raise TypeError("delta_t must be a number")
         if value <= 0:

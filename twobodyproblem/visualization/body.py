@@ -27,46 +27,43 @@ class Body(vp.sphere):
 
     @property
     def name(self):
-        """returns the name of the body"""
+        """get the name of the body"""
         return self._name
 
     @property
     def mass(self):
-        """returns the mass of the body"""
+        """get the mass of the body"""
         return self._mass
 
     @property
     def force(self):
-        """returns the force of the body"""
+        """get and set the force of the body"""
         return self._force
 
     @force.setter
     def force(self, value: vp.vector):
-        """set the force of the body"""
         if not isinstance(value, vp.vector):
             raise TypeError("force must be a vector")
         self._force = value
 
     @property
     def acceleration(self):
-        """returns the acceleration of the body"""
+        """get and set the acceleration of the body"""
         return self._acceleration
 
     @acceleration.setter
     def acceleration(self, value: vp.vector):
-        """set the acceleration of the body"""
         if not isinstance(value, vp.vector):
             raise TypeError("acceleration must be a vector")
         self._acceleration = value
 
     @property
     def velocity(self):
-        """returns the velocity of the body"""
+        """get and set the velocity of the body"""
         return self._velocity
 
     @velocity.setter
     def velocity(self, value: vp.vector):
-        """set the velocity of the body"""
         if not isinstance(value, vp.vector):
             raise TypeError("velocity must be a vector")
         self._velocity = value

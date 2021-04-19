@@ -16,12 +16,11 @@ class ValuesBody:
 
     @property
     def mass(self):
-        """get mass"""
+        """get and set mass"""
         return self._mass
 
     @mass.setter
     def mass(self, value):
-        """set mass"""
         if not isinstance(value, int) and not isinstance(value, float):
             raise TypeError("mass must be a number")
         if value == 0:
@@ -30,12 +29,11 @@ class ValuesBody:
 
     @property
     def radius(self):
-        """get radius"""
+        """get and set radius"""
         return self._radius
 
     @radius.setter
     def radius(self, value):
-        """set radius"""
         if not isinstance(value, int) and not isinstance(value, float):
             raise TypeError("radius must be a number")
         if value <= 0:
@@ -44,12 +42,11 @@ class ValuesBody:
 
     @property
     def velocity(self):
-        """get velocity"""
+        """get and set velocity"""
         return self._velocity
 
     @velocity.setter
     def velocity(self, value: vp.vector):
-        """set velocity"""
         if not isinstance(value, vp.vector):
             raise TypeError("velocity must be a vector")
         self._velocity = value
@@ -112,12 +109,11 @@ class Values:
 
     @property
     def distance(self):
-        """get distance between bodies"""
+        """get and set distance between bodies"""
         return self._distance
 
     @distance.setter
     def distance(self, value):
-        """set distance between bodies"""
         if not isinstance(value, int) and not isinstance(value, float):
             raise TypeError("distance must be a number")
         self._distance = value
