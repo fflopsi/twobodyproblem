@@ -4,9 +4,9 @@ import sys
 
 import vpython as vp
 
-from twobodyproblem.visualization.body import Body
-from twobodyproblem.values import Values
 from twobodyproblem.options import Options
+from twobodyproblem.values import Values
+from twobodyproblem.visualization.body import Body
 
 
 class Simulation:
@@ -17,16 +17,12 @@ class Simulation:
             values: dictionary of required values for the simulation
             option: dictionary of additional options for the simulation
         """
-        self._values = values
-        self._options = options
-
-    @property
-    def values(self):
-        return self._values
-
-    @property
-    def options(self):
-        return self._options
+        if isinstance(values, Values) and isinstance(options, Options):
+            self.values = values
+            self.options = options
+        else:
+            raise TypeError("values must be of type Values, options must be "
+                            "of type Options")
 
     def pause(self, button: vp.button):
         """pause and un-pause the simulation
@@ -52,8 +48,8 @@ class Simulation:
             slider: slider which was changed
             sphere: body associated with the slider
         """
-        valdict = self.values.to_dict()
-        sphere.radius = valdict[sphere.name + "_radius"] * slider.value
+        sphere.radius = eval("self.values." + sphere.name
+                             + ".radius") * slider.value
 
     def reset_slider(self, slider: vp.slider):
         """reset the slider to the default value
