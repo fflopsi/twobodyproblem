@@ -1,10 +1,9 @@
 import argparse
+import os
+import subprocess
 import sys
 
-from PySide6 import QtWidgets
-
 import twobodyproblem
-from twobodyproblem.entry import EntryWindow
 from twobodyproblem.options import Options
 from twobodyproblem.values import Values
 from twobodyproblem.visualization.simulation import Simulation
@@ -43,11 +42,27 @@ if __name__ == "__main__":
         print("passed arguments:", end=" ")
         print(sys.argv)
     if not args.nogui:
-        # run the GUI app
-        app = QtWidgets.QApplication(sys.argv)
-        window = EntryWindow(debug=args.debug)
-        window.ui.show()
-        sys.exit(app.exec_())
+        inst_pkgs = [r.decode().split('==')[0] for r in
+                     subprocess.check_output([sys.executable, '-m', 'pip',
+                                              'freeze']).split()]
+        if "PySide6" in inst_pkgs:
+            # run the GUI app
+            from PySide6 import QtWidgets
+            from twobodyproblem.entry import EntryWindow
+            app = QtWidgets.QApplication(sys.argv)
+            window = EntryWindow(debug=args.debug)
+            window.ui.show()
+            sys.exit(app.exec_())
+        else:
+            # installation of PySide6 needed
+            print("you need to install PySide6 to run this program in GUI "
+                  "mode, so please do it with \"pip3 install PySide6\"")
+            auto = input("input y/Y to install it automatically: ")
+            if auto == "y" or auto == "Y":
+                os.system("pip3 install PySide6 --upgrade")
+                restart = input("input y/Y to relaunch the program: ")
+                if restart == "y" or restart == "Y":
+                    os.execl(sys.executable, "python", __file__, *sys.argv[1:])
     else:
         # run the CLI
         print("This is the command line interface for inputting the required "
