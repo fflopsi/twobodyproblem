@@ -160,17 +160,21 @@ class EntryWindow(QtWidgets.QMainWindow):
         returns: Values
         """
         self.fill_standards()
-        return Values(central_mass=float(self.ui.central_mass.text()),
-                      central_radius=float(self.ui.central_radius.text()),
-                      central_v0_x=float(self.ui.central_v0_x.text()),
-                      central_v0_y=float(self.ui.central_v0_y.text()),
-                      central_v0_z=float(self.ui.central_v0_z.text()),
-                      sat_mass=float(self.ui.sat_mass.text()),
-                      sat_radius=float(self.ui.sat_radius.text()),
-                      sat_v0_x=float(self.ui.sat_v0_x.text()),
-                      sat_v0_y=float(self.ui.sat_v0_y.text()),
-                      sat_v0_z=float(self.ui.sat_v0_z.text()),
-                      distance=float(self.ui.distance.text()))
+        values = Values(central_mass=float(self.ui.central_mass.text()),
+                        central_radius=float(self.ui.central_radius.text()),
+                        central_v0_x=float(self.ui.central_v0_x.text()),
+                        central_v0_y=float(self.ui.central_v0_y.text()),
+                        central_v0_z=float(self.ui.central_v0_z.text()),
+                        sat_mass=float(self.ui.sat_mass.text()),
+                        sat_radius=float(self.ui.sat_radius.text()),
+                        sat_v0_x=float(self.ui.sat_v0_x.text()),
+                        sat_v0_y=float(self.ui.sat_v0_y.text()),
+                        sat_v0_z=float(self.ui.sat_v0_z.text()),
+                        distance=float(self.ui.distance.text()))
+        if self.debug:
+            print("these values are being used:", end=" ")
+            print(values.to_dict())
+        return values
 
     def save(self):
         """save values to standard file"""

@@ -69,22 +69,26 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
         returns: Options
         """
-        return Options(canvas_width=self.ui.canvas_width.value(),
-                       canvas_height=self.ui.canvas_height.value(),
-                       color_objects_r=self.ui.color_objects_r.value(),
-                       color_objects_g=self.ui.color_objects_g.value(),
-                       color_objects_b=self.ui.color_objects_r.value(),
-                       color_pointers_r=self.ui.color_pointer_r.value(),
-                       color_pointers_g=self.ui.color_pointer_g.value(),
-                       color_pointers_b=self.ui.color_pointer_b.value(),
-                       show_pointers=int(self.ui.show_pointers.isChecked()),
-                       update_rate=self.ui.update_rate.value(),
-                       max_seconds=self.ui.max_seconds.value(),
-                       delta_t=self.ui.t_factor.value(),
-                       central_centered=int(
-                           self.ui.do_central_centered.isChecked()),
-                       testing=int(self.ui.do_testing.isChecked()),
-                       restart=int(self.ui.do_restart.isChecked()))
+        options = Options(canvas_width=self.ui.canvas_width.value(),
+                          canvas_height=self.ui.canvas_height.value(),
+                          color_objects_r=self.ui.color_objects_r.value(),
+                          color_objects_g=self.ui.color_objects_g.value(),
+                          color_objects_b=self.ui.color_objects_r.value(),
+                          color_pointers_r=self.ui.color_pointer_r.value(),
+                          color_pointers_g=self.ui.color_pointer_g.value(),
+                          color_pointers_b=self.ui.color_pointer_b.value(),
+                          show_pointers=int(self.ui.show_pointers.isChecked()),
+                          update_rate=self.ui.update_rate.value(),
+                          max_seconds=self.ui.max_seconds.value(),
+                          delta_t=self.ui.t_factor.value(),
+                          central_centered=int(
+                              self.ui.do_central_centered.isChecked()),
+                          testing=int(self.ui.do_testing.isChecked()),
+                          restart=int(self.ui.do_restart.isChecked()))
+        if self.debug:
+            print("these settings are being used:", end=" ")
+            print(options.to_dict())
+        return options
 
     def save(self):
         """save the entered settings to standard file"""
