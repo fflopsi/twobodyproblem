@@ -69,7 +69,8 @@ class Body(vp.sphere):
         self._velocity = value
 
     def calculate(self, delta_t=10):
-        """calculate new acceleration, velocity, position from force and mass
+        """calculate new acceleration, velocity and position from force
+        (calculation beforehand needed), mass, previous velocity and position
 
         args:
             delta_t: Δt value (seconds in one calculation) (default 10)
