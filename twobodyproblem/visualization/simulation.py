@@ -151,7 +151,13 @@ class Simulation:
             vp.rate(self.options.rate)
             # vp.sleep(1/self.options["update_rate"])
             if pause_sim.text == "Pause":
-                central.calculate(sat, self.options.delta_t)
+                # physical calculations
+                r = sat.pos - central.pos
+                fv = (6.67430e-11 * central.mass * sat.mass) / (vp.mag(r) ** 2)
+                central.force = fv * vp.norm(r)
+                sat.force = fv * vp.norm(-r)
+                central.calculate(self.options.delta_t)
+                sat.calculate(self.options.delta_t)
                 if show_pointers:
                     # move pointers
                     central_ptr.pos = central.pos - central_ptr.axis + \

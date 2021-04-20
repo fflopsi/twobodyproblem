@@ -68,24 +68,12 @@ class Body(vp.sphere):
             raise TypeError("velocity must be a vector")
         self._velocity = value
 
-    def calculate(self, other, delta_t=10):
-        """calculate force, acceleration, velocity and position of both bodies
+    def calculate(self, delta_t=10):
+        """calculate new acceleration, velocity, position from force and mass
 
         args:
-            other: the other body that should be calculated with
             delta_t: Δt value (seconds in one calculation) (default 10)
         """
-        # vector for distance
-        r = other.pos - self.pos
-        # scalar value of the gravitational force
-        force_value = (6.67430e-11 * self.mass * other.mass) / (vp.mag(r) ** 2)
-        # calculation for self
-        self.force = force_value * vp.norm(r)
         self.acceleration = self.force / self.mass
         self.velocity = self.acceleration * delta_t + self.velocity
         self.pos = self.velocity * delta_t + self.pos
-        # calculation for other
-        other.force = force_value * vp.norm(-r)
-        other.acceleration = other.force / other.mass
-        other.velocity = other.acceleration * delta_t + other.velocity
-        other.pos = other.velocity * delta_t + other.pos
