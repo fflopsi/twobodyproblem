@@ -1,4 +1,8 @@
+import os
+from pathlib import Path
+
 import vpython as vp
+import yaml
 
 
 class ValuesBody:
@@ -55,6 +59,8 @@ class ValuesBody:
 class Values:
     """class used for value input"""
 
+    directory = os.path.dirname(os.path.realpath(__file__))
+
     def __init__(self, central_mass=5.972e+24, central_radius=6371000.0,
                  central_v0_x=0.0, central_v0_y=0.0, central_v0_z=0.0,
                  sat_mass=500.0, sat_radius=2.0, sat_v0_x=0.0, sat_v0_y=0.0,
@@ -81,6 +87,8 @@ class Values:
 
         args:
             values: dictionary of values to be used
+
+        returns: Values
         """
         return cls(central_mass=values["central_mass"],
                    central_radius=values["central_radius"],
@@ -100,12 +108,31 @@ class Values:
 
         args:
             values: list or tuple to be used
+
+        returns: Values
         """
         return cls(central_mass=values[0], central_radius=values[1],
                    central_v0_x=values[2], central_v0_y=values[3],
                    central_v0_z=values[4], sat_mass=values[5],
                    sat_radius=values[6], sat_v0_x=values[7],
                    sat_v0_y=values[8], sat_v0_z=values[9], distance=values[10])
+
+    @classmethod
+    def from_file(cls, path=None):
+        """create Values object from yaml file
+
+        args:
+            path: path to file (default ./saved_data/values.yml)
+
+        returns: Values
+        """
+        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/saved"
+        if not os.path.isdir(dir_path):
+            os.makedirs(dir_path)
+        if path is None:
+            path = dir_path + "/values.yml"
+        with open(path, "r") as f:
+            return cls.from_dict(yaml.load(f, Loader=yaml.FullLoader))
 
     @property
     def distance(self):
@@ -140,3 +167,17 @@ class Values:
             },
             "distance": self.distance
         }
+
+    def save(self, path=None):
+        """save content of self to yaml file (overwriting existing content)
+
+        args:
+            path: path to file (default ./saved_data/values.yml)
+        """
+        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/saved"
+        if not os.path.isdir(dir_path):
+            os.makedirs(dir_path)
+        if path is None:
+            path = dir_path + "/values.yml"
+        with open(path, "w+") as f:
+            f.write(yaml.dump(self.to_dict()))
