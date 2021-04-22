@@ -1,4 +1,8 @@
+import os
+from pathlib import Path
+
 import vpython as vp
+import yaml
 
 
 class OptionsCanvas:
@@ -118,6 +122,8 @@ class Options:
 
         args:
             values: dictionary of options to be used
+
+        returns: Options
         """
         return cls(canvas_width=values["canvas"]["width"],
                    canvas_height=values["canvas"]["height"],
@@ -140,6 +146,8 @@ class Options:
 
         args:
             values: list or tuple of options to be used
+
+        returns: Options
         """
         return cls(canvas_width=values[0], canvas_height=values[1],
                    color_objects_r=values[2], color_objects_g=values[3],
@@ -149,6 +157,24 @@ class Options:
                    max_seconds=values[10], delta_t=values[11],
                    central_centered=values[12], testing=values[13],
                    restart=values[14])
+
+    @classmethod
+    def from_file(cls, path=None):
+        """create Options object from yaml file
+
+        args:
+            path: path to file (default [user home dir]/Documents/
+                TwoBodyProblem/default/settings.yml)
+
+        returns: Options
+        """
+        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
+        if not os.path.isdir(dir_path):
+            os.makedirs(dir_path)
+        if path is None:
+            path = dir_path + "/settings.yml"
+        with open(path, "r") as f:
+            return cls.from_dict(yaml.load(f, Loader=yaml.FullLoader))
 
     @property
     def rate(self):
@@ -219,3 +245,18 @@ class Options:
             "do_testing": self.testing,
             "do_restart": self.restart
         }
+
+    def save(self, path=None):
+        """save content of self to yaml file (overwriting existing content)
+
+        args:
+            path: path to file (default [user home dir]/Documents/
+                TwoBodyProblem/default/settings.yml)
+        """
+        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
+        if not os.path.isdir(dir_path):
+            os.makedirs(dir_path)
+        if path is None:
+            path = dir_path + "/settings.yml"
+        with open(path, "w+") as f:
+            f.write(yaml.dump(self.to_dict()))
