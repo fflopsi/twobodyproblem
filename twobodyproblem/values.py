@@ -122,7 +122,8 @@ class Values:
         """create Values object from yaml file
 
         args:
-            path: path to file (default ./saved_data/values.yml)
+            path: path to file (default [user home dir]/Documents/
+                TwoBodyProblem/default/values.yml)
 
         returns: Values
         """
@@ -172,7 +173,8 @@ class Values:
         """save content of self to yaml file (overwriting existing content)
 
         args:
-            path: path to file (default ./saved_data/values.yml)
+            path: path to file (default [user home dir]/Documents/
+                TwoBodyProblem/default/values.yml)
         """
         dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
         if not os.path.isdir(dir_path):
