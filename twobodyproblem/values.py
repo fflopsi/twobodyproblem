@@ -126,7 +126,7 @@ class Values:
 
         returns: Values
         """
-        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/saved"
+        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
         if not os.path.isdir(dir_path):
             os.makedirs(dir_path)
         if path is None:
@@ -174,7 +174,7 @@ class Values:
         args:
             path: path to file (default ./saved_data/values.yml)
         """
-        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/saved"
+        dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
         if not os.path.isdir(dir_path):
             os.makedirs(dir_path)
         if path is None:
