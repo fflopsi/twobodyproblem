@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help me improve
-title: ''
+title: "[BUG]"
 labels: bug, help wanted
 assignees: flopsi-l-f
 
@@ -27,6 +27,13 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. Windows 10]
  - Browser [e.g. chrome, safari]
  - Version [e.g. 1.0.0]
+
+**Smartphone (please complete the following information):**
+ - Device: [e.g. Samsung Galaxy S10]
+ - OS: [e.g. Android 9]
+ - Python environment [e.g. Pydroid version 4.01]
+ - Browser [e.g. stock browser, Samsung Internet]
+ - Program Version [e.g. 1.0.0]
 
 **Additional context**
 Add any other context about the problem here.
