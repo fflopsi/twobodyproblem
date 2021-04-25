@@ -4,6 +4,8 @@ from pathlib import Path
 import vpython as vp
 import yaml
 
+defaults = (1000, 600, 255, 255, 255, 1, 255, 0, 0, 100, 30, 10, 0, 0, 1)
+
 
 class OptionsCanvas:
     """class used for representing vpython canvases in Options"""
@@ -83,12 +85,14 @@ class OptionsColor:
 class Options:
     """class used for option input"""
 
-    def __init__(self, canvas_width=1000, canvas_height=600,
-                 color_objects_r=255, color_objects_g=255,
-                 color_objects_b=255, color_pointers_r=255,
-                 color_pointers_g=0, color_pointers_b=0, show_pointers=1,
-                 update_rate=100, max_seconds=30, delta_t=10,
-                 central_centered=0, testing=0, restart=1):
+    def __init__(self, canvas_width=defaults[0], canvas_height=defaults[1],
+                 color_objects_r=defaults[2], color_objects_g=defaults[3],
+                 color_objects_b=defaults[4], show_pointers=defaults[5],
+                 color_pointers_r=defaults[6], color_pointers_g=defaults[7],
+                 color_pointers_b=defaults[8], update_rate=defaults[9],
+                 max_seconds=defaults[10], delta_t=defaults[11],
+                 central_centered=defaults[12], testing=defaults[13],
+                 restart=defaults[14]):
         """args:
             canvas_*: dimensions of vpython canvas (defaults 1000, 600)
             color_bodies_*: RGB value of body color (defaults 255, 255, 255)
@@ -130,10 +134,10 @@ class Options:
                    color_objects_r=values["color"]["objects"]["r"],
                    color_objects_g=values["color"]["objects"]["g"],
                    color_objects_b=values["color"]["objects"]["b"],
+                   show_pointers=values["show_pointers"],
                    color_pointers_r=values["color"]["pointers"]["r"],
                    color_pointers_g=values["color"]["pointers"]["g"],
                    color_pointers_b=values["color"]["pointers"]["b"],
-                   show_pointers=values["show_pointers"],
                    update_rate=values["update_rate"],
                    max_seconds=values["max_seconds"],
                    delta_t=values["t_factor"],
@@ -151,9 +155,9 @@ class Options:
         """
         return cls(canvas_width=values[0], canvas_height=values[1],
                    color_objects_r=values[2], color_objects_g=values[3],
-                   color_objects_b=values[4], color_pointers_r=values[5],
-                   color_pointers_g=values[6], color_pointers_b=values[7],
-                   show_pointers=values[8], update_rate=values[9],
+                   color_objects_b=values[4], show_pointers=values[5],
+                   color_pointers_r=values[6], color_pointers_g=values[7],
+                   color_pointers_b=values[8], update_rate=values[9],
                    max_seconds=values[10], delta_t=values[11],
                    central_centered=values[12], testing=values[13],
                    restart=values[14])
@@ -175,6 +179,79 @@ class Options:
             path = dir_path + "/settings.yml"
         with open(path, "r") as f:
             return cls.from_dict(yaml.load(f, Loader=yaml.FullLoader))
+
+    @classmethod
+    def from_input(cls):
+        """create Options object from user input
+
+        returns: Options
+        """
+        options = list(defaults)
+        try:
+            options[0] = int(input("canvas width (1000)[px]: "))
+        except ValueError:
+            pass
+        try:
+            options[1] = int(input("canvas height (600)[px]: "))
+        except ValueError:
+            pass
+        print("color objects RGB: ")
+        try:
+            options[2] = int(input("\tR (255): "))
+        except ValueError:
+            pass
+        try:
+            options[3] = int(input("\tG (255): "))
+        except ValueError:
+            pass
+        try:
+            options[4] = int(input("\tB (255): "))
+        except ValueError:
+            pass
+        try:
+            options[5] = int(input("show the pointers (1): "))
+        except ValueError:
+            pass
+        if options[5] == 1:
+            print("color pointers RGB: ")
+            try:
+                options[6] = int(input("\tR (255): "))
+            except ValueError:
+                pass
+            try:
+                options[7] = int(input("\tG (0): "))
+            except ValueError:
+                pass
+            try:
+                options[8] = int(input("\tB (0): "))
+            except ValueError:
+                pass
+        try:
+            options[9] = int(input("calculations per second (100): "))
+        except ValueError:
+            pass
+        try:
+            options[10] = int(input("simulation length (30)[s]: "))
+        except ValueError:
+            pass
+        try:
+            options[11] = int(input("acceleration factor (Δt) (10): "))
+        except ValueError:
+            pass
+        try:
+            options[12] = int(input("centered central body (0): "))
+        except ValueError:
+            pass
+        try:
+            options[13] = int(input("enable testing features (0): "))
+        except ValueError:
+            pass
+        try:
+            options[14] = int(input("restart program after simulation (1): "))
+        except ValueError:
+            pass
+
+        return cls.from_list(options)
 
     @property
     def rate(self):
@@ -225,6 +302,7 @@ class Options:
                 "width": self.canvas.width,
                 "height": self.canvas.height
             },
+            "show_pointers": self.pointers,
             "color": {
                 "objects": {
                     "r": self.colors.bodies.x,
@@ -237,7 +315,6 @@ class Options:
                     "b": self.colors.pointers.z
                 },
             },
-            "show_pointers": self.pointers,
             "update_rate": self.rate,
             "max_seconds": self.sim_time,
             "t_factor": self.delta_t,

@@ -4,6 +4,9 @@ from pathlib import Path
 import vpython as vp
 import yaml
 
+defaults = (5.972e+24, 6371000.0, 0.0, 0.0, 0.0,
+            500.0, 2.0, 0.0, 0.0, -8000.0, 1000000.0)
+
 
 class ValuesBody:
     """class used for representing bodies in Values"""
@@ -60,11 +63,15 @@ class Values:
     """class used for value input"""
 
     directory = os.path.dirname(os.path.realpath(__file__))
+    defaults = (5.972e+24, 6371000.0, 0.0, 0.0, 0.0,
+                500.0, 2.0, 0.0, 0.0, -8000.0, 1000000.0)
 
-    def __init__(self, central_mass=5.972e+24, central_radius=6371000.0,
-                 central_v0_x=0.0, central_v0_y=0.0, central_v0_z=0.0,
-                 sat_mass=500.0, sat_radius=2.0, sat_v0_x=0.0, sat_v0_y=0.0,
-                 sat_v0_z=-8000.0, distance=1000000.0):
+    def __init__(self, central_mass=defaults[0], central_radius=defaults[1],
+                 central_v0_x=defaults[2], central_v0_y=defaults[3],
+                 central_v0_z=defaults[4], sat_mass=defaults[5],
+                 sat_radius=defaults[6], sat_v0_x=defaults[7],
+                 sat_v0_y=defaults[8], sat_v0_z=defaults[9],
+                 distance=defaults[10]):
         """args:
             central_mass: mass of first body (default 5.972e+24)
             central_radius: radius of first body (default 6371000)
@@ -134,6 +141,64 @@ class Values:
             path = dir_path + "/values.yml"
         with open(path, "r") as f:
             return cls.from_dict(yaml.load(f, Loader=yaml.FullLoader))
+
+    @classmethod
+    def from_input(cls):
+        """create Values object from user input
+
+        returns: Values
+        """
+        values = list(defaults)
+        print("central body:")
+        try:
+            values[0] = float(input("\tmass (5.972e+24)[kg]: "))
+        except ValueError:
+            pass
+        try:
+            values[1] = float(input("\tradius (6371000)[m]: "))
+        except ValueError:
+            pass
+        print("\tstarting velocity [m/s]:")
+        try:
+            values[2] = float(input("\t\tspeed in x (0): "))
+        except ValueError:
+            pass
+        try:
+            values[3] = float(input("\t\tspeed in y (0): "))
+        except ValueError:
+            pass
+        try:
+            values[4] = float(input("\t\tspeed in z (0): "))
+        except ValueError:
+            pass
+        print("satellite / second body:")
+        try:
+            values[5] = float(input("\tmass (500)[kg]: "))
+        except ValueError:
+            pass
+        try:
+            values[6] = float(input("\tradius (2)[m]: "))
+        except ValueError:
+            pass
+        print("\tstarting velocity [m/s]:")
+        try:
+            values[7] = float(input("\t\tspeed in x (0): "))
+        except ValueError:
+            pass
+        try:
+            values[8] = float(input("\t\tspeed in y (0): "))
+        except ValueError:
+            pass
+        try:
+            values[9] = float(input("\t\tspeed in z (-8000): "))
+        except ValueError:
+            pass
+        try:
+            values[10] = float(input("\tinitial distance (1000000)[m]: "))
+        except ValueError:
+            pass
+
+        return cls.from_list(values)
 
     @property
     def distance(self):
