@@ -8,63 +8,58 @@ defaults = (5.972e+24, 6371000.0, 0.0, 0.0, 0.0,
             500.0, 2.0, 0.0, 0.0, -8000.0, 1000000.0)
 
 
-class ValuesBody:
-    """class used for representing bodies in Values"""
-
-    def __init__(self, mass, radius, v0_x=0.0, v0_y=0.0, v0_z=0.0):
-        """args:
-            mass: the mass of the body
-            radius: the radius of the body
-            v0_*: the starting velocity of the body (defaults 0, 0, 0)
-        """
-        self.mass = mass
-        self.radius = radius
-        self.velocity = vp.vector(v0_x, v0_y, v0_z)
-
-    @property
-    def mass(self):
-        """get and set mass"""
-        return self._mass
-
-    @mass.setter
-    def mass(self, value):
-        if not isinstance(value, int) and not isinstance(value, float):
-            raise TypeError("mass must be a number")
-        if value == 0:
-            raise ValueError("mass must not be 0 (zero)")
-        self._mass = value
-
-    @property
-    def radius(self):
-        """get and set radius"""
-        return self._radius
-
-    @radius.setter
-    def radius(self, value):
-        if not isinstance(value, int) and not isinstance(value, float):
-            raise TypeError("radius must be a number")
-        if value <= 0:
-            raise ValueError("radius must be positive")
-        self._radius = value
-
-    @property
-    def velocity(self):
-        """get and set velocity"""
-        return self._velocity
-
-    @velocity.setter
-    def velocity(self, value: vp.vector):
-        if not isinstance(value, vp.vector):
-            raise TypeError("velocity must be a vector")
-        self._velocity = value
-
-
 class Values:
     """class used for value input"""
 
-    directory = os.path.dirname(os.path.realpath(__file__))
-    defaults = (5.972e+24, 6371000.0, 0.0, 0.0, 0.0,
-                500.0, 2.0, 0.0, 0.0, -8000.0, 1000000.0)
+    class Body:
+        """class used for representing bodies in Values"""
+
+        def __init__(self, mass, radius, v0_x=0.0, v0_y=0.0, v0_z=0.0):
+            """args:
+                mass: the mass of the body
+                radius: the radius of the body
+                v0_*: the starting velocity of the body (defaults 0, 0, 0)
+            """
+            self.mass = mass
+            self.radius = radius
+            self.velocity = vp.vector(v0_x, v0_y, v0_z)
+
+        @property
+        def mass(self):
+            """get and set mass"""
+            return self._mass
+
+        @mass.setter
+        def mass(self, value):
+            if not isinstance(value, int) and not isinstance(value, float):
+                raise TypeError("mass must be a number")
+            if value == 0:
+                raise ValueError("mass must not be 0 (zero)")
+            self._mass = value
+
+        @property
+        def radius(self):
+            """get and set radius"""
+            return self._radius
+
+        @radius.setter
+        def radius(self, value):
+            if not isinstance(value, int) and not isinstance(value, float):
+                raise TypeError("radius must be a number")
+            if value <= 0:
+                raise ValueError("radius must be positive")
+            self._radius = value
+
+        @property
+        def velocity(self):
+            """get and set velocity"""
+            return self._velocity
+
+        @velocity.setter
+        def velocity(self, value: vp.vector):
+            if not isinstance(value, vp.vector):
+                raise TypeError("velocity must be a vector")
+            self._velocity = value
 
     def __init__(self, central_mass=defaults[0], central_radius=defaults[1],
                  central_v0_x=defaults[2], central_v0_y=defaults[3],
@@ -81,11 +76,11 @@ class Values:
             sat_v0_*: starting velocity of second body (defaults 0, 0, 0)
             distance: starting distance between bodies (default 1000000)
         """
-        self.central = ValuesBody(mass=central_mass, radius=central_radius,
-                                  v0_x=central_v0_x, v0_y=central_v0_y,
-                                  v0_z=central_v0_z)
-        self.sat = ValuesBody(mass=sat_mass, radius=sat_radius,
-                              v0_x=sat_v0_x, v0_y=sat_v0_y, v0_z=sat_v0_z)
+        self.central = self.Body(mass=central_mass, radius=central_radius,
+                                 v0_x=central_v0_x, v0_y=central_v0_y,
+                                 v0_z=central_v0_z)
+        self.sat = self.Body(mass=sat_mass, radius=sat_radius,
+                             v0_x=sat_v0_x, v0_y=sat_v0_y, v0_z=sat_v0_z)
         self.distance = distance
 
     @classmethod

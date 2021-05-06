@@ -7,83 +7,81 @@ import yaml
 defaults = (1000, 600, 255, 255, 255, 1, 255, 0, 0, 100, 30, 10, 0, 0, 1)
 
 
-class OptionsCanvas:
-    """class used for representing vpython canvases in Options"""
-
-    def __init__(self, width=1000, height=600):
-        """args:
-            width: width of the canvas (default 1000)
-            height: height of the canvas (default 600)
-        """
-        self.width = width
-        self.height = height
-
-    @property
-    def width(self):
-        """get and set width"""
-        return self._width
-
-    @width.setter
-    def width(self, value):
-        if not isinstance(value, int):
-            raise TypeError("width must be an integer")
-        if value < 100:
-            raise ValueError("width must be greater than 100")
-        self._width = value
-
-    @property
-    def height(self):
-        """get and set height"""
-        return self._height
-
-    @height.setter
-    def height(self, value):
-        if not isinstance(value, int):
-            raise TypeError("height must be an integer")
-        if value < 50:
-            raise ValueError("height must be greater than 50")
-        self._height = value
-
-
-class OptionsColor:
-    """class used for storing color options"""
-
-    def __init__(self, bodies_r=255, bodies_g=255, bodies_b=255,
-                 pointers_r=255, pointers_g=0, pointers_b=0):
-        """args:
-            bodies_*: RGB value of body color (defaults 255, 255, 255)
-            pointers_*: RGB value of pointer color (defaults 255, 0, 0)
-        """
-        self.bodies = vp.vector(bodies_r, bodies_g, bodies_b)
-        self.pointers = vp.vector(pointers_r, pointers_g, pointers_b)
-
-    @property
-    def bodies(self):
-        """get and set bodies color vector"""
-        return self._bodies
-
-    @bodies.setter
-    def bodies(self, value):
-        if not (0 <= value.x <= 255 and 0 <= value.y <= 255
-                and 0 <= value.z <= 255):
-            raise ValueError("RGB values must be between 0 and 255")
-        self._bodies = value
-
-    @property
-    def pointers(self):
-        """get and set pointers color vector"""
-        return self._pointers
-
-    @pointers.setter
-    def pointers(self, value):
-        if not (0 <= value.x <= 255 and 0 <= value.y <= 255
-                and 0 <= value.z <= 255):
-            raise ValueError("RGB values must be between 0 and 255")
-        self._pointers = value
-
-
 class Options:
     """class used for option input"""
+
+    class Canvas:
+        """class used for representing vpython canvases in Options"""
+
+        def __init__(self, width=1000, height=600):
+            """args:
+                width: width of the canvas (default 1000)
+                height: height of the canvas (default 600)
+            """
+            self.width = width
+            self.height = height
+
+        @property
+        def width(self):
+            """get and set width"""
+            return self._width
+
+        @width.setter
+        def width(self, value):
+            if not isinstance(value, int):
+                raise TypeError("width must be an integer")
+            if value < 100:
+                raise ValueError("width must be greater than 100")
+            self._width = value
+
+        @property
+        def height(self):
+            """get and set height"""
+            return self._height
+
+        @height.setter
+        def height(self, value):
+            if not isinstance(value, int):
+                raise TypeError("height must be an integer")
+            if value < 50:
+                raise ValueError("height must be greater than 50")
+            self._height = value
+
+    class Color:
+        """class used for storing color options"""
+
+        def __init__(self, bodies_r=255, bodies_g=255, bodies_b=255,
+                     pointers_r=255, pointers_g=0, pointers_b=0):
+            """args:
+                bodies_*: RGB value of body color (defaults 255, 255, 255)
+                pointers_*: RGB value of pointer color (defaults 255, 0, 0)
+            """
+            self.bodies = vp.vector(bodies_r, bodies_g, bodies_b)
+            self.pointers = vp.vector(pointers_r, pointers_g, pointers_b)
+
+        @property
+        def bodies(self):
+            """get and set bodies color vector"""
+            return self._bodies
+
+        @bodies.setter
+        def bodies(self, value):
+            if not (0 <= value.x <= 255 and 0 <= value.y <= 255
+                    and 0 <= value.z <= 255):
+                raise ValueError("RGB values must be between 0 and 255")
+            self._bodies = value
+
+        @property
+        def pointers(self):
+            """get and set pointers color vector"""
+            return self._pointers
+
+        @pointers.setter
+        def pointers(self, value):
+            if not (0 <= value.x <= 255 and 0 <= value.y <= 255
+                    and 0 <= value.z <= 255):
+                raise ValueError("RGB values must be between 0 and 255")
+            self._pointers = value
 
     def __init__(self, canvas_width=defaults[0], canvas_height=defaults[1],
                  color_objects_r=defaults[2], color_objects_g=defaults[3],
@@ -105,13 +103,14 @@ class Options:
             testing: enable testing features (default 0)
             restart: restart the whole program after one simulation (default 1)
         """
-        self.canvas = OptionsCanvas(width=canvas_width, height=canvas_height)
-        self.colors = OptionsColor(bodies_r=color_objects_r,
-                                   bodies_g=color_objects_g,
-                                   bodies_b=color_objects_b,
-                                   pointers_r=color_pointers_r,
-                                   pointers_g=color_pointers_g,
-                                   pointers_b=color_pointers_b)
+        self.canvas = self.Canvas(width=canvas_width,
+                                  height=canvas_height)
+        self.colors = self.Color(bodies_r=color_objects_r,
+                                 bodies_g=color_objects_g,
+                                 bodies_b=color_objects_b,
+                                 pointers_r=color_pointers_r,
+                                 pointers_g=color_pointers_g,
+                                 pointers_b=color_pointers_b)
         self.pointers = bool(show_pointers)
         self.rate = update_rate
         self.sim_time = max_seconds
