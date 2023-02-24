@@ -50,9 +50,9 @@ features, install it from GitHub (see [below](#via-github)).*
 1. Make sure [Git SCM](https://git-scm.com/downloads) is installed correctly.
 1. Run these commands from a command line:
     1. `mkdir TwoBody` and `cd TwoBody`
-    1. `git clone https://github.com/Two-Body-Problem/twobodyproblem-simulation-python.git`
+    1. `git clone https://github.com/twobodyproblem/simulation-python.git`
     1. `pip3 install --upgrade pip setuptools wheel`
-    1. `pip3 install twobodyproblem-simulation-python`
+    1. `pip3 install simulation-python`
 1. Now, the program is runnable with `python -m twobodyproblem` or
    `python3 -m twobodyproblem`.
 
