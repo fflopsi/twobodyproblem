@@ -16,8 +16,7 @@ if __name__ == "__main__":
                     "body problem.\nTo run the simulation normally, just run "
                     "the command without any of the optional arguments.",
         epilog="For further information, "
-               "visit:\nhttps://github.com/Two-Body-Problem/twobodyproblem"
-               "-simulation-python"
+               "visit:\nhttps://github.com/twobodyproblem/simulation-python"
     )
     parser.add_argument(
         "-v", "--version", action="version",

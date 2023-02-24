@@ -23,8 +23,7 @@ if __name__ == "__main__":
                     "body problem.\nTo use it normally in CLI mode, just run "
                     "the command without any of the optional arguments.",
         epilog="For further information, "
-               "visit:\nhttps://github.com/flopsi-l-f/two-body"
-               "-problem_simulation"
+               "visit:\nhttps://github.com/twobodyproblem/simulation-python"
     )
     parser.add_argument(
         "-v", "--version", action="version",
