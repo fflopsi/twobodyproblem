@@ -8,20 +8,21 @@ I wrote a small program in Python to simulate the two body problem. You type in
 some parameters, like mass, radius, velocity and distance. The program will
 show you a visualization of the simulation.
 
-*This program is command line only. If you want a graphical user interface,
-visit [this repository](https://github.com/Two-Body-Problem/twobodyproblem-simulation-python-gui)
+*This program is command line only. If you want a graphical user interface for
+inputting your data,
+visit [this repository](https://github.com/twobodyproblem/simulation-python-gui)
 containing a GUI program.*
 
 ## Table of Contents
 
-[Installation Instructions](#installation-instructions)
+[Installation](#installation)
 
 - [via PyPi](#via-pypi)
 - [via GitHub](#via-github)
 
 [Usage](#usage)
 
-## Installation Instructions
+## Installation
 
 *(You may need Microsoft Visual C++ to be able to run the program, so install
 it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools) if
@@ -83,7 +84,3 @@ button restarts the *whole* program, not just the simulation.
 The sliders below the buttons can be used to magnify the bodies in the
 simulation. This magnification does not affect the physics, it is only a visual
 help.
-
-***
-
-*Participation in this README is always welcome!*
