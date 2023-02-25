@@ -4,3 +4,37 @@ requires = [
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "twobodyproblem"
+dynamic = [ "version" ]
+authors = [
+    { name = "Florian Frauenfelder", email = "florian.l.frauenfelder@gmail.com" }
+]
+description = "A little simulation for the gravitational two body problem"
+readme = "README.md"
+license = { file = "LICENSE.md" }
+requires-python = ">=3.8"
+keywords = [ "simulation", "gravitation", "vpython" ]
+classifiers = [
+    "Development Status :: 5 - Production/Stable"
+    "Intended Audience :: Education"
+    "Intended Audience :: End Users/Desktop"
+    "License :: OSI Approved :: MIT License"
+    "Natural Language :: English"
+    "Operating System :: OS Independent"
+    "Programming Language :: Python :: 3 :: Only"
+    "Programming Language :: Python :: 3.8"
+    "Programming Language :: Python :: 3.9"
+    "Topic :: Education"
+    "Topic :: Scientific/Engineering :: Astronomy"
+    "Topic :: Scientific/Engineering :: Physics"
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "my_package.__version__" }
+
+[project.urls]
+homepage = "https://github.com/twobodyproblem/simulation-python"
+PyPi = "https://pypi.org/project/twobodyproblem"
+GUI = "https://github.com/twobodyproblem/simulation-python-gui"
