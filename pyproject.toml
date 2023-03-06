@@ -7,15 +7,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "twobodyproblem"
-dynamic = [ "version" ]
+dynamic = ["version"]
 authors = [
     { name = "Florian Frauenfelder", email = "florian.l.frauenfelder@gmail.com" }
 ]
 description = "A little simulation for the gravitational two body problem"
 readme = "README.md"
-license = { file = "LICENSE.md" }
+license = {file = "LICENSE.md"}
 requires-python = ">=3.8"
-keywords = [ "simulation", "gravitation", "vpython" ]
+keywords = ["simulation", "gravitation", "vpython"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Education",
@@ -36,13 +36,16 @@ dependencies = [
 ]
 
 [tool.setuptools.dynamic]
-version = { attr = "twobodyproblem.__version__" }
+version = {attr = "twobodyproblem.__version__"}
 
 [tool.setuptools]
 packages = [
     "twobodyproblem",
     "twobodyproblem.visualization"
 ]
+
+[tool.setuptools.package-data]
+twobodyproblem = ["saved_data/presets.yml"]
 
 [project.urls]
 homepage = "https://github.com/twobodyproblem/simulation-python"
