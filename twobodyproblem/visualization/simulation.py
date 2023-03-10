@@ -10,13 +10,15 @@ from twobodyproblem.visualization.body import Body
 
 
 class Simulation:
-    """class used for the visualization of the simulation"""
+    """Visualization of the simulation
+    
+    Attributes:
+    values: Values object with physical values required for simulation
+    options: Options object required for adjusting simulation
+    """
 
     def __init__(self, values: Values, options: Options):
-        """args:
-            values: dictionary of required values for the simulation
-            option: dictionary of additional options for the simulation
-        """
+        """Initialize a Simulation with required values and options"""
         if isinstance(values, Values) and isinstance(options, Options):
             self.values = values
             self.options = options
@@ -25,10 +27,10 @@ class Simulation:
                             "of type Options")
 
     def pause(self, button: vp.button):
-        """pause and un-pause the simulation
+        """Pause and un-pause the simulation
 
-        args:
-            button: pause button itself
+        Arguments:
+        button: Pause vpython button itself
         """
         if button.text == "Pause":
             button.text = "Play"
@@ -36,32 +38,28 @@ class Simulation:
             button.text = "Pause"
 
     def restart(self):
-        """restart the program"""
+        """Restart the program"""
         # does not work perfectly, especially on command line
         os.execl(sys.executable, sys.executable, *sys.argv)
         # os.execv(sys.executable, ["python"] + sys.argv)
 
     def adjust_radius(self, slider: vp.slider, sphere: Body):
-        """adjust the visual size of the body according to the slider value
+        """Adjust the visual size of the body according to the slider value
 
-        args:
-            slider: slider which was changed
-            sphere: body associated with the slider
+        Arguments:
+        slider: vpython slider which was changed
+        sphere: Body associated with the slider
         """
         sphere.radius = eval("self.values." + sphere.name
                              + ".radius") * slider.value
 
     def reset_slider(self, slider: vp.slider):
-        """reset the slider to the default value
-
-        args:
-            slider: slider to be reset
-        """
+        """Reset the slider to the default value"""
         slider.value = 1
         slider.bind()
 
     def start(self):
-        """open the vpython window and start the simulation"""
+        """Open the vpython window and start the simulation"""
         # set up important boolean values from options
         testing = self.options.testing
         central_centered = self.options.central_centered

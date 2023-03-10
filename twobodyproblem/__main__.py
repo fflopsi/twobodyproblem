@@ -21,17 +21,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "-v", "--version", action="version",
         version="%(prog)s version " + twobodyproblem.__version__,
-        help="show the version of the program and exit"
+        help="Show the version of the program and exit"
     )
     parser.add_argument(
         "-d", "--debug", action="store_true",
-        help="run the program with debug info prints"
+        help="Run the program with debug info prints"
     )
     args = parser.parse_args()
 
     if args.debug:
-        print("debugging activated...")
-        print("passed arguments:", end=" ")
+        print("Debugging activated...")
+        print("Passed arguments:", end=" ")
         print(sys.argv)
 
     # run the CLI
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     print("For the inputs that are yes/no, type 1 for yes and 0 for no.")
 
     open_val = input("\nIf you want to import values from a file, type y/Y: ")
-    if open_val == "y" or open_val == "Y":
+    if open_val in ("y", "Y"):
         path = input("Input the path to the file (if left empty, "
                      "the standard file will be used): ")
         if path == "":
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         values = Values.from_input()
         save_val = input("\nIf you want to save these values to a file, "
                          "type y/Y: ")
-        if save_val == "y" or save_val == "Y":
+        if save_val in ("y", "Y"):
             path = input("Input the path to the file (if left empty, "
                          "the standard file will be used): ")
             if path == "":
@@ -63,11 +63,11 @@ if __name__ == "__main__":
             else:
                 values.save(path)
     if args.debug:
-        print("values:", end=" ")
+        print("Values:", end=" ")
         print(values.to_dict())
 
     open_opt = input("\nIf you want to import options from a file, type y/Y: ")
-    if open_opt == "y" or open_opt == "Y":
+    if open_opt in ("y", "Y"):
         path = input("Input the path to the file (if left empty, "
                      "the standard file will be used): ")
         if path == "":
@@ -79,7 +79,7 @@ if __name__ == "__main__":
         options = Options.from_input()
         save_opt = input("\nIf you want to save these options to a file, "
                          "type y/Y: ")
-        if save_opt == "y" or save_opt == "Y":
+        if save_opt in ("y", "Y"):
             path = input("Input the path to the file (if left empty, "
                          "the standard file will be used): ")
             if path == "":
@@ -87,7 +87,7 @@ if __name__ == "__main__":
             else:
                 options = Options.from_file(path)
     if args.debug:
-        print("options:", end=" ")
+        print("Options:", end=" ")
         print(options.to_dict())
 
     # create and start simulation

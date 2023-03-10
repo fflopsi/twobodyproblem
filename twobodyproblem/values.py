@@ -9,24 +9,32 @@ defaults = (5.972e+24, 6371000.0, 0.0, 0.0, 0.0,
 
 
 class Values:
-    """class used for value input"""
+    """Contains all values used in the simulation
+    
+    Attributes:
+    central: The central Body, usually the more massive one
+    sat: The second Body (satellite)
+    distance: Starting distance between the two bodies
+    """
 
     class Body:
-        """class used for representing bodies in Values"""
+        """Represents bodies
+        
+        Attributes:
+        mass: The mass of the body in kg
+        radius: The radius of the body in m
+        velocity: The velocity of the body in m/s in x, y, z directions
+        """
 
         def __init__(self, mass, radius, v0_x=0.0, v0_y=0.0, v0_z=0.0):
-            """args:
-                mass: the mass of the body
-                radius: the radius of the body
-                v0_*: the starting velocity of the body (defaults 0, 0, 0)
-            """
+            """Initialize a Body with an initial velocity v0 in x, y, z"""
             self.mass = mass
             self.radius = radius
             self.velocity = vp.vector(v0_x, v0_y, v0_z)
 
         @property
         def mass(self):
-            """get and set mass"""
+            """Get and set mass"""
             return self._mass
 
         @mass.setter
@@ -39,7 +47,7 @@ class Values:
 
         @property
         def radius(self):
-            """get and set radius"""
+            """Get and set radius"""
             return self._radius
 
         @radius.setter
@@ -52,7 +60,7 @@ class Values:
 
         @property
         def velocity(self):
-            """get and set velocity"""
+            """Get and set velocity"""
             return self._velocity
 
         @velocity.setter
@@ -67,15 +75,7 @@ class Values:
                  sat_radius=defaults[6], sat_v0_x=defaults[7],
                  sat_v0_y=defaults[8], sat_v0_z=defaults[9],
                  distance=defaults[10]):
-        """args:
-            central_mass: mass of first body (default 5.972e+24)
-            central_radius: radius of first body (default 6371000)
-            central_v0_*: starting velocity of first body (defaults 0, 0, 0)
-            sat_mass: mass of second body (default 500)
-            sat_radius: radius of second body (default 2)
-            sat_v0_*: starting velocity of second body (defaults 0, 0, 0)
-            distance: starting distance between bodies (default 1000000)
-        """
+        """Initialize a Values object with the details for central and sat bodies"""
         self.central = self.Body(mass=central_mass, radius=central_radius,
                                  v0_x=central_v0_x, v0_y=central_v0_y,
                                  v0_z=central_v0_z)
@@ -85,13 +85,7 @@ class Values:
 
     @classmethod
     def from_dict(cls, values: dict):
-        """create Values object from dictionary
-
-        args:
-            values: dictionary of values to be used
-
-        returns: Values
-        """
+        """Create Values object from dictionary"""
         return cls(central_mass=values["central_mass"],
                    central_radius=values["central_radius"],
                    central_v0_x=values["central_v0"]["x"],
@@ -106,13 +100,7 @@ class Values:
 
     @classmethod
     def from_list(cls, values):
-        """create Values object from list or tuple
-
-        args:
-            values: list or tuple to be used
-
-        returns: Values
-        """
+        """Create Values object from list or tuple"""
         return cls(central_mass=values[0], central_radius=values[1],
                    central_v0_x=values[2], central_v0_y=values[3],
                    central_v0_z=values[4], sat_mass=values[5],
@@ -121,13 +109,11 @@ class Values:
 
     @classmethod
     def from_file(cls, path=None):
-        """create Values object from yaml file
+        """Create Values object from yaml file
 
-        args:
-            path: path to file (default [user home dir]/Documents/
-                TwoBodyProblem/default/values.yml)
-
-        returns: Values
+        Arguments:
+        path: path to file (default [user home dir]/Documents/
+            TwoBodyProblem/default/values.yml)
         """
         dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
         if not os.path.isdir(dir_path):
@@ -139,57 +125,54 @@ class Values:
 
     @classmethod
     def from_input(cls):
-        """create Values object from user input
-
-        returns: Values
-        """
+        """Create Values object from user input"""
         values = list(defaults)
-        print("central body:")
+        print("Central body:")
         try:
-            values[0] = float(input("\tmass (5.972e+24)[kg]: "))
+            values[0] = float(input("\tMass (5.972e+24)[kg]: "))
         except ValueError:
             pass
         try:
-            values[1] = float(input("\tradius (6371000)[m]: "))
+            values[1] = float(input("\tRadius (6371000)[m]: "))
         except ValueError:
             pass
-        print("\tstarting velocity [m/s]:")
+        print("\tStarting velocity [m/s]:")
         try:
-            values[2] = float(input("\t\tspeed in x (0): "))
-        except ValueError:
-            pass
-        try:
-            values[3] = float(input("\t\tspeed in y (0): "))
+            values[2] = float(input("\t\tSpeed in x (0): "))
         except ValueError:
             pass
         try:
-            values[4] = float(input("\t\tspeed in z (0): "))
-        except ValueError:
-            pass
-        print("satellite / second body:")
-        try:
-            values[5] = float(input("\tmass (500)[kg]: "))
+            values[3] = float(input("\t\tSpeed in y (0): "))
         except ValueError:
             pass
         try:
-            values[6] = float(input("\tradius (2)[m]: "))
+            values[4] = float(input("\t\tSpeed in z (0): "))
         except ValueError:
             pass
-        print("\tstarting velocity [m/s]:")
+        print("Satellite / second body:")
         try:
-            values[7] = float(input("\t\tspeed in x (0): "))
-        except ValueError:
-            pass
-        try:
-            values[8] = float(input("\t\tspeed in y (0): "))
+            values[5] = float(input("\tMass (500)[kg]: "))
         except ValueError:
             pass
         try:
-            values[9] = float(input("\t\tspeed in z (-8000): "))
+            values[6] = float(input("\tRadius (2)[m]: "))
+        except ValueError:
+            pass
+        print("\tStarting velocity [m/s]:")
+        try:
+            values[7] = float(input("\t\tSpeed in x (0): "))
         except ValueError:
             pass
         try:
-            values[10] = float(input("\tinitial distance (1000000)[m]: "))
+            values[8] = float(input("\t\tSpeed in y (0): "))
+        except ValueError:
+            pass
+        try:
+            values[9] = float(input("\t\tSpeed in z (-8000): "))
+        except ValueError:
+            pass
+        try:
+            values[10] = float(input("\tInitial distance (1000000)[m]: "))
         except ValueError:
             pass
 
@@ -197,7 +180,7 @@ class Values:
 
     @property
     def distance(self):
-        """get and set distance between bodies"""
+        """Get and set distance between bodies"""
         return self._distance
 
     @distance.setter
@@ -207,10 +190,7 @@ class Values:
         self._distance = value
 
     def to_dict(self) -> dict:
-        """converts the Values object to a dictionary
-
-        returns: dict
-        """
+        """Converts the Values object to a dictionary"""
         return {
             "central_mass": self.central.mass,
             "central_radius": self.central.radius,
@@ -230,10 +210,10 @@ class Values:
         }
 
     def save(self, path=None):
-        """save content of self to yaml file (overwriting existing content)
+        """Save content of self to yaml file (overwriting existing content)
 
-        args:
-            path: path to file (default [user home dir]/Documents/
+        Arguments:
+        path: path to file (default [user home dir]/Documents/
                 TwoBodyProblem/default/values.yml)
         """
         dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"

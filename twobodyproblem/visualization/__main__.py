@@ -28,17 +28,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "-v", "--version", action="version",
         version="%(prog)s version " + twobodyproblem.__version__,
-        help="show the version of the program and exit"
+        help="Show the version of the program and exit"
     )
     parser.add_argument(
         "-d", "--debug", action="store_true",
-        help="run the program in debug mode"
+        help="Run the program in debug mode"
     )
     parser.add_argument(
         "-i", "--input", nargs="*", default=[5.972e+24, 6371000.0, 0.0, 0.0,
                                              0.0, 500.0, 2.0, 0.0, 0.0,
                                              -8000.0, 1000000.0],
-        help="input the values in SI units in the following order: central "
+        help="Input the values in SI units in the following order: central "
              "mass, central radius, central velocity in x, y, z, satellite "
              "mass, satellite radius, satellite velocity in x, y, z, "
              "starting distance",
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-o", "--options", nargs="*", default=[1000, 600, 255, 255, 255, 255,
                                                0, 0, 1, 100, 30, 10, 0, 0, 1],
-        help="input the options in the following order (1 for yes, 0 for no): "
+        help="Input the options in the following order (1 for yes, 0 for no): "
              "canvas width, canvas height, color objects RGB, color pointers "
              "RGB, show pointers, calculations per second, simulation length "
              "in s, acceleration factor Δt, centered central body, testing "
@@ -69,12 +69,12 @@ if __name__ == "__main__":
     options = Options.from_list(args.options)
 
     if args.debug:
-        print("debugging activated...")
-        print("passed arguments:", end=" ")
+        print("Debugging activated...")
+        print("Passed arguments:", end=" ")
         print(sys.argv)
-        print("values:", end=" ")
+        print("Values:", end=" ")
         print(values.to_dict())
-        print("options:", end=" ")
+        print("Options:", end=" ")
         print(options.to_dict())
 
     # create and start simulation

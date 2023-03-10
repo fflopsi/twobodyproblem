@@ -8,7 +8,7 @@ with open(os.path.dirname(os.path.realpath(__file__))
 
 
 class AstroBody:
-    """base class of which all preset classes should inherit"""
+    """Base class of which all preset classes should inherit"""
     values: dict
     mass: float
     radius: float
@@ -17,41 +17,35 @@ class AstroBody:
 
 
 class Sun(AstroBody):
-    """class for Sun presets, inherits from AstroBody"""
+    """Class for Sun presets, inherits from AstroBody"""
     values = presets["Sun"]
     mass = values["mass"]
     radius = values["radius"]
 
 
 class Earth(AstroBody):
-    """class for Earth presets, inherits from AstroBody"""
+    """Class for Earth presets, inherits from AstroBody"""
     values = presets["Earth"]
     mass = values["mass"]
     radius = values["radius"]
 
 
 class Moon(AstroBody):
-    """class for Moon presets, inherits from AstroBody"""
+    """Class for Moon presets, inherits from AstroBody"""
     values = presets["Moon"]
     mass = values["mass"]
     radius = values["radius"]
 
 
 class Sputnik2(AstroBody):
-    """class for Sputnik 2 presets, inherits from AstroBody"""
+    """Class for Sputnik 2 presets, inherits from AstroBody"""
     values = presets["Sputnik2"]
     mass = values["mass"]
     radius = values["radius"]
 
 
 def mass(body: str) -> float:
-    """returns mass of given body
-
-    args:
-        body: string which body's mass should be returned
-
-    returns: float
-    """
+    """Returns mass of given body"""
     if isinstance(body, str):
         return presets[body]["mass"]
     else:
@@ -59,13 +53,7 @@ def mass(body: str) -> float:
 
 
 def radius(body: str) -> float:
-    """returns radius of given body
-
-    args:
-        body: string which body's radius should be returned
-
-    returns: float
-    """
+    """Returns radius of given body"""
     if isinstance(body, str):
         return presets[body]["radius"]
     else:
@@ -73,13 +61,7 @@ def radius(body: str) -> float:
 
 
 def distance(name: str) -> float:
-    """returns distance between two given bodies
-
-    args:
-        name: name of distance that should be returned
-
-    returns: float
-    """
+    """Returns distance between two given bodies"""
     if isinstance(name, str):
         return presets["distance"][name]
     else:

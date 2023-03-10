@@ -8,22 +8,36 @@ defaults = (1000, 600, 255, 255, 255, 1, 255, 0, 0, 100, 30, 10, 0, 0, 1)
 
 
 class Options:
-    """class used for option input"""
+    """Contains all options used in the simulation
+    
+    Attributes:
+    canvas: A Canvas object used for the vpython canvas
+    colors: A Color object used for the colors of the bodies and pointers
+    pointers: Show the pointers
+    rate: The rate of calculations per second
+    sim_time: Simulation time in seconds
+    delta_t: Number of seconds calculated per calculation
+    central_centered: Visually center the central body
+    testing: Enable testing features
+    restart: Restart the program after the simulation ends
+    """
 
     class Canvas:
-        """class used for representing vpython canvases in Options"""
+        """Represents vpython canvas
+        
+        Attributes:
+        width: the width of the canvas in pixels
+        height: the height of the canvas in pixels
+        """
 
         def __init__(self, width=1000, height=600):
-            """args:
-                width: width of the canvas (default 1000)
-                height: height of the canvas (default 600)
-            """
+            """Initialize a Canvas with width and height"""
             self.width = width
             self.height = height
 
         @property
         def width(self):
-            """get and set width"""
+            """Get and set width of the Canvas in pixels"""
             return self._width
 
         @width.setter
@@ -36,7 +50,7 @@ class Options:
 
         @property
         def height(self):
-            """get and set height"""
+            """Get and set height of the Canvas in pixels"""
             return self._height
 
         @height.setter
@@ -48,20 +62,22 @@ class Options:
             self._height = value
 
     class Color:
-        """class used for storing color options"""
+        """Stores color options for bodies and pointers
+        
+        Attributes:
+        bodies: vector for the color values of the bodies (spheres)
+        pointers: vector for the color values of the pointers (arrows)
+        """
 
         def __init__(self, bodies_r=255, bodies_g=255, bodies_b=255,
                      pointers_r=255, pointers_g=0, pointers_b=0):
-            """args:
-                bodies_*: RGB value of body color (defaults 255, 255, 255)
-                pointers_*: RGB value of pointer color (defaults 255, 0, 0)
-            """
+            """Initialize a Color class with RGB values for bodies and pointers"""
             self.bodies = vp.vector(bodies_r, bodies_g, bodies_b)
             self.pointers = vp.vector(pointers_r, pointers_g, pointers_b)
 
         @property
         def bodies(self):
-            """get and set bodies color vector"""
+            """Get and set bodies RGB color vector"""
             return self._bodies
 
         @bodies.setter
@@ -73,7 +89,7 @@ class Options:
 
         @property
         def pointers(self):
-            """get and set pointers color vector"""
+            """Get and set pointers RGB color vector"""
             return self._pointers
 
         @pointers.setter
@@ -91,18 +107,7 @@ class Options:
                  max_seconds=defaults[10], delta_t=defaults[11],
                  central_centered=defaults[12], testing=defaults[13],
                  restart=defaults[14]):
-        """args:
-            canvas_*: dimensions of vpython canvas (defaults 1000, 600)
-            color_bodies_*: RGB value of body color (defaults 255, 255, 255)
-            color_pointers_*: RGB value of pointer color (defaults 255, 0, 0)
-            show_pointers: optional pointers to objects (default 1)
-            update_rate: calculations per second (default 100)
-            max_seconds: simulation time in s (default 30)
-            delta_t: Δt value (seconds in one calculation) (default 10)
-            central_centered: center central body during simulation (default 0)
-            testing: enable testing features (default 0)
-            restart: restart the whole program after one simulation (default 1)
-        """
+        """Initialize an Options object with Canvas and Color objects split"""
         self.canvas = self.Canvas(width=canvas_width,
                                   height=canvas_height)
         self.colors = self.Color(bodies_r=color_objects_r,
@@ -121,13 +126,7 @@ class Options:
 
     @classmethod
     def from_dict(cls, values: dict):
-        """create Options object from dictionary
-
-        args:
-            values: dictionary of options to be used
-
-        returns: Options
-        """
+        """Create Options object from dictionary"""
         return cls(canvas_width=values["canvas"]["width"],
                    canvas_height=values["canvas"]["height"],
                    color_objects_r=values["color"]["objects"]["r"],
@@ -145,13 +144,7 @@ class Options:
 
     @classmethod
     def from_list(cls, values):
-        """create Options object form list or tuple
-
-        args:
-            values: list or tuple of options to be used
-
-        returns: Options
-        """
+        """Create Options object from list or tuple"""
         return cls(canvas_width=values[0], canvas_height=values[1],
                    color_objects_r=values[2], color_objects_g=values[3],
                    color_objects_b=values[4], show_pointers=values[5],
@@ -163,13 +156,11 @@ class Options:
 
     @classmethod
     def from_file(cls, path=None):
-        """create Options object from yaml file
+        """Create Options object from yaml file
 
-        args:
-            path: path to file (default [user home dir]/Documents/
-                TwoBodyProblem/default/settings.yml)
-
-        returns: Options
+        Arguments:
+        path: path to file (default [user home dir]/Documents/
+            TwoBodyProblem/default/settings.yml)
         """
         dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
         if not os.path.isdir(dir_path):
@@ -181,20 +172,17 @@ class Options:
 
     @classmethod
     def from_input(cls):
-        """create Options object from user input
-
-        returns: Options
-        """
+        """Create Options object from user input"""
         options = list(defaults)
         try:
-            options[0] = int(input("canvas width (1000)[px]: "))
+            options[0] = int(input("Canvas width (1000)[px]: "))
         except ValueError:
             pass
         try:
-            options[1] = int(input("canvas height (600)[px]: "))
+            options[1] = int(input("Canvas height (600)[px]: "))
         except ValueError:
             pass
-        print("color objects RGB: ")
+        print("Color objects RGB: ")
         try:
             options[2] = int(input("\tR (255): "))
         except ValueError:
@@ -208,11 +196,11 @@ class Options:
         except ValueError:
             pass
         try:
-            options[5] = int(input("show the pointers (1): "))
+            options[5] = int(input("Show the pointers (1): "))
         except ValueError:
             pass
         if options[5] == 1:
-            print("color pointers RGB: ")
+            print("Color pointers RGB: ")
             try:
                 options[6] = int(input("\tR (255): "))
             except ValueError:
@@ -226,27 +214,27 @@ class Options:
             except ValueError:
                 pass
         try:
-            options[9] = int(input("calculations per second (100): "))
+            options[9] = int(input("Calculations per second (100): "))
         except ValueError:
             pass
         try:
-            options[10] = int(input("simulation length (30)[s]: "))
+            options[10] = int(input("Simulation length (30)[s]: "))
         except ValueError:
             pass
         try:
-            options[11] = int(input("acceleration factor (Δt) (10): "))
+            options[11] = int(input("Acceleration factor (Δt) (10): "))
         except ValueError:
             pass
         try:
-            options[12] = int(input("centered central body (0): "))
+            options[12] = int(input("Centered central body (0): "))
         except ValueError:
             pass
         try:
-            options[13] = int(input("enable testing features (0): "))
+            options[13] = int(input("Enable testing features (0): "))
         except ValueError:
             pass
         try:
-            options[14] = int(input("restart program after simulation (1): "))
+            options[14] = int(input("Restart program after simulation (1): "))
         except ValueError:
             pass
 
@@ -254,7 +242,7 @@ class Options:
 
     @property
     def rate(self):
-        """get and set update rate"""
+        """Get and set update rate"""
         return self._rate
 
     @rate.setter
@@ -267,7 +255,7 @@ class Options:
 
     @property
     def sim_time(self):
-        """get and set simulation time"""
+        """Get and set simulation time"""
         return self._sim_time
 
     @sim_time.setter
@@ -280,7 +268,7 @@ class Options:
 
     @property
     def delta_t(self):
-        """get and set Δt"""
+        """Get and set Δt"""
         return self._delta_t
 
     @delta_t.setter
@@ -292,10 +280,7 @@ class Options:
         self._delta_t = value
 
     def to_dict(self) -> dict:
-        """converts the Options object to a dictionary
-
-        returns: dict
-        """
+        """Convert the Options object to a dictionary"""
         return {
             "canvas": {
                 "width": self.canvas.width,
@@ -323,11 +308,11 @@ class Options:
         }
 
     def save(self, path=None):
-        """save content of self to yaml file (overwriting existing content)
+        """Save content of Options to yaml file (overwriting existing content)
 
-        args:
-            path: path to file (default [user home dir]/Documents/
-                TwoBodyProblem/default/settings.yml)
+        Arguments:
+        path: path to file (default [user home dir]/Documents/
+            TwoBodyProblem/default/settings.yml)
         """
         dir_path = str(Path.home()) + "/Documents/TwoBodyProblem/default"
         if not os.path.isdir(dir_path):
