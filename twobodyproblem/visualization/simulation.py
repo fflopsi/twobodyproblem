@@ -26,44 +26,53 @@ class Simulation:
             raise TypeError("values must be of type Values, options must be "
                             "of type Options")
 
-    def pause(self, button: vp.button):
-        """Pause and un-pause the simulation
-
-        Arguments:
-        button: Pause vpython button itself
-        """
-        if button.text == "Pause":
-            button.text = "Play"
-        else:
-            button.text = "Pause"
-
-    def restart(self):
-        """Restart the program"""
-        # does not work perfectly, especially on command line
-        os.execl(sys.executable, sys.executable, *sys.argv)
-        # os.execv(sys.executable, ["python"] + sys.argv)
-
-    def adjust_radius(self, slider: vp.slider, sphere: Body):
-        """Adjust the visual size of the body according to the slider value
-
-        Arguments:
-        slider: vpython slider which was changed
-        sphere: Body associated with the slider
-        """
-        sphere.radius = eval("self.values." + sphere.name
-                             + ".radius") * slider.value
-
-    def reset_slider(self, slider: vp.slider):
-        """Reset the slider to the default value"""
-        slider.value = 1
-        slider.bind()
-
-    def start(self):
+    def start(self): # TODO: rename
         """Open the vpython window and start the simulation"""
         # set up important boolean values from options
         testing = self.options.testing
         central_centered = self.options.central_centered
         show_pointers = self.options.pointers
+
+        collision_detection = True
+
+        def pause(button: vp.button):
+            """Pause and un-pause the simulation
+
+            Arguments:
+            button: Pause vpython button itself
+            """
+            if button.text == "Pause":
+                button.text = "Play"
+            else:
+                button.text = "Pause"
+
+        def restart():
+            """Restart the program"""
+            # does not work perfectly, especially on command line
+            os.execl(sys.executable, sys.executable, *sys.argv)
+            # os.execv(sys.executable, ["python"] + sys.argv)
+
+        def switch_collision_detection(button: vp.button):
+            """Activate and deactivate collision detection"""
+            if button.checked:
+                collision_detection = True
+            else:
+                collision_detection = False
+
+        def adjust_radius(slider: vp.slider, sphere: Body):
+            """Adjust the visual size of the body according to the slider value
+
+            Arguments:
+            slider: vpython slider which was changed
+            sphere: Body associated with the slider
+            """
+            sphere.radius = eval("self.values." + sphere.name
+                                 + ".radius") * slider.value
+
+        def reset_slider(slider: vp.slider):
+            """Reset the slider to the default value"""
+            slider.value = 1
+            slider.bind()
 
         # set up canvas, bodies and pointers
         scene = vp.canvas(title="Simulation zum Zweikörperproblem",
@@ -113,10 +122,12 @@ class Simulation:
                 0, self.values.sat.radius, 0)
 
         # set up buttons
-        pause_sim = vp.button(text="Pause", bind=self.pause)
+        pause_sim = vp.button(text="Pause", bind=pause)
         vp.button(text="Stop",
                   bind=lambda: os.kill(os.getpid(), signal.SIGINT))
-        vp.button(text="Restart", bind=self.restart)
+        vp.button(text="Restart", bind=restart)
+        vp.checkbox(text="Collision detection",
+                    bind=switch_collision_detection, checked=True)
         scene.append_to_caption("\n")
 
         # set up sliders for changing the radius of the two bodies
@@ -124,19 +135,17 @@ class Simulation:
                                          self.values.central.radius) /
                                         self.values.central.radius),
                                    min=1, value=1, top=12, bottom=12,
-                                   bind=lambda: self.adjust_radius(
+                                   bind=lambda: adjust_radius(
                                        slider=central_slider, sphere=central))
-        vp.button(text="Reset", bind=lambda: self.reset_slider(
-            central_slider))
+        vp.button(text="Reset", bind=lambda: reset_slider(central_slider))
         scene.append_to_caption("\n")
         sat_slider = vp.slider(max=((self.values.distance +
                                      self.values.sat.radius) /
                                     self.values.sat.radius),
                                min=1, value=1, top=12, bottom=12,
-                               bind=lambda: self.adjust_radius(
-                                   slider=sat_slider, sphere=sat))
-        vp.button(text="Reset",
-                  bind=lambda: self.reset_slider(sat_slider))
+                               bind=lambda: adjust_radius(slider=sat_slider,
+                                   sphere=sat))
+        vp.button(text="Reset", bind=lambda: reset_slider(sat_slider))
 
         # set up time variables
         t = 0
@@ -164,5 +173,10 @@ class Simulation:
                         0, sat.radius, 0)
                 if self.options.sim_time > 0:
                     t += 1
+                # collision detection
+                if collision_detection and vp.mag(sat.pos - central.pos) < \
+                        self.values.central.radius + self.values.sat.radius:
+                    pause_sim.text = "Collision detected (original radii)," + \
+                                     " click to continue"
         if bool(self.options.restart):
-            self.restart()
+            restart()
