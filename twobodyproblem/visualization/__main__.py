@@ -10,7 +10,7 @@ import sys
 import twobodyproblem
 from twobodyproblem.options import Options
 from twobodyproblem.values import Values
-from twobodyproblem.visualization.simulation import Simulation
+from twobodyproblem.visualization.simulation import run_simulation
 
 if __name__ == "__main__":
     # add CLI arguments
@@ -77,5 +77,5 @@ if __name__ == "__main__":
         print("Options:", end=" ")
         print(options.to_dict())
 
-    # create and start simulation
-    Simulation(values=values, options=options).start()
+    # start simulation
+    run_simulation(values=values, options=options)
