@@ -45,6 +45,14 @@ def run_simulation(values: Values = Values(), options: Options = Options()): # T
         else:
             collision_detection = False
 
+    def change_rate(field: vp.winput):
+        """Change the rate according to winput field number"""
+        options.rate = field.number
+
+    def change_delta_t(field: vp.winput):
+        """Change the Δt factor according to winput field number"""
+        options.delta_t = field.number
+
     def adjust_radius(slider: vp.slider, sphere: Body):
         """Adjust the visual size of the body according to the slider value
 
@@ -112,6 +120,10 @@ def run_simulation(values: Values = Values(), options: Options = Options()): # T
     vp.checkbox(text="Collision detection",
                 bind=switch_collision_detection, checked=True)
     scene.append_to_caption("\n")
+
+    # set up text fields for rate and Δt
+    vp.winput(text=options.rate, prompt="Rate: ", bind=change_rate) # TODO: test prompt
+    vp.winput(text=options.delta_t, prompt="Δt: ", bind=change_delta_t)
 
     # set up sliders for changing the radius of the two bodies
     central_slider = vp.slider(max=((values.distance +
