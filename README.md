@@ -38,10 +38,9 @@ features, install it from GitHub (see [below](#via-github)).*
 1. Make sure [Python](https://www.python.org/downloads) and pip are installed
    correctly.
 1. Run these commands from a command line:
-    1. `pip3 install --upgrade pip setuptools wheel`
-    1. `pip3 install --upgrade twobodyproblem`
-1. Now, the program is runnable with `python -m twobodyproblem` or
-   `python3 -m twobodyproblem`.
+    1. `pip install --upgrade pip setuptools wheel`
+    1. `pip install --upgrade twobodyproblem`
+1. Now, the program is usable with `python -m twobodyproblem`.
 
 ### via GitHub
 
@@ -51,19 +50,16 @@ features, install it from GitHub (see [below](#via-github)).*
 1. Run these commands from a command line:
     1. `mkdir TwoBody` and `cd TwoBody`
     1. `git clone https://github.com/twobodyproblem/simulation-python.git`
-    1. `pip3 install --upgrade pip setuptools wheel`
-    1. `pip3 install simulation-python`
-1. Now, the program is runnable with `python -m twobodyproblem` or
-   `python3 -m twobodyproblem`.
+    1. `pip install --upgrade pip setuptools wheel`
+    1. `pip install ./simulation-python/`
+1. Now, the program is usable with `python -m twobodyproblem`.
 
 ## Usage
 
 *To learn more about how to run the program with different options,
-run `python -m twbodyproblem -h` or `python3 -m twbodyproblem -h`
-respectively.*
+run `python -m twbodyproblem -h`.*
 
-Run the program with `python -m twobodyproblem` or `python3 -m twobodyproblem`
-on a command line.
+Run the program with `python -m twobodyproblem` on a command line.
 
 First, you will have to input *options* and *values*. The options define the
 particular behavior of the simulation, the values define the dimensions (i.e.
