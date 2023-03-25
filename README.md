@@ -13,22 +13,13 @@ inputting your data,
 visit [this repository](https://github.com/twobodyproblem/simulation-python-gui)
 containing a GUI program.*
 
-## Table of Contents
-
-[Installation](#installation)
-
-- [via PyPi](#via-pypi)
-- [via GitHub](#via-github)
-
-[Usage](#usage)
-
 ## Installation
 
 *(You may need Microsoft Visual C++ to be able to run the program, so install
 it from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools) if
 needed.)*
 
-### via PyPi
+### Via PyPi
 
 *The Python package manager pip will install the last uploaded version from the
 Python Package Index [PyPi](https://pypi.org/project/twobodyproblem). This will
@@ -42,7 +33,7 @@ features, install it from GitHub (see [below](#via-github)).*
     1. `pip install --upgrade twobodyproblem`
 1. Now, the program is usable with `python -m twobodyproblem`.
 
-### via GitHub
+### Via GitHub
 
 1. Make sure [Python](https://www.python.org/downloads) and pip are installed
    correctly.
