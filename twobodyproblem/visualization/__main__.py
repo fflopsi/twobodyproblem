@@ -17,13 +17,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="twobodyproblem",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        usage="python/python3 -m twobodyproblem.visualization [-h | -v ] "
+        usage="python -m twobodyproblem.visualization [-h | -v] "
               "-i values [-o options] [-d]",
         description="This is a little simulation of the gravitational two "
                     "body problem.\nTo use it normally in CLI mode, just run "
                     "the command without any of the optional arguments.",
         epilog="For further information, "
-               "visit:\nhttps://github.com/twobodyproblem/simulation-python"
+               "visit:\nhttps://github.com/fflopsi/twobodyproblem"
     )
     parser.add_argument(
         "-v", "--version", action="version",

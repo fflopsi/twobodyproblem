@@ -48,6 +48,6 @@ packages = [
 twobodyproblem = ["saved_data/presets.yml"]
 
 [project.urls]
-homepage = "https://github.com/twobodyproblem/simulation-python"
+homepage = "https://github.com/fflopsi/twobodyproblem"
 PyPi = "https://pypi.org/project/twobodyproblem"
-GUI = "https://github.com/twobodyproblem/simulation-python-gui"
+GUI = "https://github.com/fflopsi/twobodyproblem-gui"

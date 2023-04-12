@@ -11,12 +11,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="twobodyproblem",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        usage="python/python3 -m twobodyproblem [-h | -v ] [-d]",
+        usage="python -m twobodyproblem [-h | -v] [-d]",
         description="This is a little simulation of the gravitational two "
                     "body problem.\nTo run the simulation normally, just run "
                     "the command without any of the optional arguments.",
         epilog="For further information, "
-               "visit:\nhttps://github.com/twobodyproblem/simulation-python"
+               "visit:\nhttps://github.com/fflopsi/twobodyproblem"
     )
     parser.add_argument(
         "-v", "--version", action="version",
