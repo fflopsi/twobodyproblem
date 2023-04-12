@@ -10,7 +10,7 @@ show you a visualization of the simulation.
 
 *This program is command line only. If you want a graphical user interface for
 inputting your data,
-visit [this repository](https://github.com/twobodyproblem/simulation-python-gui)
+visit [this repository](https://github.com/fflopsi/twobodyproblem-gui)
 containing a GUI program.*
 
 ## Installation
@@ -40,9 +40,9 @@ features, install it from GitHub (see [below](#via-github)).*
 1. Make sure [Git SCM](https://git-scm.com/downloads) is installed correctly.
 1. Run these commands from a command line:
     1. `mkdir TwoBody` and `cd TwoBody`
-    1. `git clone https://github.com/twobodyproblem/simulation-python.git`
+    1. `git clone https://github.com/fflopsi/twobodyproblem.git`
     1. `pip install --upgrade pip setuptools wheel`
-    1. `pip install ./simulation-python/`
+    1. `pip install ./twobodyproblem/`
 1. Now, the program is usable with `python -m twobodyproblem`.
 
 ## Usage
