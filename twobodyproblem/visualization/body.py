@@ -15,11 +15,10 @@ class Body(vp.sphere):
     acceleration: The current acceleration of the Body as vpython vector in x, y, z
     """
 
-    def __init__(self, sim, name: str, mass=1.0, velocity=vp.vector(0, 0, 0),
+    def __init__(self, name: str, mass=1.0, velocity=vp.vector(0, 0, 0),
                  **kwargs):
         """Constructor extends vpython.sphere constructor"""
         super(Body, self).__init__(**kwargs)
-        self.parent = sim
         self._name = name
         self._mass = mass
         self.velocity = velocity
@@ -70,8 +69,8 @@ class Body(vp.sphere):
         self._velocity = value
 
     def calculate(self, delta_t=10):
-        """Calculate new acceleration, velocity and position from force
-        (calculation beforehand needed), mass, previous velocity and position
+        """Calculate new acceleration, velocity and position from force (calculation beforehand
+        needed), mass, previous velocity and position
 
         Arguments:
         delta_t: Δt value (seconds in one calculation) (default 10)
