@@ -69,8 +69,8 @@ class Options:
         pointers: vector for the color values of the pointers (arrows)
         """
 
-        def __init__(self, bodies_r=255, bodies_g=255, bodies_b=255,
-                     pointers_r=255, pointers_g=0, pointers_b=0):
+        def __init__(self, bodies_r=255, bodies_g=255, bodies_b=255, pointers_r=255, pointers_g=0,
+                     pointers_b=0):
             """Initialize a Color class with RGB values for bodies and pointers"""
             self.bodies = vp.vector(bodies_r, bodies_g, bodies_b)
             self.pointers = vp.vector(pointers_r, pointers_g, pointers_b)
@@ -82,8 +82,7 @@ class Options:
 
         @bodies.setter
         def bodies(self, value):
-            if not (0 <= value.x <= 255 and 0 <= value.y <= 255
-                    and 0 <= value.z <= 255):
+            if not (0 <= value.x <= 255 and 0 <= value.y <= 255 and 0 <= value.z <= 255):
                 raise ValueError("RGB values must be between 0 and 255")
             self._bodies = value
 
@@ -94,8 +93,7 @@ class Options:
 
         @pointers.setter
         def pointers(self, value):
-            if not (0 <= value.x <= 255 and 0 <= value.y <= 255
-                    and 0 <= value.z <= 255):
+            if not (0 <= value.x <= 255 and 0 <= value.y <= 255 and 0 <= value.z <= 255):
                 raise ValueError("RGB values must be between 0 and 255")
             self._pointers = value
 
@@ -103,19 +101,14 @@ class Options:
                  color_objects_r=defaults[2], color_objects_g=defaults[3],
                  color_objects_b=defaults[4], show_pointers=defaults[5],
                  color_pointers_r=defaults[6], color_pointers_g=defaults[7],
-                 color_pointers_b=defaults[8], update_rate=defaults[9],
-                 max_seconds=defaults[10], delta_t=defaults[11],
-                 central_centered=defaults[12], testing=defaults[13],
+                 color_pointers_b=defaults[8], update_rate=defaults[9], max_seconds=defaults[10],
+                 delta_t=defaults[11], central_centered=defaults[12], testing=defaults[13],
                  restart=defaults[14]):
         """Initialize an Options object with Canvas and Color objects split"""
-        self.canvas = self.Canvas(width=canvas_width,
-                                  height=canvas_height)
-        self.colors = self.Color(bodies_r=color_objects_r,
-                                 bodies_g=color_objects_g,
-                                 bodies_b=color_objects_b,
-                                 pointers_r=color_pointers_r,
-                                 pointers_g=color_pointers_g,
-                                 pointers_b=color_pointers_b)
+        self.canvas = self.Canvas(width=canvas_width, height=canvas_height)
+        self.colors = self.Color(bodies_r=color_objects_r, bodies_g=color_objects_g,
+                                 bodies_b=color_objects_b, pointers_r=color_pointers_r,
+                                 pointers_g=color_pointers_g, pointers_b=color_pointers_b)
         self.pointers = bool(show_pointers)
         self.rate = update_rate
         self.sim_time = max_seconds
@@ -127,8 +120,7 @@ class Options:
     @classmethod
     def from_dict(cls, values: dict):
         """Create Options object from dictionary"""
-        return cls(canvas_width=values["canvas"]["width"],
-                   canvas_height=values["canvas"]["height"],
+        return cls(canvas_width=values["canvas"]["width"], canvas_height=values["canvas"]["height"],
                    color_objects_r=values["color"]["objects"]["r"],
                    color_objects_g=values["color"]["objects"]["g"],
                    color_objects_b=values["color"]["objects"]["b"],
@@ -136,22 +128,18 @@ class Options:
                    color_pointers_r=values["color"]["pointers"]["r"],
                    color_pointers_g=values["color"]["pointers"]["g"],
                    color_pointers_b=values["color"]["pointers"]["b"],
-                   update_rate=values["update_rate"],
-                   max_seconds=values["max_seconds"],
-                   delta_t=values["t_factor"],
-                   central_centered=values["do_central_centered"],
+                   update_rate=values["update_rate"], max_seconds=values["max_seconds"],
+                   delta_t=values["t_factor"], central_centered=values["do_central_centered"],
                    testing=values["do_testing"], restart=values["do_restart"])
 
     @classmethod
     def from_list(cls, values):
         """Create Options object from list or tuple"""
-        return cls(canvas_width=values[0], canvas_height=values[1],
-                   color_objects_r=values[2], color_objects_g=values[3],
-                   color_objects_b=values[4], show_pointers=values[5],
+        return cls(canvas_width=values[0], canvas_height=values[1], color_objects_r=values[2],
+                   color_objects_g=values[3], color_objects_b=values[4], show_pointers=values[5],
                    color_pointers_r=values[6], color_pointers_g=values[7],
-                   color_pointers_b=values[8], update_rate=values[9],
-                   max_seconds=values[10], delta_t=values[11],
-                   central_centered=values[12], testing=values[13],
+                   color_pointers_b=values[8], update_rate=values[9], max_seconds=values[10],
+                   delta_t=values[11], central_centered=values[12], testing=values[13],
                    restart=values[14])
 
     @classmethod

@@ -2,8 +2,7 @@ import os
 
 import yaml
 
-with open(os.path.dirname(os.path.realpath(__file__))
-          + "/saved_data/presets.yml") as f:
+with open(os.path.dirname(os.path.realpath(__file__)) + "/saved_data/presets.yml") as f:
     presets = yaml.load(f, Loader=yaml.FullLoader)
 
 

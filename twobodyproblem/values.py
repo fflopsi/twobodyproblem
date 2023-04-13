@@ -4,8 +4,7 @@ from pathlib import Path
 import vpython as vp
 import yaml
 
-defaults = (5.972e+24, 6371000.0, 0.0, 0.0, 0.0,
-            500.0, 2.0, 0.0, 0.0, -8000.0, 1000000.0)
+defaults = (5.972e+24, 6371000.0, 0.0, 0.0, 0.0, 500.0, 2.0, 0.0, 0.0, -8000.0, 1000000.0)
 
 
 class Values:
@@ -70,42 +69,33 @@ class Values:
             self._velocity = value
 
     def __init__(self, central_mass=defaults[0], central_radius=defaults[1],
-                 central_v0_x=defaults[2], central_v0_y=defaults[3],
-                 central_v0_z=defaults[4], sat_mass=defaults[5],
-                 sat_radius=defaults[6], sat_v0_x=defaults[7],
-                 sat_v0_y=defaults[8], sat_v0_z=defaults[9],
-                 distance=defaults[10]):
+                 central_v0_x=defaults[2], central_v0_y=defaults[3], central_v0_z=defaults[4],
+                 sat_mass=defaults[5], sat_radius=defaults[6], sat_v0_x=defaults[7],
+                 sat_v0_y=defaults[8], sat_v0_z=defaults[9], distance=defaults[10]):
         """Initialize a Values object with the details for central and sat bodies"""
-        self.central = self.Body(mass=central_mass, radius=central_radius,
-                                 v0_x=central_v0_x, v0_y=central_v0_y,
-                                 v0_z=central_v0_z)
-        self.sat = self.Body(mass=sat_mass, radius=sat_radius,
-                             v0_x=sat_v0_x, v0_y=sat_v0_y, v0_z=sat_v0_z)
+        self.central = self.Body(mass=central_mass, radius=central_radius, v0_x=central_v0_x,
+                                 v0_y=central_v0_y, v0_z=central_v0_z)
+        self.sat = self.Body(mass=sat_mass, radius=sat_radius, v0_x=sat_v0_x, v0_y=sat_v0_y,
+                             v0_z=sat_v0_z)
         self.distance = distance
 
     @classmethod
     def from_dict(cls, values: dict):
         """Create Values object from dictionary"""
-        return cls(central_mass=values["central_mass"],
-                   central_radius=values["central_radius"],
-                   central_v0_x=values["central_v0"]["x"],
-                   central_v0_y=values["central_v0"]["y"],
-                   central_v0_z=values["central_v0"]["z"],
-                   sat_mass=values["sat_mass"],
-                   sat_radius=values["sat_radius"],
-                   sat_v0_x=values["sat_v0"]["x"],
-                   sat_v0_y=values["sat_v0"]["y"],
-                   sat_v0_z=values["sat_v0"]["z"],
+        return cls(central_mass=values["central_mass"], central_radius=values["central_radius"],
+                   central_v0_x=values["central_v0"]["x"], central_v0_y=values["central_v0"]["y"],
+                   central_v0_z=values["central_v0"]["z"], sat_mass=values["sat_mass"],
+                   sat_radius=values["sat_radius"], sat_v0_x=values["sat_v0"]["x"],
+                   sat_v0_y=values["sat_v0"]["y"], sat_v0_z=values["sat_v0"]["z"],
                    distance=values["distance"])
 
     @classmethod
     def from_list(cls, values):
         """Create Values object from list or tuple"""
-        return cls(central_mass=values[0], central_radius=values[1],
-                   central_v0_x=values[2], central_v0_y=values[3],
-                   central_v0_z=values[4], sat_mass=values[5],
-                   sat_radius=values[6], sat_v0_x=values[7],
-                   sat_v0_y=values[8], sat_v0_z=values[9], distance=values[10])
+        return cls(central_mass=values[0], central_radius=values[1], central_v0_x=values[2],
+                   central_v0_y=values[3], central_v0_z=values[4], sat_mass=values[5],
+                   sat_radius=values[6], sat_v0_x=values[7], sat_v0_y=values[8], sat_v0_z=values[9],
+                   distance=values[10])
 
     @classmethod
     def from_file(cls, path=None):
